@@ -1,0 +1,35 @@
+@font-face{
+	font-family: 'JuliusSansOne';
+	src: url(fonts/JuliusSansOne-Regular.ttf);
+}
+
+#login-layout{
+	-fx-background-color: #1E1E1E
+}
+
+#titulo-text{
+	-fx-fill: white;
+	-fx-font-size: 64px;
+	-fx-font-family: 'JuliusSansOne';
+	-fx-letter-spacing: 2px;
+}
+
+.input{
+	-fx-background-color:transparent;
+	-fx-border-color:white;
+	-fx-border-width:0 0 1 0;
+	-fx-text-fill:white;
+	-fx-font-size:24px;
+	-fx-prompt-text-fill: white;
+	-fx-pref-width: 705px;
+}
+
+#login-botao{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+	-fx-background-radius: 30px;
+	-fx-padding: 10 25 10 25;
+	-fx-font-size: 20px;
+	-fx-cursor: hand;
+
+}
