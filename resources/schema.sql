@@ -17,6 +17,7 @@ CREATE TABLE colaboradores (
     cpf VARCHAR(11) UNIQUE NOT NULL,
     data_nascimento DATE NOT NULL,
 	cargo VARCHAR(50) NOT NULL,
+	setor Varchar(50) NOT NULL,
     experiencia TEXT,
     observacoes TEXT
 );
