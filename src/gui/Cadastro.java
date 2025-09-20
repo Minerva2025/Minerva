@@ -29,7 +29,7 @@ public class Cadastro extends Application {
 		infosPessoais.getStyleClass().add("infos");
 		
 		TextField nome = new TextField();
-		nome.setPromptText("Nome");
+		nome.setPromptText("Nome completo");
 		nome.getStyleClass().add("input");
 		
 		TextField cpf = new TextField();
