@@ -15,6 +15,7 @@ public class Usuario {
     private Funcao funcao;          // Função/cargo (enum)
     private String experiencia;     // Experiência profissional
     private String observacoes;     // Observações adicionais
+    private Integer gestorId; // ID do gestor responsável
 
     /**
      * Construtor da classe Usuario.
@@ -24,16 +25,21 @@ public class Usuario {
      * @param funcao Função do usuário (RH, GESTOR_GERAL, GESTOR_AREA)
      * @param experiencia Experiência profissional
      * @param observacoes Observações adicionais
-     */
+     * @param gestorId identificar quem é gestor responsável
+
+     * */
     public Usuario(String nome, String cpf, LocalDate data_nascimento, Funcao funcao, String experiencia,
-                   String observacoes) {
+                   String observacoes,Integer gestorId) {
         this.nome = nome;
         this.cpf = cpf;
         this.data_nascimento = data_nascimento;
         this.funcao = funcao;
         this.experiencia = experiencia;
         this.observacoes = observacoes;
+        this.gestorId = gestorId;
     }
+
+
 
     // --- Getters e Setters ---
     public int getId() { return id; }
@@ -56,4 +62,11 @@ public class Usuario {
 
     public String getObservacoes() { return observacoes; }
     public void setObservacoes(String observacoes) { this.observacoes = observacoes; }
+
+    public Integer getGestorId() {return gestorId;}
+    public void setGestorId(Integer gestorId) {this.gestorId = gestorId;}
 }
+
+
+
+
