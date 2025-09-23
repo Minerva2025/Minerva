@@ -4,3 +4,8 @@
 
 /bin/
 *.class
+
+.idea/
+*.iml
+/target/
+*.log

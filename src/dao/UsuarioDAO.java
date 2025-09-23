@@ -21,7 +21,7 @@ public class UsuarioDAO {
      * Insere um novo usuário no banco.
      */
     public void insert(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nome, cpf, data_nascimento, funcao, experiencia, observacoes) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nome, cpf, data_nascimento, funcao, experiencia, observacoes, gestor_id) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -32,7 +32,11 @@ public class UsuarioDAO {
             stmt.setString(4, usuario.getFuncao().name());
             stmt.setString(5, usuario.getExperiencia());
             stmt.setString(6, usuario.getObservacoes());
-
+            if (usuario.getGestorId() != null) {
+                stmt.setInt(7, usuario.getGestorId());
+            } else {
+                stmt.setNull(7, java.sql.Types.INTEGER);
+            }
             stmt.executeUpdate();
 
             // Recupera o ID gerado automaticamente pelo banco
@@ -50,7 +54,7 @@ public class UsuarioDAO {
      * Atualiza um usuário existente no banco.
      */
     public void update(Usuario usuario) {
-        String sql = "UPDATE usuarios SET nome = ?, cpf = ?, data_nascimento = ?, funcao = ?, experiencia = ?, observacoes = ? WHERE id = ?";
+        String sql = "UPDATE usuarios SET nome = ?, cpf = ?, data_nascimento = ?, funcao = ?, experiencia = ?, observacoes = ?, gestor_id = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -61,7 +65,12 @@ public class UsuarioDAO {
             stmt.setString(4, usuario.getFuncao().name());
             stmt.setString(5, usuario.getExperiencia());
             stmt.setString(6, usuario.getObservacoes());
-            stmt.setInt(7, usuario.getId());
+            if (usuario.getGestorId() != null) {
+                stmt.setInt(7, usuario.getGestorId());
+            } else {
+                stmt.setNull(7, java.sql.Types.INTEGER);
+            }
+            stmt.setInt(8, usuario.getId());
 
             stmt.executeUpdate();
 
@@ -106,9 +115,15 @@ public class UsuarioDAO {
                         rs.getDate("data_nascimento").toLocalDate(), // Converte java.sql.Date para LocalDate
                         Funcao.valueOf(rs.getString("funcao")),
                         rs.getString("experiencia"),
-                        rs.getString("observacoes")
+                        rs.getString("observacoes"),
+                        rs.getString("gestor_id"),
                 );
                 u.setId(rs.getInt("id"));
+                u.setGestorId(rs.getInt("gestor_id"));
+                if (rs.wasNull()) {
+                    u.setGestorId(null);
+                }
+
 
                 // Redimensiona o array para adicionar o novo usuário
                 Usuario[] temp = new Usuario[usuarios.length + 1];
