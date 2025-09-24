@@ -2,20 +2,30 @@ package gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Usuario;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.effect.GaussianBlur;
 
 public class HomeRH extends Application{
 	
+    private Usuario logado;
+
+    public HomeRH(Usuario usuarioLogado) {
+        this.logado = usuarioLogado;
+    }
+	
 	@Override
-	public void start(Stage stage) {
+	public void start(Stage homeStage) {
 		
-		Text titulo = new Text("BEM-VINDO");
+		String primeiroNome = logado.getNome().split(" ")[0];
+		
+		Text titulo = new Text("Bem-vindo " + primeiroNome + "!");
 		titulo.setId("titulo");
 		
 		Ellipse blob1 = new Ellipse(155, 155);
@@ -50,7 +60,12 @@ public class HomeRH extends Application{
 		
 		ToggleButton inicio = new ToggleButton("Início");
 		inicio.setId("inicio");
-		ToggleButton equipe = new ToggleButton("Equipe");
+		Button equipe = new Button("Equipe");
+		equipe.setOnAction(e -> {
+	        Stage cadastroUStage = new Stage();
+	        new CadastroUsuarios(logado).start(cadastroUStage);		   
+
+		});
 		equipe.setId("equipe");
 		ToggleButton relatorios = new ToggleButton("Relatórios");
 		relatorios.setId("relatorios");
@@ -71,12 +86,12 @@ public class HomeRH extends Application{
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("HomeRH.css").toExternalForm());
 		
-		stage.setScene(scene);
-		stage.setFullScreen(true);
-		stage.setFullScreenExitHint("");
-		stage.show();
+		homeStage.setScene(scene);
+		homeStage.setFullScreen(true);
+		homeStage.setFullScreenExitHint("");
+		homeStage.show();
 	}
-	
+		
 	public static void main (String[]args) {
 		launch(args);
 	}

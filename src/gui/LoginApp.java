@@ -10,6 +10,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+
+import controller.UsuarioController;
+import model.Funcao;
+import model.Usuario;
 
 public class LoginApp extends Application{
 	
@@ -47,10 +52,36 @@ public class LoginApp extends Application{
 		primaryStage.setFullScreen(true);
 		primaryStage.setFullScreenExitHint("");
 		primaryStage.show();
-	}
-	
-	public static void main (String[]args) {
-		launch(args);
+		
+		UsuarioController usuarioController = new UsuarioController();
+
+		loginButton.setOnAction(e -> {
+			String cpf = cpfField.getText().replaceAll("[^\\d]", "");
+            String senha = senhaField.getText();
+
+		    Usuario usuarioLogado = usuarioController.login(cpf, senha);
+
+		    if (usuarioLogado != null) {
+		        Stage homeStage = new Stage();
+		        if (usuarioLogado.getFuncao() == Funcao.RH) {
+		        	new HomeRH(usuarioLogado).start(homeStage);		   
+		        } else if (usuarioLogado.getFuncao() == Funcao.GESTOR_AREA) {
+		            new HomeGestorArea(usuarioLogado).start(homeStage);
+		        } else if (usuarioLogado.getFuncao() == Funcao.GESTOR_GERAL) {
+		            new HomeGestorGeral(usuarioLogado).start(homeStage);
+		        }
+		        primaryStage.close();
+		    }
+		    	else {
+		        // Login falhou
+		        Alert alert = new Alert(Alert.AlertType.ERROR);
+		        alert.setTitle("Erro de Login");
+		        alert.setHeaderText(null);
+		        alert.setContentText("CPF ou senha inválidos!");
+		        alert.showAndWait();
+		    }
+		});
+		
 	}
 }
 	

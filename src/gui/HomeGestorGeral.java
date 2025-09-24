@@ -7,10 +7,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Usuario;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.effect.GaussianBlur;
 
 public class HomeGestorGeral extends Application{
+	
+    private Usuario logado;
+
+    public HomeGestorGeral(Usuario usuarioLogado) {
+        this.logado = usuarioLogado;
+    }
+	
 	
 	@Override
 	public void start(Stage stage) {

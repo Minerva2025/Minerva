@@ -12,14 +12,24 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Funcao;
+import model.Usuario;
+import controller.UsuarioController;
+import java.time.LocalDate;
+
 
 public class CadastroUsuarios extends Application {
 	
+    private Usuario logado;
+    private UsuarioController usuarioController = new UsuarioController();
+
+    public CadastroUsuarios(Usuario logado) { 
+    	this.logado = logado;
+    }
+	
 	@Override
-	public void start(Stage stage) {
-		
-		Stage thirdStage = new Stage();
-		
+	public void start(Stage cadastroUStage) {
+				
 		Text titulocadastrorh = new Text("Cadastrar Usuários");
 		titulocadastrorh.setId("titulo-cadastro-rh");
 		
@@ -65,14 +75,27 @@ public class CadastroUsuarios extends Application {
 		experiencia.getStyleClass().add("input");
 		
 		
-		ComboBox<String> funcao = new ComboBox<>();
-		funcao.getItems().addAll(
-		    "RH",
-		    "Gestor de Área",
-		    "Gestor Geral"
-		);
+		ComboBox<Funcao> funcao = new ComboBox<>();
+		funcao.getItems().addAll(Funcao.values());
 		funcao.setPromptText("Função");
 		funcao.getStyleClass().add("input");
+		
+		funcao.setCellFactory(cb -> new ListCell<>() {
+		    @Override
+		    protected void updateItem(Funcao item, boolean empty) {
+		        super.updateItem(item, empty);
+		        if (empty || item == null) {
+		            setText(null);
+		        } else {
+		            switch(item) {
+		                case RH -> setText("RH");
+		                case GESTOR_AREA -> setText("Gestor de Área");
+		                case GESTOR_GERAL -> setText("Gestor Geral");
+		            }
+		        }
+		    }
+		});
+		funcao.setButtonCell(funcao.getCellFactory().call(null));
 
 		
 		TextField obs = new TextField();
@@ -138,16 +161,55 @@ public class CadastroUsuarios extends Application {
 		scene.getStylesheets().add(getClass().getResource("CadastroUsuario.css").toExternalForm());
 		
 		
-		thirdStage.setScene(scene);
-		thirdStage.setFullScreen(true);
-		thirdStage.setFullScreenExitHint("");
-		thirdStage.show();
+		cadastroUStage.setScene(scene);
+		cadastroUStage.setFullScreen(true);
+		cadastroUStage.setFullScreenExitHint("");
+		cadastroUStage.show();
+		
+		salvarButton.setOnAction(e -> {
+		    try {
+		        String nomeStr = nome.getText();
+		        String cpfStr = cpf.getText().replaceAll("[^\\d]", "");
+		        String senhaStr = "12345";
+		        LocalDate dataNascimento = dataNasci.getValue();
+		        Funcao funcaoSelecionada = funcao.getValue();
+		        String experienciaStr = experiencia.getText();
+		        String obsStr = obs.getText();
+
+		        if (nomeStr.isEmpty() || cpfStr.isEmpty() || senhaStr.isEmpty() || dataNascimento == null || funcaoSelecionada == null) {
+		            Alert alert = new Alert(Alert.AlertType.ERROR, "Preencha todos os campos obrigatórios!");
+		            alert.showAndWait();
+		            return;
+		        }
+				
+		        Usuario novoUsuario = new Usuario(
+		                nomeStr,
+		                cpfStr,
+		                senhaStr,
+		                dataNascimento,
+		                funcaoSelecionada,
+		                experienciaStr,
+		                obsStr
+		        );
+		        
+		        usuarioController.criarUsuario(logado, novoUsuario);
+		        
+		        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuário cadastrado com sucesso!");
+		        alert.showAndWait();
+		        cadastroUStage.close();
+		        
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		        Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao cadastrar usuário!");
+		        alert.showAndWait();
+		    }
+		});
+		
+		cancelarButton.setOnAction(e -> cadastroUStage.close());
+
 	}
 	
 	public static void main (String[]args) {
 		launch(args);
 	}
-
-
-		
 }
