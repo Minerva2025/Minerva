@@ -170,7 +170,7 @@ public class CadastroUsuarios extends Application {
 		    try {
 		        String nomeStr = nome.getText();
 		        String cpfStr = cpf.getText().replaceAll("[^\\d]", "");
-		        String senhaStr = "12345";
+		        String senhaStr = senha.getText();
 		        LocalDate dataNascimento = dataNasci.getValue();
 		        Funcao funcaoSelecionada = funcao.getValue();
 		        String experienciaStr = experiencia.getText();
