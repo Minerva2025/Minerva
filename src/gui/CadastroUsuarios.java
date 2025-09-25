@@ -66,6 +66,10 @@ public class CadastroUsuarios extends Application {
             }
         });
 		
+		PasswordField senha = new PasswordField();
+		senha.setPromptText("Senha");
+		senha.getStyleClass().add("input");
+		
 		Text infosprofissionais = new Text("Informações Profissionais");
 		infosprofissionais.getStyleClass().add("infos");
 		
@@ -133,20 +137,22 @@ public class CadastroUsuarios extends Application {
 		grid.add(dataNasci, 0, 3, 1, 1);
 		grid.add(cpf, 1, 3, 1, 1);
 		
-		grid.add(infosprofissionais, 0, 4, 1, 1);
+		grid.add(senha, 0, 4, 2, 1);
 		
-		grid.add(experiencia, 0, 5, 1, 1);
+		grid.add(infosprofissionais, 0, 5, 1, 1);
 		
-		grid.add(funcao, 1, 5, 1, 1);
+		grid.add(experiencia, 0, 6, 1, 1);
 		
-		grid.add(obs, 0, 6, 2, 1);
+		grid.add(funcao, 1, 6, 1, 1);
+		
+		grid.add(obs, 0, 7, 2, 1);
 		
 		grid.getColumnConstraints().addAll(col1,col2);
 		
 		HBox botoesBox = new HBox(20);
 		botoesBox.getChildren().addAll(salvarButton, cancelarButton);
 		botoesBox.setAlignment(Pos.CENTER);
-		grid.add(botoesBox, 0, 7, 2, 1);
+		grid.add(botoesBox, 0, 8, 2, 1);
 		
 		dataNasci.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(dataNasci, Priority.ALWAYS);
@@ -213,3 +219,5 @@ public class CadastroUsuarios extends Application {
 		launch(args);
 	}
 }
+
+
