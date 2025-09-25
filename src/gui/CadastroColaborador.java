@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.GridPane;
@@ -15,7 +16,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Cadastro extends Application {
+public class CadastroColaborador extends Application {
 	
 	@Override
 	public void start(Stage stage) {
@@ -66,6 +67,20 @@ public class Cadastro extends Application {
 		cargo.setPromptText("Cargo");
 		cargo.getStyleClass().add("input");
 		
+		ComboBox<String> setor = new ComboBox<>();
+		setor.getItems().addAll(
+		    "Desenvolvimento",
+		    "Produto",
+		    "Vendas e Marketing",
+		    "Suporte",
+		    "DevOps",
+		    "Financeiro",
+		    "Pesquisa e Inovação",
+		    "Gestão de Projetos"
+		);
+		setor.setPromptText("Setor");
+		setor.getStyleClass().add("input");
+		
 		TextField experiencia = new TextField();
 		experiencia.setPromptText("Experiência");
 		experiencia.getStyleClass().add("input");
@@ -108,9 +123,11 @@ public class Cadastro extends Application {
 		grid.add(infosProfissionais, 0, 4, 2, 1);
 		
 		grid.add(cargo, 0, 5, 1, 1);
-		grid.add(experiencia, 1, 5, 1, 1);
+		grid.add(setor, 1, 5, 1, 1);
 		
-		grid.add(obs, 0, 6, 2, 1);
+		grid.add(experiencia, 0, 6, 1, 1);
+		
+		grid.add(obs, 1, 6, 1, 1);
 		
 		grid.getColumnConstraints().addAll(col1, col2);
 		
@@ -121,6 +138,9 @@ public class Cadastro extends Application {
 		
 		dataNasci.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(dataNasci, Priority.ALWAYS);
+		
+		GridPane.setHgrow(setor, Priority.ALWAYS);
+		setor.setMaxWidth(Double.MAX_VALUE);
 		
 		BorderPane root = new BorderPane();
 		root.setCenter(grid);
