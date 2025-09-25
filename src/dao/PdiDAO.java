@@ -159,4 +159,87 @@ public class PdiDAO {
 
         return lista;
     }
+    
+    /**
+     * Listagem por ano
+     */
+    public List<Pdi> findByAno(int ano) {
+    	String sql = "SELECT * FROM pdis WHERE YEAR(prazo) = ?";
+    	List<Pdi> lista = new ArrayList<>();
+    	
+    	try (Connection conn = ConnectionFactory.getConnection();
+    		 PreparedStatement stmt = conn.prepareStatement(sql)) {
+    		
+    		stmt.setInt(1, ano);
+    		ResultSet rs = stmt.executeQuery();
+    		
+    		while (rs.next()) {
+    			lista.add(new Pdi(
+    				rs.getInt("id"),
+    				rs.getInt("colaborador_id"),
+    				rs.getString("objetivo"),
+    				rs.getDate("prazo").toLocalDate(),
+    				Status.valueOf(rs.getString("Status"))
+    			));
+    		}
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return lista;
+    }
+    
+    public List<Pdi> findByColaborador(int colaboradorId) {
+        String sql = "SELECT * FROM pdis WHERE colaborador_id = ?";
+        List<Pdi> lista = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, colaboradorId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(new Pdi(
+                    rs.getInt("id"),
+                    rs.getInt("colaborador_id"),
+                    rs.getString("objetivo"),
+                    rs.getDate("prazo").toLocalDate(),
+                    Status.valueOf(rs.getString("status"))
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
+    public List<Pdi> findBySetor(String setor) {
+        String sql = "SELECT p.* FROM pdis p " +
+                     "JOIN colaboradores c ON p.colaborador_id = c.id " +
+                     "WHERE c.setor = ?";
+        List<Pdi> lista = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, setor);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(new Pdi(
+                    rs.getInt("id"),
+                    rs.getInt("colaborador_id"),
+                    rs.getString("objetivo"),
+                    rs.getDate("prazo").toLocalDate(),
+                    Status.valueOf(rs.getString("status"))
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }	
 }
+
+	
