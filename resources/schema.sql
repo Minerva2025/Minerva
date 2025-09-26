@@ -4,7 +4,8 @@ USE sistema_pdi;
 CREATE TABLE usuarios (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
-    cpf VARCHAR(11) UNIQUE NOT NULL,
+    cpf VARCHAR(14) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
     data_nascimento DATE NOT NULL,
     funcao ENUM('RH', 'GESTOR_GERAL', 'GESTOR_AREA') NOT NULL,
     experiencia TEXT,
@@ -17,6 +18,7 @@ CREATE TABLE colaboradores (
     cpf VARCHAR(11) UNIQUE NOT NULL,
     data_nascimento DATE NOT NULL,
 	cargo VARCHAR(50) NOT NULL,
+	setor Varchar(50) NOT NULL,
     experiencia TEXT,
     observacoes TEXT
 );

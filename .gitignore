@@ -4,3 +4,9 @@
 
 /bin/
 *.class
+
+.idea/
+*.iml
+/target/
+*.log
+/nbproject/private/

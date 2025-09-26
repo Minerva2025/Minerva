@@ -1,7 +1,8 @@
 package model;
 
 public enum Status {
-    EM_ANDAMENTO,
+    NAO_INICIADO,
+	EM_ANDAMENTO,
     CONCLUIDO,
     ATRASADO
 }

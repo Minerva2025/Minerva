@@ -9,28 +9,27 @@ public class Colaborador {
 	private String cpf;
 	private LocalDate data_nascimento;
 	private String cargo;
+	private String setor;
 	private String experiencia;
 	private String observacoes;
-	
-	
-	
-	public Colaborador(int id, String nome, String cpf, LocalDate data_nascimento, String cargo, String experiencia,
-			String observacoes) {
+			
+			
+	public Colaborador(int id, String nome, String cpf, LocalDate data_nascimento, String cargo, String setor,
+			String experiencia, String observacoes) {
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.data_nascimento = data_nascimento;
 		this.cargo = cargo;
+		this.setor = setor;
 		this.experiencia = experiencia;
 		this.observacoes = observacoes;
 	}
 
 
-	
 	public int getId() {
 		return id;
 	}
-
 
 
 	public void setId(int id) {
@@ -38,11 +37,9 @@ public class Colaborador {
 	}
 
 
-
 	public String getNome() {
 		return nome;
 	}
-
 
 
 	public void setNome(String nome) {
@@ -50,11 +47,9 @@ public class Colaborador {
 	}
 
 
-
 	public String getCpf() {
 		return cpf;
 	}
-
 
 
 	public void setCpf(String cpf) {
@@ -62,11 +57,9 @@ public class Colaborador {
 	}
 
 
-
 	public LocalDate getData_nascimento() {
 		return data_nascimento;
 	}
-
 
 
 	public void setData_nascimento(LocalDate data_nascimento) {
@@ -74,11 +67,9 @@ public class Colaborador {
 	}
 
 
-
 	public String getCargo() {
 		return cargo;
 	}
-
 
 
 	public void setCargo(String cargo) {
@@ -86,11 +77,19 @@ public class Colaborador {
 	}
 
 
+	public String getSetor() {
+		return setor;
+	}
+
+
+	public void setSetor(String setor) {
+		this.setor = setor;
+	}
+
 
 	public String getExperiencia() {
 		return experiencia;
 	}
-
 
 
 	public void setExperiencia(String experiencia) {
@@ -98,22 +97,16 @@ public class Colaborador {
 	}
 
 
-
 	public String getObservacoes() {
 		return observacoes;
 	}
-
 
 
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
 	}
 	
-	
-	
-	
-	
-	
+
 	
 
 }

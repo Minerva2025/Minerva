@@ -9,7 +9,7 @@ import java.sql.Statement;
 import factory.ConnectionFactory;
 import model.Usuario;
 import model.Funcao;
-import java.sql.Date; // Para converter LocalDate para SQL DATE
+import java.sql.Date; 
 
 /**
  * DAO para manipulação da tabela 'usuarios'.
@@ -21,18 +21,19 @@ public class UsuarioDAO {
      * Insere um novo usuário no banco.
      */
     public void insert(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nome, cpf, data_nascimento, funcao, experiencia, observacoes) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nome, cpf, senha, data_nascimento, funcao, experiencia, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getCpf());
-            stmt.setDate(3, Date.valueOf(usuario.getData_nascimento())); // Converte LocalDate para java.sql.Date
-            stmt.setString(4, usuario.getFuncao().name());
-            stmt.setString(5, usuario.getExperiencia());
-            stmt.setString(6, usuario.getObservacoes());
-
+            stmt.setString(3, usuario.getSenha());
+            stmt.setDate(4, Date.valueOf(usuario.getData_nascimento())); // Converte LocalDate para java.sql.Date
+            stmt.setString(5, usuario.getFuncao().name());
+            stmt.setString(6, usuario.getExperiencia());
+            stmt.setString(7, usuario.getObservacoes());
+            
             stmt.executeUpdate();
 
             // Recupera o ID gerado automaticamente pelo banco
@@ -50,18 +51,19 @@ public class UsuarioDAO {
      * Atualiza um usuário existente no banco.
      */
     public void update(Usuario usuario) {
-        String sql = "UPDATE usuarios SET nome = ?, cpf = ?, data_nascimento = ?, funcao = ?, experiencia = ?, observacoes = ? WHERE id = ?";
+        String sql = "UPDATE usuarios SET nome = ?, cpf = ?, senha = ?,  data_nascimento = ?, funcao = ?, experiencia = ?, observacoes = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getCpf());
-            stmt.setDate(3, Date.valueOf(usuario.getData_nascimento()));
-            stmt.setString(4, usuario.getFuncao().name());
-            stmt.setString(5, usuario.getExperiencia());
-            stmt.setString(6, usuario.getObservacoes());
-            stmt.setInt(7, usuario.getId());
+            stmt.setString(3, usuario.getSenha());
+            stmt.setDate(4, Date.valueOf(usuario.getData_nascimento()));
+            stmt.setString(5, usuario.getFuncao().name());
+            stmt.setString(6, usuario.getExperiencia());
+            stmt.setString(7, usuario.getObservacoes());
+            stmt.setInt(8, usuario.getId());
 
             stmt.executeUpdate();
 
@@ -86,10 +88,43 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Autentica um usuário pelo CPF e senha.
+     */
+    public Usuario autenticar(String cpf, String senha) {
+        String sql = "SELECT * FROM usuarios WHERE cpf = ? AND senha = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, cpf);
+            stmt.setString(2, senha);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Usuario u = new Usuario(
+                        rs.getString("nome"),
+                        rs.getString("cpf"),
+                        rs.getString("senha"),
+                        rs.getDate("data_nascimento").toLocalDate(),
+                        Funcao.valueOf(rs.getString("funcao")),
+                        rs.getString("experiencia"),
+                        rs.getString("observacoes")
+                );
+                u.setId(rs.getInt("id"));
+                return u;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
-     * Lista todos os usuários do banco.
-     * Retorna um array de usuários.
+     * Lista todos os usuários do banco. Retorna um array de usuários.
      */
     public Usuario[] list() {
         String sql = "SELECT * FROM usuarios";
@@ -100,15 +135,16 @@ public class UsuarioDAO {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Usuario u = new Usuario(
-                        rs.getString("nome"),
-                        rs.getString("cpf"),
-                        rs.getDate("data_nascimento").toLocalDate(), // Converte java.sql.Date para LocalDate
-                        Funcao.valueOf(rs.getString("funcao")),
-                        rs.getString("experiencia"),
-                        rs.getString("observacoes")
-                );
-                u.setId(rs.getInt("id"));
+            	Usuario u = new Usuario(
+            		    rs.getString("nome"),
+            		    rs.getString("cpf"),
+            		    rs.getString("senha"),
+            		    rs.getDate("data_nascimento").toLocalDate(),
+            		    Funcao.valueOf(rs.getString("funcao")),
+            		    rs.getString("experiencia"),
+            		    rs.getString("observacoes")
+            		);
+            		u.setId(rs.getInt("id"));
 
                 // Redimensiona o array para adicionar o novo usuário
                 Usuario[] temp = new Usuario[usuarios.length + 1];
