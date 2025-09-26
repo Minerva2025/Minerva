@@ -1,10 +1,13 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.shape.Ellipse;
@@ -44,9 +47,9 @@ public class HomeRH extends Application{
 		container.setId("container");
 		container.getChildren().addAll(colaboradores, pdiAtivo, pdiConcluido);
 		
-		VBox coluna1 = new VBox();
-		coluna1.setId("coluna1");
-		coluna1.getChildren().addAll(titulo, container, blob1, blob2, blob3);
+		VBox center = new VBox();
+		center.setId("center");
+		center.getChildren().addAll(titulo, container, blob1, blob2, blob3);
 		
 		ToggleButton inicio = new ToggleButton("Início");
 		inicio.setId("inicio");
@@ -59,17 +62,39 @@ public class HomeRH extends Application{
 		ToggleButton avaliacoes = new ToggleButton("Avaliações");
 		avaliacoes.setId("avaliacoes");
 		
-		VBox coluna2 = new VBox(30, inicio, equipe, relatorios, metas, avaliacoes);
-		coluna2.setId("coluna2");
+		VBox left = new VBox(30, inicio, equipe, relatorios, metas, avaliacoes);
+		left.setId("left");
 		
 		HBox root = new HBox();
-		root.getChildren().addAll(coluna2, coluna1);
+		root.setStyle("-fx-background-color: #1E1E1E");
+		root.getChildren().addAll(left, center);
 		
-		coluna1.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
-		coluna2.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
+		center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
+		left.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("HomeRH.css").toExternalForm());
+		
+		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
+
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
+
+		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.38));
+		
+		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.15));
 		
 		stage.setScene(scene);
 		stage.setFullScreen(true);
