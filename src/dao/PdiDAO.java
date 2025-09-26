@@ -26,6 +26,10 @@ public class PdiDAO {
         this.connection = connection;
     }
 
+    PdiDAO() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
   
 
     /**
