@@ -3,9 +3,9 @@
 	src: url(fonts/JuliusSansOne-Regular.ttf);
 }*/
 
-#coluna1{
+#center{
 	-fx-background-color: #1E1E1E;
-	-fx-padding: 40 0 0 30
+	-fx-padding: 110 0 0 45
 }
 
 #titulo{
@@ -27,10 +27,11 @@
 	-fx-letter-spacing: 2px;
 }
 
-#coluna2{
+#left{
 	-fx-background-color: #323232;
-	-fx-padding: 100 0 0 40;
-	/*-fx-background-radius: 0 20 20 0;*/
+	-fx-padding: 170 0 0 40;
+	-fx-background-radius: 0 20 20 0;
+	-fx-background-insets: 0
 }
 
 #inicio, #equipe, #relatorios, #metas{
@@ -42,20 +43,6 @@
 	-fx-border-color: transparent
 }
 
-#blob1{
+#blob1, #blob2, #blob3{
 	-fx-fill: #323232;
-	-fx-translate-x: 1050;
-	-fx-translate-y: -220;
-}
-
-#blob2{
-	-fx-fill: #323232;
-	-fx-translate-x: 870;
-	-fx-translate-y: -270;
-}
-
-#blob3{
-	-fx-fill: #323232;
-	-fx-translate-x: 1210;
-	-fx-translate-y: 210;
 }
