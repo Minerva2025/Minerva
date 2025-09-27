@@ -90,31 +90,31 @@ public class HomeRH extends Application{
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("HomeRH.css").toExternalForm());
 		
-    blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
-    blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
+		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
-    blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
-    blob2.radiusYProperty().bind(blob2.radiusXProperty());
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
 
-    blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
-    blob3.radiusYProperty().bind(blob3.radiusXProperty());
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
 
-    StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-    blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
-    blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
 
-    StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
-    blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
-    blob2.translateYProperty().bind(scene.heightProperty().multiply(0.38));
+		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.3));
 
-    StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
-    blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
-    blob3.translateYProperty().bind(scene.heightProperty().multiply(0.15));
+		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
 
-    homeStage.setScene(scene);
-    homeStage.setFullScreen(true);
-    homeStage.setFullScreenExitHint("");
-    homeStage.show();
+		homeStage.setScene(scene);
+		homeStage.setFullScreen(true);
+		homeStage.setFullScreenExitHint("");
+		homeStage.show();
 
 	}
 		
