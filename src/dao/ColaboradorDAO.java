@@ -5,15 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.ArrayList;
 
 import factory.ConnectionFactory;
 import model.Colaborador;
-import java.sql.Date; // Para converter LocalDate para SQL DATE
+import java.sql.Date;
 
-/**
- * DAO para manipulação da tabela 'colaboradores'.
- * Contém métodos de insert, update, delete e list.
- */
 public class ColaboradorDAO {
 
     /**
@@ -88,37 +86,26 @@ public class ColaboradorDAO {
         }
     }
 
-    /**
-     * Lista todos os colaboradores do banco.
-     * Retorna um array de colaboradores.
-     */
-    public Colaborador[] list() {
+
+    public List<Colaborador> listAll() {
         String sql = "SELECT * FROM colaboradores";
-        Colaborador[] colaboradores = new Colaborador[0];
+        List<Colaborador> colaboradores = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Colaborador c = new Colaborador(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("cpf"),
-                        rs.getDate("data_nascimento").toLocalDate(), // java.sql.Date → LocalDate
-                        rs.getString("cargo"),
-                        rs.getString("Setor"),
-                        rs.getString("experiencia"),
-                        rs.getString("observacoes")
-                );
-
-                // Redimensiona o array para adicionar o novo colaborador
-                Colaborador[] temp = new Colaborador[colaboradores.length + 1];
-                for (int i = 0; i < colaboradores.length; i++) {
-                    temp[i] = colaboradores[i];
-                }
-                temp[temp.length - 1] = c;
-                colaboradores = temp;
+                colaboradores.add(new Colaborador(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("cpf"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getString("cargo"),
+                    rs.getString("setor"),
+                    rs.getString("experiencia"),
+                    rs.getString("observacoes")
+                ));
             }
 
         } catch (SQLException e) {
@@ -127,4 +114,122 @@ public class ColaboradorDAO {
 
         return colaboradores;
     }
+    
+    public List<Colaborador> findBySetor(String setor) {
+        String sql = "SELECT * FROM colaboradores WHERE setor = ?";
+        List<Colaborador> lista = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, setor);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(new Colaborador(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("cpf"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getString("cargo"),
+                    rs.getString("setor"),
+                    rs.getString("experiencia"),
+                    rs.getString("observacoes")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+    public List<Colaborador> findByCargo(String cargo) {
+        String sql = "SELECT * FROM colaboradores WHERE cargo = ?";
+        List<Colaborador> lista = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, cargo);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(new Colaborador(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("cpf"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getString("cargo"),
+                    rs.getString("setor"),
+                    rs.getString("experiencia"),
+                    rs.getString("observacoes")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+    public List<Colaborador> findByNome(String nome) {
+        String sql = "SELECT * FROM colaboradores WHERE nome LIKE ?";
+        List<Colaborador> lista = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + nome + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                lista.add(new Colaborador(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("cpf"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getString("cargo"),
+                    rs.getString("setor"),
+                    rs.getString("experiencia"),
+                    rs.getString("observacoes")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+    
+    public Colaborador getColaboradorById(int id) {
+        String sql = "SELECT * FROM colaboradores WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return new Colaborador(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("cpf"),
+                    rs.getDate("data_nascimento").toLocalDate(),
+                    rs.getString("cargo"),
+                    rs.getString("setor"),
+                    rs.getString("experiencia"),
+                    rs.getString("observacoes")
+                );
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // retorna null se não encontrou
+    }
+    
 }
