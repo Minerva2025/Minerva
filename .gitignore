@@ -9,3 +9,9 @@
 *.iml
 /target/
 *.log
+/nbproject/private/
+/build/
+/Dist/
+/manisfet.mf/
+
+*.log

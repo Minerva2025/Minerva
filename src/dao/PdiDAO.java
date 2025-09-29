@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import factory.ConnectionFactory;
 import model.Pdi;
 import model.Status;
@@ -19,6 +18,20 @@ import model.Status;
  */
 public class PdiDAO {
     
+	private Connection connection;
+	
+	
+	 // Construtor para os TESTES
+    public PdiDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    PdiDAO() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+  
+
     /**
      * Insere um novo PDI no banco de dados.
      * O ID é gerado automaticamente (AUTO_INCREMENT) e atualizado no objeto.
@@ -28,9 +41,7 @@ public class PdiDAO {
     public void insert(Pdi pdi) {
         String sql = "INSERT INTO pdis(colaborador_id , objetivo, prazo, status) VALUES (?, ?, ?, ?)";
         
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, pdi.getColaborador_id());
             stmt.setString(2, pdi.getObjetivo());
             stmt.setDate(3, Date.valueOf(pdi.getPrazo()));
@@ -58,8 +69,7 @@ public class PdiDAO {
     public void update(Pdi pdi) {
         String sql = "UPDATE pdis SET colaborador_id = ?, objetivo = ?, prazo = ?, status = ?  WHERE id = ?";
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql)) {
 
             stmt.setInt(1, pdi.getColaborador_id());
             stmt.setString(2, pdi.getObjetivo());
@@ -83,9 +93,7 @@ public class PdiDAO {
     public void delete(Pdi pdi) {
         String sql = "DELETE FROM pdis WHERE id = ?";
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql)){
             stmt.setInt(1, pdi.getId());
             stmt.executeUpdate();
 
@@ -104,8 +112,7 @@ public class PdiDAO {
         String sql = "SELECT * FROM pdis WHERE id = ?";
         Pdi pdi = null;
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql)) {
             
             stmt.setInt(1, id);
 
@@ -137,8 +144,7 @@ public class PdiDAO {
         String sql = "SELECT * FROM pdis";
         List<Pdi> lista = new ArrayList<>();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -164,49 +170,45 @@ public class PdiDAO {
      * Listagem por ano
      */
     public List<Pdi> findByAno(int ano) {
-    	String sql = "SELECT * FROM pdis WHERE YEAR(prazo) = ?";
-    	List<Pdi> lista = new ArrayList<>();
-    	
-    	try (Connection conn = ConnectionFactory.getConnection();
-    		 PreparedStatement stmt = conn.prepareStatement(sql)) {
-    		
-    		stmt.setInt(1, ano);
-    		ResultSet rs = stmt.executeQuery();
-    		
-    		while (rs.next()) {
-    			lista.add(new Pdi(
-    				rs.getInt("id"),
-    				rs.getInt("colaborador_id"),
-    				rs.getString("objetivo"),
-    				rs.getDate("prazo").toLocalDate(),
-    				Status.valueOf(rs.getString("Status"))
-    			));
-    		}
-    	} catch (SQLException e) {
-    		e.printStackTrace();
-    	}
-    	
-    	return lista;
+        String sql = "SELECT * FROM pdis WHERE YEAR(prazo) = ?";
+        List<Pdi> lista = new ArrayList<>();
+        
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql)) {
+            stmt.setInt(1, ano);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Pdi(
+                        rs.getInt("id"),
+                        rs.getInt("colaborador_id"),
+                        rs.getString("objetivo"),
+                        rs.getDate("prazo").toLocalDate(),
+                        Status.valueOf(rs.getString("status"))
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
+    
     
     public List<Pdi> findByColaborador(int colaboradorId) {
         String sql = "SELECT * FROM pdis WHERE colaborador_id = ?";
         List<Pdi> lista = new ArrayList<>();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql)) {
             stmt.setInt(1, colaboradorId);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                lista.add(new Pdi(
-                    rs.getInt("id"),
-                    rs.getInt("colaborador_id"),
-                    rs.getString("objetivo"),
-                    rs.getDate("prazo").toLocalDate(),
-                    Status.valueOf(rs.getString("status"))
-                ));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Pdi(
+                        rs.getInt("id"),
+                        rs.getInt("colaborador_id"),
+                        rs.getString("objetivo"),
+                        rs.getDate("prazo").toLocalDate(),
+                        Status.valueOf(rs.getString("status"))
+                    ));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -215,31 +217,27 @@ public class PdiDAO {
     }
     
     public List<Pdi> findBySetor(String setor) {
-        String sql = "SELECT p.* FROM pdis p " +
-                     "JOIN colaboradores c ON p.colaborador_id = c.id " +
-                     "WHERE c.setor = ?";
+        String sql = "SELECT p.* FROM pdis p JOIN colaboradores c ON p.colaborador_id = c.id WHERE c.setor = ?";
         List<Pdi> lista = new ArrayList<>();
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql)) {
             stmt.setString(1, setor);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                lista.add(new Pdi(
-                    rs.getInt("id"),
-                    rs.getInt("colaborador_id"),
-                    rs.getString("objetivo"),
-                    rs.getDate("prazo").toLocalDate(),
-                    Status.valueOf(rs.getString("status"))
-                ));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Pdi(
+                        rs.getInt("id"),
+                        rs.getInt("colaborador_id"),
+                        rs.getString("objetivo"),
+                        rs.getDate("prazo").toLocalDate(),
+                        Status.valueOf(rs.getString("status"))
+                    ));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return lista;
     }	
+    
+    
 }
-
-	
