@@ -28,6 +28,6 @@ CREATE TABLE pdis (
     colaborador_id INT NOT NULL,
     objetivo TEXT NOT NULL,
     prazo DATE NOT NULL,
-    status ENUM('EM_ANDAMENTO', 'CONCLUIDO', 'ATRASADO') DEFAULT 'EM_ANDAMENTO',
+    status ENUM('NAO_INICIADO','EM_ANDAMENTO','CONCLUIDO','ATRASADO') DEFAULT 'EM_ANDAMENTO',
     FOREIGN KEY (colaborador_id) REFERENCES colaboradores(id)
 );

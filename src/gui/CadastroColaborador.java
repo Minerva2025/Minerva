@@ -1,5 +1,7 @@
 package gui;
 
+import controller.UsuarioController;
+import dao.ColaboradorDAO;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
@@ -19,14 +21,21 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Colaborador;
+import model.Usuario;
 
 public class CadastroColaborador extends Application {
 	
+    private Usuario logado;
+    private UsuarioController usuarioController = new UsuarioController();
+	
+	public CadastroColaborador(Usuario logado) {
+    	this.logado = logado;
+	}
+
 	@Override
-	public void start(Stage stage) {
-		
-		Stage secondStage = new Stage();	
-		
+	public void start(Stage cadastroCStage) {
+				
 		Ellipse blob1 = new Ellipse();
 		blob1.setId("blob1");
 		
@@ -112,7 +121,7 @@ public class CadastroColaborador extends Application {
 		
 		Button cancelarButton = new Button("Cancelar");
 		cancelarButton.getStyleClass().add("botao-cadastro");
-		
+				
 		ColumnConstraints col1 = new ColumnConstraints();
 		col1.setPercentWidth(50);
 		ColumnConstraints col2 = new ColumnConstraints();
@@ -190,10 +199,37 @@ public class CadastroColaborador extends Application {
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(-0.05));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.1));
 	
-		secondStage.setScene(scene);
-		secondStage.setFullScreen(true);
-		secondStage.setFullScreenExitHint("");
-		secondStage.show();
+		cadastroCStage.setScene(scene);
+		cadastroCStage.setFullScreen(true);
+		cadastroCStage.setFullScreenExitHint("");
+		cadastroCStage.show();
+		
+		salvarButton.setOnAction(e -> {
+		    try {
+		        Colaborador colaborador = new Colaborador(
+		            0, // id será gerado no banco
+		            nome.getText(),
+		            cpf.getText().replaceAll("[^\\d]", ""),
+		            dataNasci.getValue(),
+		            cargo.getText(),
+		            setor.getValue(),
+		            experiencia.getText(),
+		            obs.getText()
+		        );
+
+		        ColaboradorDAO dao = new ColaboradorDAO();
+		        dao.insert(colaborador);
+
+		        cadastroCStage.close();
+
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		        System.out.println(" Erro ao salvar colaborador: " + ex.getMessage());
+		    }
+		});
+
+		cancelarButton.setOnAction(e -> cadastroCStage.close());
+
 	}
 	
 	public static void main (String[]args) {
