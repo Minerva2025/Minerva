@@ -3,7 +3,9 @@ package gui;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
@@ -24,7 +26,7 @@ public class HomeGestorGeral extends Application{
 	
 	
 	@Override
-	public void start(Stage stage) {
+	public void start(Stage homeggstage) {
 		
 		Text titulo = new Text("BEM-VINDO");
 		titulo.setId("titulo");
@@ -63,7 +65,16 @@ public class HomeGestorGeral extends Application{
 		equipe.setId("equipe");
 		ToggleButton relatorios = new ToggleButton("Relatórios");
 		relatorios.setId("relatorios");
-		ToggleButton metas = new ToggleButton("Metas");
+		
+		Button metas = new Button("Metas");
+		metas.setOnAction(e -> {
+	        Stage metasGGStage = new Stage();
+	        new MetasGG(logado).start(metasGGStage);	
+	        
+            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stageAtual.close();
+
+		});
 		metas.setId("metas");
 		
 		VBox left = new VBox(30, inicio, equipe, relatorios, metas);
@@ -100,10 +111,10 @@ public class HomeGestorGeral extends Application{
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
 		
-		stage.setScene(scene);
-		stage.setFullScreen(true);
-		stage.setFullScreenExitHint("");
-		stage.show();
+		homeggstage.setScene(scene);
+		homeggstage.setFullScreen(true);
+		homeggstage.setFullScreenExitHint("");
+		homeggstage.show();
 	}
 	
 	public static void main (String[]args) {
