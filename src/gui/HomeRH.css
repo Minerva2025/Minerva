@@ -20,7 +20,7 @@
 	-fx-padding: 80 0 0 0
 }
 
-#colaboradores, #pdiAtivo, #pdiConcluido{
+#colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido{
 	-fx-fill: white;
 	-fx-font-size: 18px;
 	-fx-font-family: 'JuliusSansOne';

@@ -1,8 +1,13 @@
 package gui;
 
+import java.util.List;
+
+import dao.ColaboradorDAO;
+import dao.PdiDAO;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
@@ -11,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Pdi;
 import model.Usuario;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.effect.GaussianBlur;
@@ -24,9 +30,27 @@ public class HomeRH extends Application{
     }
 	
 	@Override
-	public void start(Stage homeStage) {
+	public void start(Stage homerhStage) {
 		
 		String primeiroNome = logado.getNome().split(" ")[0];
+		 ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
+		 PdiDAO pdiDAO = new PdiDAO();
+		 
+		 int totalColaboradores = colaboradorDAO.listAll().size();
+		 
+		 List<Pdi> todosPdis = pdiDAO.listAll();
+		 
+		 int pdiAtivoCount = 0; // EM_ANDAMENTO e ATRASADO
+		 int pdiInativoCount = 0; // NAO_INICIADO
+		 int pdiConcluidoCount = 0; // CONCLUIDO
+		 
+		 for (Pdi pdi : todosPdis) {
+		        switch (pdi.getStatus()) {
+		            case EM_ANDAMENTO, ATRASADO -> pdiAtivoCount++;
+		            case NAO_INICIADO -> pdiInativoCount++;
+		            case CONCLUIDO -> pdiConcluidoCount++;
+		        }
+		    }
 		
 		Text titulo = new Text("Bem-vindo " + primeiroNome + "!");
 		titulo.setId("titulo");
@@ -45,17 +69,19 @@ public class HomeRH extends Application{
 		blob2.setEffect(blur);
 		blob3.setEffect(blur);
 		
-		Text colaboradores = new Text("Colaboradores:");
+		Text colaboradores = new Text("Colaboradores: " + totalColaboradores);
 		colaboradores.setId("colaboradores");
-		Text pdiAtivo = new Text("PDIs ativos:");
+		Text pdiAtivo = new Text("PDIs ativos: " + pdiAtivoCount);
 		pdiAtivo.setId("pdiAtivo");
-		Text pdiConcluido = new Text("PDIs concluídos:");
+		Text pdiInativo = new Text("PDIs não iniciados: " + pdiInativoCount);
+		pdiInativo.setId("pdiInativo");
+		Text pdiConcluido = new Text("PDIs concluídos: " + pdiConcluidoCount);
 		pdiConcluido.setId("pdiConcluido");
 		
 		
 		HBox container = new HBox(150);
 		container.setId("container");
-		container.getChildren().addAll(colaboradores, pdiAtivo, pdiConcluido);
+		container.getChildren().addAll(colaboradores, pdiAtivo, pdiInativo, pdiConcluido);
 		
 		VBox center = new VBox();
 		center.setId("center");
@@ -63,16 +89,29 @@ public class HomeRH extends Application{
 		
 		ToggleButton inicio = new ToggleButton("Início");
 		inicio.setId("inicio");
-		Button equipe = new Button("Equipe");
-		equipe.setOnAction(e -> {
-	        Stage cadastroUStage = new Stage();
-	        new CadastroUsuarios(logado).start(cadastroUStage);		   
-
-		});
-		equipe.setId("equipe");
+		
+        Button equipe = new Button("Equipe");
+        equipe.setOnAction(e -> {
+            Stage equipesrhStage = new Stage();
+            new EquipesRH(logado).start(equipesrhStage);
+            
+            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stageAtual.close();
+        });       
+        equipe.setId("equipe");
+        
 		ToggleButton relatorios = new ToggleButton("Relatórios");
 		relatorios.setId("relatorios");
-		ToggleButton metas = new ToggleButton("Metas");
+		
+		Button metas = new Button("Metas");
+		metas.setOnAction(e -> {
+	        Stage metasStage = new Stage();
+	        new Metas(logado).start(metasStage);	
+	        
+            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stageAtual.close();
+
+		});
 		metas.setId("metas");
 		ToggleButton avaliacoes = new ToggleButton("Avaliações");
 		avaliacoes.setId("avaliacoes");
@@ -111,10 +150,12 @@ public class HomeRH extends Application{
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
 
-		homeStage.setScene(scene);
-		homeStage.setFullScreen(true);
-		homeStage.setFullScreenExitHint("");
-		homeStage.show();
+
+		homerhStage.setScene(scene);
+		homerhStage.setFullScreen(true);
+		homerhStage.setFullScreenExitHint("");
+		homerhStage.show();
+
 
 	}
 		
