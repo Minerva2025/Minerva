@@ -46,6 +46,24 @@ public class LoginApp extends Application{
 		cpfField.setPromptText("CPF");
 		cpfField.getStyleClass().add("input");
 		
+		cpfField.textProperty().addListener((obs, oldText, newText) -> {
+            String numeric = newText.replaceAll("[^\\d]", "");
+            if (numeric.length() > 11) numeric = numeric.substring(0, 11);
+
+            StringBuilder formatted = new StringBuilder();
+            for (int i = 0; i < numeric.length(); i++) {
+                if (i == 3 || i == 6) formatted.append('.');
+                if (i == 9) formatted.append('-');
+                formatted.append(numeric.charAt(i));
+            }
+            
+            if (!formatted.toString().equals(newText)) {
+                int pos = cpfField.getCaretPosition();
+                cpfField.setText(formatted.toString());
+                cpfField.positionCaret(Math.min(pos, formatted.length()));
+            }
+        });
+		
 		PasswordField senhaField = new PasswordField();
 		senhaField.setPromptText("Senha");
 		senhaField.getStyleClass().add("input");
