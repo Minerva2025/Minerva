@@ -33,3 +33,15 @@
 	-fx-cursor: hand;
 
 }
+
+#blob1{
+	-fx-fill: #323232;
+}
+
+#blob2{
+	-fx-fill: #323232;
+}
+
+#blob3{
+	-fx-fill: #323232;
+}

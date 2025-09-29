@@ -20,7 +20,7 @@ public class ColaboradorDAO {
      * Insere um novo colaborador no banco.
      */
     public void insert(Colaborador colaborador) {
-        String sql = "INSERT INTO colaboradores (nome, cpf, data_nascimento, cargo, experiencia, observacoes) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO colaboradores (nome, cpf, data_nascimento, cargo, setor, experiencia, observacoes) VALUES (?, ?, ?, ?, ?,?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -29,8 +29,9 @@ public class ColaboradorDAO {
             stmt.setString(2, colaborador.getCpf());
             stmt.setDate(3, Date.valueOf(colaborador.getData_nascimento())); // LocalDate → java.sql.Date
             stmt.setString(4, colaborador.getCargo());
-            stmt.setString(5, colaborador.getExperiencia());
-            stmt.setString(6, colaborador.getObservacoes());
+            stmt.setString(5, colaborador.getSetor());
+            stmt.setString(6, colaborador.getExperiencia());
+            stmt.setString(7, colaborador.getObservacoes());
 
             stmt.executeUpdate();
 
@@ -49,7 +50,7 @@ public class ColaboradorDAO {
      * Atualiza um colaborador existente no banco.
      */
     public void update(Colaborador colaborador) {
-        String sql = "UPDATE colaboradores SET nome = ?, cpf = ?, data_nascimento = ?, cargo = ?, experiencia = ?, observacoes = ? WHERE id = ?";
+        String sql = "UPDATE colaboradores SET nome = ?, cpf = ?, data_nascimento = ?, cargo = ?, setor = ?, experiencia = ?, observacoes = ? WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -58,9 +59,10 @@ public class ColaboradorDAO {
             stmt.setString(2, colaborador.getCpf());
             stmt.setDate(3, Date.valueOf(colaborador.getData_nascimento()));
             stmt.setString(4, colaborador.getCargo());
-            stmt.setString(5, colaborador.getExperiencia());
-            stmt.setString(6, colaborador.getObservacoes());
-            stmt.setInt(7, colaborador.getId());
+            stmt.setString(5, colaborador.getSetor());
+            stmt.setString(6, colaborador.getExperiencia());
+            stmt.setString(7, colaborador.getObservacoes());
+            stmt.setInt(8, colaborador.getId());
 
             stmt.executeUpdate();
 
@@ -105,6 +107,7 @@ public class ColaboradorDAO {
                         rs.getString("cpf"),
                         rs.getDate("data_nascimento").toLocalDate(), // java.sql.Date → LocalDate
                         rs.getString("cargo"),
+                        rs.getString("Setor"),
                         rs.getString("experiencia"),
                         rs.getString("observacoes")
                 );

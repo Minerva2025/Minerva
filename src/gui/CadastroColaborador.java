@@ -1,26 +1,45 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Cadastro extends Application {
+public class CadastroColaborador extends Application {
 	
 	@Override
 	public void start(Stage stage) {
 		
-		Stage secondStage = new Stage();		
+		Stage secondStage = new Stage();	
+		
+		Ellipse blob1 = new Ellipse();
+		blob1.setId("blob1");
+		
+		Ellipse blob2 = new Ellipse();
+		blob2.setId("blob2");
+		
+		Ellipse blob3 = new Ellipse();
+		blob3.setId("blob3");
+		
+		GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
 		
 		Text titulocadastro = new Text("Cadastrar colaboradores");
 		titulocadastro.setId("titulo-cadastro");
@@ -66,6 +85,20 @@ public class Cadastro extends Application {
 		cargo.setPromptText("Cargo");
 		cargo.getStyleClass().add("input");
 		
+		ComboBox<String> setor = new ComboBox<>();
+		setor.getItems().addAll(
+		    "Desenvolvimento",
+		    "Produto",
+		    "Vendas e Marketing",
+		    "Suporte",
+		    "DevOps",
+		    "Financeiro",
+		    "Pesquisa e Inovação",
+		    "Gestão de Projetos"
+		);
+		setor.setPromptText("Setor");
+		setor.getStyleClass().add("input");
+		
 		TextField experiencia = new TextField();
 		experiencia.setPromptText("Experiência");
 		experiencia.getStyleClass().add("input");
@@ -108,9 +141,11 @@ public class Cadastro extends Application {
 		grid.add(infosProfissionais, 0, 4, 2, 1);
 		
 		grid.add(cargo, 0, 5, 1, 1);
-		grid.add(experiencia, 1, 5, 1, 1);
+		grid.add(setor, 1, 5, 1, 1);
 		
-		grid.add(obs, 0, 6, 2, 1);
+		grid.add(experiencia, 0, 6, 1, 1);
+		
+		grid.add(obs, 1, 6, 1, 1);
 		
 		grid.getColumnConstraints().addAll(col1, col2);
 		
@@ -122,13 +157,39 @@ public class Cadastro extends Application {
 		dataNasci.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(dataNasci, Priority.ALWAYS);
 		
+		GridPane.setHgrow(setor, Priority.ALWAYS);
+		setor.setMaxWidth(Double.MAX_VALUE);
+		
+		StackPane stack = new StackPane();
+		stack.getChildren().addAll(grid, blob1, blob2, blob3);
+		
 		BorderPane root = new BorderPane();
-		root.setCenter(grid);
+		root.setCenter(stack);
 		
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("Cadastro.css").toExternalForm());
 		
+		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty());
 		
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+		
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+		
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(-0.2));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
+		
+		StackPane.setAlignment(blob2, Pos.TOP_RIGHT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(-0.1));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.1));
+		
+		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(-0.05));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.1));
+	
 		secondStage.setScene(scene);
 		secondStage.setFullScreen(true);
 		secondStage.setFullScreenExitHint("");

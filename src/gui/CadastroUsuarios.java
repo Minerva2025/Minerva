@@ -1,14 +1,18 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -29,7 +33,21 @@ public class CadastroUsuarios extends Application {
 	
 	@Override
 	public void start(Stage cadastroUStage) {
-				
+		
+		Ellipse blob1 = new Ellipse();
+		blob1.setId("blob1");
+		
+		Ellipse blob2 = new Ellipse();
+		blob2.setId("blob2");
+		
+		Ellipse blob3 = new Ellipse();
+		blob3.setId("blob3");
+		
+		GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
+		
 		Text titulocadastrorh = new Text("Cadastrar Usuários");
 		titulocadastrorh.setId("titulo-cadastro-rh");
 		
@@ -65,6 +83,10 @@ public class CadastroUsuarios extends Application {
                 cpf.positionCaret(Math.min(pos, formatted.length()));
             }
         });
+		
+		PasswordField senha = new PasswordField();
+		senha.setPromptText("Senha");
+		senha.getStyleClass().add("input");
 		
 		Text infosprofissionais = new Text("Informações Profissionais");
 		infosprofissionais.getStyleClass().add("infos");
@@ -133,20 +155,22 @@ public class CadastroUsuarios extends Application {
 		grid.add(dataNasci, 0, 3, 1, 1);
 		grid.add(cpf, 1, 3, 1, 1);
 		
-		grid.add(infosprofissionais, 0, 4, 1, 1);
+		grid.add(senha, 0, 4, 2, 1);
 		
-		grid.add(experiencia, 0, 5, 1, 1);
+		grid.add(infosprofissionais, 0, 5, 1, 1);
 		
-		grid.add(funcao, 1, 5, 1, 1);
+		grid.add(experiencia, 0, 6, 1, 1);
 		
-		grid.add(obs, 0, 6, 2, 1);
+		grid.add(funcao, 1, 6, 1, 1);
+		
+		grid.add(obs, 0, 7, 2, 1);
 		
 		grid.getColumnConstraints().addAll(col1,col2);
 		
 		HBox botoesBox = new HBox(20);
 		botoesBox.getChildren().addAll(salvarButton, cancelarButton);
 		botoesBox.setAlignment(Pos.CENTER);
-		grid.add(botoesBox, 0, 7, 2, 1);
+		grid.add(botoesBox, 0, 8, 2, 1);
 		
 		dataNasci.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(dataNasci, Priority.ALWAYS);
@@ -154,12 +178,35 @@ public class CadastroUsuarios extends Application {
 		GridPane.setHgrow(funcao, Priority.ALWAYS);
 		funcao.setMaxWidth(Double.MAX_VALUE);
 		
+		StackPane stack = new StackPane();
+		stack.getChildren().addAll(grid, blob1, blob2, blob3);
+		
 		BorderPane root = new BorderPane();
-		root.setCenter(grid);
+		root.setCenter(stack);
 		
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("CadastroUsuario.css").toExternalForm());
 		
+		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty());
+		
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+		
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+		
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(-0.2));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
+		
+		StackPane.setAlignment(blob2, Pos.TOP_RIGHT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(-0.1));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.1));
+		
+		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(-0.05));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.1));
 		
 		cadastroUStage.setScene(scene);
 		cadastroUStage.setFullScreen(true);
@@ -213,3 +260,5 @@ public class CadastroUsuarios extends Application {
 		launch(args);
 	}
 }
+
+
