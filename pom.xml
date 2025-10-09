@@ -14,57 +14,6 @@
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
   </properties>
-
-  <dependencies>
-  <!-- JavaFX Base -->
-  <dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-base</artifactId>
-    <version>21.0.4</version>
-  </dependency>
-
-  <!-- JavaFX Graphics -->
-  <dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-graphics</artifactId>
-    <version>21.0.4</version>
-  </dependency>
-
-  <!-- JavaFX Controls -->
-  <dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-controls</artifactId>
-    <version>21.0.4</version>
-  </dependency>
-
-  <!-- JavaFX FXML -->
-  <dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-fxml</artifactId>
-    <version>21.0.4</version>
-  </dependency>
-
-  <!-- JavaFX Media -->
-  <dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-media</artifactId>
-    <version>21.0.4</version>
-  </dependency>
-
-  <!-- JavaFX Swing -->
-  <dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-swing</artifactId>
-    <version>21.0.4</version>
-  </dependency>
-
-  <!-- MySQL Connector -->
-  <dependency>
-    <groupId>com.mysql</groupId>
-    <artifactId>mysql-connector-j</artifactId>
-    <version>9.0.0</version>
-  </dependency>
-</dependencies>
   
   <build>
     <plugins>
