@@ -9,6 +9,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.util.List;
+
 import dao.ColaboradorDAO;
 import dao.PdiDAO;
 import model.Pdi;
@@ -41,7 +43,7 @@ public class PdiController {
 	//Configuração do combo box de colaboradores
 	private void carregarColaboradores() {
 		ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
-		Colaborador[] colaboradores = colaboradorDAO.list();
+		List<Colaborador> colaboradores = colaboradorDAO.listAll();
 		colaboradoresList.addAll(colaboradores);
 		
 		cbColaborador.setItems(colaboradoresList);
