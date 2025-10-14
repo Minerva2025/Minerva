@@ -6,42 +6,40 @@ import dao.ColaboradorDAO;
 import dao.PdiDAO;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Pdi;
 import model.Usuario;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.effect.GaussianBlur;
 
-public class HomeGestorArea extends Application{
+public class EquipesGA extends Application{
 	
     private Usuario logado;
 
-    public HomeGestorArea(Usuario usuarioLogado) {
+    public EquipesGA(Usuario usuarioLogado) {
         this.logado = usuarioLogado;
     }
-	
-	
-	@Override
-	public void start(Stage stage) {
+
+	public void start(Stage equipesgaStage) {
 		
-		String primeiroNome = logado.getNome().split(" ")[0];
-		 ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
-		 PdiDAO pdiDAO = new PdiDAO();
-		 
+		PdiDAO pdiDAO = new PdiDAO();
+		ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
 		 int totalColaboradores = colaboradorDAO.listAll().size();
 		 
 		 List<Pdi> todosPdis = pdiDAO.listAll();
 		 
-		 int pdiAtivoCount = 0; // EM_ANDAMENTO e ATRASADO
-		 int pdiInativoCount = 0; // NAO_INICIADO
-		 int pdiConcluidoCount = 0; // CONCLUIDO
+		 int pdiAtivoCount = 0;
+		 int pdiInativoCount = 0;
+		 int pdiConcluidoCount = 0;
 		 
 		 for (Pdi pdi : todosPdis) {
 		        switch (pdi.getStatus()) {
@@ -51,16 +49,16 @@ public class HomeGestorArea extends Application{
 		        }
 		    }
 		
-		Text titulo = new Text("Bem-vindo " + primeiroNome + "!");
+		Text titulo = new Text("Setor");
 		titulo.setId("titulo");
 		
-		Ellipse blob1 = new Ellipse();
+		Ellipse blob1 = new Ellipse(155, 155);
 		blob1.setId("blob1");
 		
-		Ellipse blob2 = new Ellipse();
+		Ellipse blob2 = new Ellipse(20, 20);
 		blob2.setId("blob2");
 		
-		Ellipse blob3 = new Ellipse();
+		Ellipse blob3 = new Ellipse(40, 40);
 		blob3.setId("blob3");
 		
 		GaussianBlur blur = new GaussianBlur(40);
@@ -81,12 +79,41 @@ public class HomeGestorArea extends Application{
 		container.setId("container");
 		container.getChildren().addAll(colaboradores, pdiAtivo, pdiInativo, pdiConcluido);
 		
+		
+		Text buscarColaboradores = new Text("Buscar colaboradores");
+		buscarColaboradores.setId("buscarColaboradores");
+		
+		//barra de pesquisa
+		
+		TextField searchField = new TextField();
+        searchField.setPromptText("Pesquisar");
+        searchField.setPrefWidth(280);
+        searchField.getStyleClass().add("search-field");
+		
+        Button searchButton = new Button("\uD83D\uDD0D");
+        searchButton.getStyleClass().add("icon-button");
+        
+        
+        Button filterButton = new Button("Filtrar");
+        filterButton.getStyleClass().add("filter-button");
+        
+        
+        HBox searchBar = new HBox(10, searchField, searchButton, filterButton);
+        searchBar.setPadding(new Insets(10, 15, 10, 15));
+        searchBar.getStyleClass().add("search-bar");
+        
+        //fim da barra de pesquisa
+        
+        VBox colaboradoresContainer = new VBox(90);
+        colaboradoresContainer.setId("colaboradoresContainer");
+        colaboradoresContainer.getChildren().addAll(buscarColaboradores, searchBar);
+        
 		VBox center = new VBox();
 		center.setId("center");
-		center.getChildren().addAll(titulo, container, blob1, blob2, blob3);
-		
-		BarraLateralGA barra = new BarraLateralGA(logado);
-		
+		center.getChildren().addAll(titulo, container, blob1, blob2, blob3, colaboradoresContainer);
+
+	    BarraLateralGA barra = new BarraLateralGA(logado);
+	
 		HBox root = new HBox();
 		root.setStyle("-fx-background-color: #1E1E1E");
 		root.getChildren().addAll(barra, center);
@@ -95,36 +122,42 @@ public class HomeGestorArea extends Application{
 		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("HomeGestorArea.css").toExternalForm());
-		scene.getStylesheets().add(getClass().getResource("EquipesRH.css").toExternalForm());
-		
+		scene.getStylesheets().add(getClass().getResource("EquipesGA.css").toExternalForm());
+
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
-
+	
 		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
 		blob2.radiusYProperty().bind(blob2.radiusXProperty());
-
+	
 		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
 		blob3.radiusYProperty().bind(blob3.radiusXProperty());
-
+	
 		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
 		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
 		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
-
+	
 		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
 		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
 		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.3));
-
+	
 		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
-		
-		stage.setScene(scene);
-		stage.setFullScreen(true);
-		stage.setFullScreenExitHint("");
-		stage.show();
-	}
 	
+		equipesgaStage.setScene(scene);
+		equipesgaStage.setFullScreen(true);
+		equipesgaStage.setFullScreenExitHint("");
+		equipesgaStage.show();
+	
+		equipesgaStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+		    if (isNowFocused) {
+		    	equipesgaStage.setFullScreen(true);
+		    }
+		});
+	
+	}
+		
 	public static void main (String[]args) {
 		launch(args);
 	}
