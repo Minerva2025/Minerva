@@ -96,7 +96,6 @@ public class CadastroUsuarios extends Application {
 		experiencia.setPromptText("Experiência");
 		experiencia.getStyleClass().add("input");
 		
-		
 		ComboBox<Funcao> funcao = new ComboBox<>();
 		funcao.getItems().addAll(Funcao.values());
 		funcao.setPromptText("Função");
@@ -118,8 +117,25 @@ public class CadastroUsuarios extends Application {
 		    }
 		});
 		funcao.setButtonCell(funcao.getCellFactory().call(null));
-
 		
+		ComboBox<String> setor = new ComboBox<>();
+		setor.getItems().addAll(
+		    "Desenvolvimento",
+		    "Produto",
+		    "Vendas e Marketing",
+		    "Suporte",
+		    "DevOps",
+		    "Financeiro",
+		    "Pesquisa e Inovação",
+		    "Gestão de Projetos"
+		);
+		setor.setPromptText("Setor");
+		setor.getStyleClass().add("input");
+		setor.setVisible(false);
+		setor.setMaxWidth(Double.MAX_VALUE);
+		GridPane.setHgrow(setor, Priority.ALWAYS);
+		
+	
 		TextField obs = new TextField();
 		obs.setPromptText("Observações");
 		obs.getStyleClass().add("input");
@@ -160,12 +176,30 @@ public class CadastroUsuarios extends Application {
 		grid.add(infosprofissionais, 0, 5, 1, 1);
 		
 		grid.add(experiencia, 0, 6, 1, 1);
-		
+				
 		grid.add(funcao, 1, 6, 1, 1);
 		
 		grid.add(obs, 0, 7, 2, 1);
 		
 		grid.getColumnConstraints().addAll(col1,col2);
+		
+		funcao.valueProperty().addListener((obsVal, oldVal, newVal) -> {
+		    if (newVal == Funcao.GESTOR_AREA) {
+		        setor.setVisible(true);
+		        grid.getChildren().remove(obs);
+		        grid.add(obs, 0, 7, 1, 1);
+		        grid.add(setor, 1, 7, 1, 1);
+
+		        GridPane.setHgrow(setor, Priority.ALWAYS);
+		        setor.setMaxWidth(Double.MAX_VALUE);
+
+		    } else {
+		        setor.setVisible(false);
+		        grid.getChildren().remove(setor);
+		        grid.getChildren().remove(obs);
+		        grid.add(obs, 0, 7, 2, 1);
+		    }
+		});
 		
 		HBox botoesBox = new HBox(20);
 		botoesBox.getChildren().addAll(salvarButton, cancelarButton);
@@ -222,6 +256,8 @@ public class CadastroUsuarios extends Application {
 		        Funcao funcaoSelecionada = funcao.getValue();
 		        String experienciaStr = experiencia.getText();
 		        String obsStr = obs.getText();
+		        String setorStr = setor.isVisible() ? setor.getPromptText() : null;
+
 
 		        if (nomeStr.isEmpty() || cpfStr.isEmpty() || senhaStr.isEmpty() || dataNascimento == null || funcaoSelecionada == null) {
 		            Alert alert = new Alert(Alert.AlertType.ERROR, "Preencha todos os campos obrigatórios!");
@@ -236,7 +272,9 @@ public class CadastroUsuarios extends Application {
 		                dataNascimento,
 		                funcaoSelecionada,
 		                experienciaStr,
-		                obsStr
+		                obsStr,
+		                setorStr
+		                
 		        );
 		        
 		        usuarioController.criarUsuario(logado, novoUsuario);

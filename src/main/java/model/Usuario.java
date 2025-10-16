@@ -9,14 +9,15 @@ public class Usuario {
     private String cpf;            
     private String senha;
     private LocalDate data_nascimento; 
-    private Funcao funcao;          
+    private Funcao funcao;
+    private String setor;
     private String experiencia;     
     private String observacoes;     
 
     
-    // Construtor para novo usuário (sem ID, pois ainda não foi salvo no banco)
+ // Construtor para novo usuário
     public Usuario(String nome, String cpf, String senha, LocalDate data_nascimento, Funcao funcao,
-                   String experiencia, String observacoes) {
+                   String experiencia, String observacoes, String setor) {
         this.nome = nome;
         this.cpf = cpf;
         this.senha = senha;
@@ -24,11 +25,12 @@ public class Usuario {
         this.funcao = funcao;
         this.experiencia = experiencia;
         this.observacoes = observacoes;
+        this.setor = setor;
     }
 
-    // Construtor para usuário vindo do banco (com ID)
+    // Construtor vindo do banco
     public Usuario(int id, String nome, String cpf, String senha, LocalDate data_nascimento, Funcao funcao,
-                   String experiencia, String observacoes) {
+                   String experiencia, String observacoes, String setor) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -37,6 +39,7 @@ public class Usuario {
         this.funcao = funcao;
         this.experiencia = experiencia;
         this.observacoes = observacoes;
+        this.setor = setor;
     }
 
 
@@ -63,5 +66,8 @@ public class Usuario {
 
     public String getObservacoes() { return observacoes; }
     public void setObservacoes(String observacoes) { this.observacoes = observacoes; }
+    
+    public String getSetor() { return setor; }
+    public void setSetor(String setor) { this.setor = setor; }
 
 }

@@ -48,10 +48,10 @@ public class MetasGG extends Application {
         this.logado = usuarioLogado;
     }
 	
-	public void start(Stage metasGGStage) {
+	public void start(Stage metasggStage) {
 
 		// cria barra lateral
-	    BarraLateralRH barra = new BarraLateralRH(logado);
+	    BarraLateralGG barra = new BarraLateralGG(logado);
 	    
 	    VBox coluna1 = new VBox();
 	    coluna1.setId("coluna1");
@@ -186,13 +186,13 @@ public class MetasGG extends Application {
 	    // cena e estilo
 	    Scene scene = new Scene(root, 1000, 600);
 	    scene.getStylesheets().add(getClass().getResource("Metas.css").toExternalForm());
-	    scene.getStylesheets().add(getClass().getResource("BarraLateralRH.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource("BarraLateral.css").toExternalForm());
 	    
-	    metasGGStage.setScene(scene);
-	    metasGGStage.setFullScreen(true);
-	    metasGGStage.setFullScreenExitHint("");
-	    metasGGStage.setTitle("Gerenciamento de Metas (PDIs)");
-	    metasGGStage.show();
+	    metasggStage.setScene(scene);
+	    metasggStage.setFullScreen(true);
+	    metasggStage.setFullScreenExitHint("");
+	    metasggStage.setTitle("Gerenciamento de Metas (PDIs)");
+	    metasggStage.show();
 
 	}
 	
