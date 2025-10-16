@@ -21,7 +21,7 @@ public class UsuarioDAO {
      * Insere um novo usuário no banco.
      */
     public void insert(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nome, cpf, senha, data_nascimento, funcao, experiencia, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nome, cpf, senha, data_nascimento, funcao, experiencia, observacoes, setor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -33,6 +33,8 @@ public class UsuarioDAO {
             stmt.setString(5, usuario.getFuncao().name());
             stmt.setString(6, usuario.getExperiencia());
             stmt.setString(7, usuario.getObservacoes());
+            stmt.setString(8, usuario.getSetor());
+
             
             stmt.executeUpdate();
 
@@ -51,7 +53,7 @@ public class UsuarioDAO {
      * Atualiza um usuário existente no banco.
      */
     public void update(Usuario usuario) {
-        String sql = "UPDATE usuarios SET nome = ?, cpf = ?, senha = ?,  data_nascimento = ?, funcao = ?, experiencia = ?, observacoes = ? WHERE id = ?";
+    	String sql = "UPDATE usuarios SET nome=?, cpf=?, senha=?, data_nascimento=?, funcao=?, experiencia=?, observacoes=?, setor=? WHERE id=?";
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -63,7 +65,8 @@ public class UsuarioDAO {
             stmt.setString(5, usuario.getFuncao().name());
             stmt.setString(6, usuario.getExperiencia());
             stmt.setString(7, usuario.getObservacoes());
-            stmt.setInt(8, usuario.getId());
+            stmt.setString(8, usuario.getSetor());
+            stmt.setInt(9, usuario.getId());
 
             stmt.executeUpdate();
 
@@ -111,7 +114,8 @@ public class UsuarioDAO {
                         rs.getDate("data_nascimento").toLocalDate(),
                         Funcao.valueOf(rs.getString("funcao")),
                         rs.getString("experiencia"),
-                        rs.getString("observacoes")
+                        rs.getString("observacoes"),
+                        rs.getString("setor")
                 );
                 u.setId(rs.getInt("id"));
                 return u;
@@ -142,7 +146,8 @@ public class UsuarioDAO {
             		    rs.getDate("data_nascimento").toLocalDate(),
             		    Funcao.valueOf(rs.getString("funcao")),
             		    rs.getString("experiencia"),
-            		    rs.getString("observacoes")
+            		    rs.getString("observacoes"),
+                        rs.getString("setor")
             		);
             		u.setId(rs.getInt("id"));
 

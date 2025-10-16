@@ -1,5 +1,9 @@
 package gui;
 
+import java.util.List;
+
+import dao.ColaboradorDAO;
+import dao.PdiDAO;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
@@ -10,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Pdi;
 import model.Usuario;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.effect.GaussianBlur;
@@ -26,7 +31,27 @@ public class HomeGestorArea extends Application{
 	@Override
 	public void start(Stage stage) {
 		
-		Text titulo = new Text("BEM-VINDO");
+		String primeiroNome = logado.getNome().split(" ")[0];
+		 ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
+		 PdiDAO pdiDAO = new PdiDAO();
+		 
+		 int totalColaboradores = colaboradorDAO.listAll().size();
+		 
+		 List<Pdi> todosPdis = pdiDAO.listAll();
+		 
+		 int pdiAtivoCount = 0; // EM_ANDAMENTO e ATRASADO
+		 int pdiInativoCount = 0; // NAO_INICIADO
+		 int pdiConcluidoCount = 0; // CONCLUIDO
+		 
+		 for (Pdi pdi : todosPdis) {
+		        switch (pdi.getStatus()) {
+		            case EM_ANDAMENTO, ATRASADO -> pdiAtivoCount++;
+		            case NAO_INICIADO -> pdiInativoCount++;
+		            case CONCLUIDO -> pdiConcluidoCount++;
+		        }
+		    }
+		
+		Text titulo = new Text("Bem-vindo " + primeiroNome + "!");
 		titulo.setId("titulo");
 		
 		Ellipse blob1 = new Ellipse();
@@ -43,41 +68,35 @@ public class HomeGestorArea extends Application{
 		blob2.setEffect(blur);
 		blob3.setEffect(blur);
 		
-		Text colaboradores = new Text("Colaboradores:");
+		Text colaboradores = new Text("Colaboradores: " + totalColaboradores);
 		colaboradores.setId("colaboradores");
-		
-		Text pdiAtivo = new Text("PDIs ativos:");
+		Text pdiAtivo = new Text("PDIs ativos: " + pdiAtivoCount);
 		pdiAtivo.setId("pdiAtivo");
+		Text pdiInativo = new Text("PDIs não iniciados: " + pdiInativoCount);
+		pdiInativo.setId("pdiInativo");
+		Text pdiConcluido = new Text("PDIs concluídos: " + pdiConcluidoCount);
+		pdiConcluido.setId("pdiConcluido");
 		
 		HBox container = new HBox(150);
 		container.setId("container");
-		container.getChildren().addAll(colaboradores, pdiAtivo);
+		container.getChildren().addAll(colaboradores, pdiAtivo, pdiInativo, pdiConcluido);
 		
 		VBox center = new VBox();
 		center.setId("center");
 		center.getChildren().addAll(titulo, container, blob1, blob2, blob3);
 		
-		ToggleButton inicio = new ToggleButton("Início");
-		inicio.setId("inicio");
-		ToggleButton equipe = new ToggleButton("Equipe");
-		equipe.setId("equipe");
-		ToggleButton relatorios = new ToggleButton("Relatórios");
-		relatorios.setId("relatorios");
-		ToggleButton metas = new ToggleButton("Metas");
-		metas.setId("metas");
-		
-		VBox left = new VBox(30, inicio, equipe, relatorios, metas);
-		left.setId("left");
+		BarraLateralGA barra = new BarraLateralGA(logado);
 		
 		HBox root = new HBox();
 		root.setStyle("-fx-background-color: #1E1E1E");
-		root.getChildren().addAll(left, center);
+		root.getChildren().addAll(barra, center);
 		
 		center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
-		left.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
+		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("HomeGestorArea.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("EquipesRH.css").toExternalForm());
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 

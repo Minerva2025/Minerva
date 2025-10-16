@@ -89,6 +89,8 @@ public class EquipesRH extends Application{
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("HomeRH.css").toExternalForm());
 		scene.getStylesheets().add(getClass().getResource("EquipesRH.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("BarraLateral.css").toExternalForm());
+
 
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));

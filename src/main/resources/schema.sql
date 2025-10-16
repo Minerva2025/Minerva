@@ -9,7 +9,8 @@ CREATE TABLE usuarios (
     data_nascimento DATE NOT NULL,
     funcao ENUM('RH', 'GESTOR_GERAL', 'GESTOR_AREA') NOT NULL,
     experiencia TEXT,
-    observacoes TEXT
+    observacoes TEXT,
+    setor VARCHAR(50)
 );
 
 CREATE TABLE colaboradores (

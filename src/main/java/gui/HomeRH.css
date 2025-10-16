@@ -27,21 +27,6 @@
 	-fx-letter-spacing: 2px;
 }
 
-#left{
-	-fx-background-color: #323232;
-	-fx-padding: 170 0 0 40;
-	-fx-background-radius: 0 20 20 0;
-	-fx-background-insets: 0
-}
-
-#inicio, #equipe, #relatorios, #metas, #avaliacoes{
-	-fx-text-fill: white;
-	-fx-font-size: 20px;
-	-fx-font-family: 'JuliusSansOne';
-	-fx-letter-spacing: 2px;
-	-fx-background-color: transparent;
-	-fx-border-color: transparent
-}
 
 #blob1, #blob2, #blob3{
 	-fx-fill: #323232;
