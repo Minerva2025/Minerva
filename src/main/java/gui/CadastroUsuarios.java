@@ -219,7 +219,7 @@ public class CadastroUsuarios extends Application {
 		root.setCenter(stack);
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("CadastroUsuario.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/CadastroUsuario.css").toExternalForm());
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty());

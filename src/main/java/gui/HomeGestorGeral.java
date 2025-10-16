@@ -98,7 +98,7 @@ public class HomeGestorGeral extends Application{
 		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("HomeGestorGeral.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/HomeGestorGeral.css").toExternalForm());
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 

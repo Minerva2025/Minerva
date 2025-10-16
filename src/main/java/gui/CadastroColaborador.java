@@ -176,7 +176,7 @@ public class CadastroColaborador extends Application {
 		root.setCenter(stack);
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("Cadastro.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/Cadastro.css").toExternalForm());
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty());
