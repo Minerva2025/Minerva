@@ -48,7 +48,7 @@
 
 ## 📅Sprints
 
-### Sprint - 1️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint1)): Em progresso⏳
+### Sprint - 1️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint1)): Concluída ✅
 
 ### Sprint - 2️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint2)) : Início em 6/10.
 
