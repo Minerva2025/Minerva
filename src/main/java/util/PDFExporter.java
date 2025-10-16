@@ -57,7 +57,7 @@ public class PDFExporter {
             table.setWidth(UnitValue.createPercentValue(100));
             
             // Cabeçalho da tabela
-            Color headerColor = new DeviceRgb(70, 130, 180); // Azul steel
+            Color headerColor = new DeviceRgb(44, 142, 131); // Azul steel
             String[] headers = {"Colaborador", "Setor", "Objetivo", "Prazo", "Status"};
             
             for (String header : headers) {
@@ -92,7 +92,7 @@ public class PDFExporter {
                 // Aplicar cor baseada no status
                 switch (pdi.getStatus()) {
                     case CONCLUIDO:
-                        statusCell.setBackgroundColor(new DeviceRgb(144, 238, 144)); // Verde claro
+                        statusCell.setBackgroundColor(new DeviceRgb(134, 210, 201)); // Verde claro
                         break;
                     case EM_ANDAMENTO:
                         statusCell.setBackgroundColor(new DeviceRgb(255, 255, 224)); // Amarelo claro

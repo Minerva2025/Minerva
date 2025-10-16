@@ -163,7 +163,7 @@ public class Metas extends Application {
 	    
 	    //Botão exportar pdf
 	    HBox headerBox = new HBox(titulo, btnExportar);
-	    
+	    headerBox.setAlignment(Pos.CENTER);
 	    
         Text tituloCadastrar = new Text("Cadastrar Nova Meta");
         tituloCadastrar.setId("tituloCadastrar");
@@ -369,7 +369,7 @@ public class Metas extends Application {
     		fileChooser.setTitle("Salvar relatório PDF");
     		
     		
-    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyy")) + ".pdf";
+    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
     		fileChooser.setInitialFileName(fileName);
     		
     		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
