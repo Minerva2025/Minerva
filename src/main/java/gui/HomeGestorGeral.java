@@ -26,7 +26,7 @@ public class HomeGestorGeral extends Application{
 	
 	
 	@Override
-	public void start(Stage homeggstage) {
+	public void start(Stage homeggStage) {
 		
 		Text titulo = new Text("BEM-VINDO");
 		titulo.setId("titulo");
@@ -59,33 +59,15 @@ public class HomeGestorGeral extends Application{
 		center.setId("center");
 		center.getChildren().addAll(titulo, container, blob1, blob2, blob3);
 		
-		ToggleButton inicio = new ToggleButton("Início");
-		inicio.setId("inicio");
-		ToggleButton equipe = new ToggleButton("Equipe");
-		equipe.setId("equipe");
-		ToggleButton relatorios = new ToggleButton("Relatórios");
-		relatorios.setId("relatorios");
-		
-		Button metas = new Button("Metas");
-		metas.setOnAction(e -> {
-	        Stage metasGGStage = new Stage();
-	        new MetasGG(logado).start(metasGGStage);	
-	        
-            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stageAtual.close();
+	    BarraLateralGG barra = new BarraLateralGG(logado);
 
-		});
-		metas.setId("metas");
-		
-		VBox left = new VBox(30, inicio, equipe, relatorios, metas);
-		left.setId("left");
 		
 		HBox root = new HBox();
 		root.setStyle("-fx-background-color: #1E1E1E");
-		root.getChildren().addAll(left, center);
+		root.getChildren().addAll(barra, center);
 		
 		center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
-		left.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
+		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("HomeGestorGeral.css").toExternalForm());
@@ -111,10 +93,10 @@ public class HomeGestorGeral extends Application{
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
 		
-		homeggstage.setScene(scene);
-		homeggstage.setFullScreen(true);
-		homeggstage.setFullScreenExitHint("");
-		homeggstage.show();
+		homeggStage.setScene(scene);
+		homeggStage.setFullScreen(true);
+		homeggStage.setFullScreenExitHint("");
+		homeggStage.show();
 	}
 	
 	public static void main (String[]args) {
