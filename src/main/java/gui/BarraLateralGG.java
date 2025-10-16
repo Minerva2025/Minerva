@@ -28,13 +28,13 @@ public class BarraLateralGG extends VBox {
         
 
         Button equipe = new Button("Equipe");
-        equipe.setOnAction(e -> {
-            Stage equipesggStage = new Stage();
-            new EquipesGG(logado).start(equipesggStage);
-            
-            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stageAtual.close();
-        });
+//        equipe.setOnAction(e -> {
+//            Stage equipesggStage = new Stage();
+//            new EquipesGG(logado).start(equipesggStage);
+//            
+//            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
+//            stageAtual.close();
+//        });
         equipe.setId("equipe");
 
         ToggleButton relatorios = new ToggleButton("Relatórios");
