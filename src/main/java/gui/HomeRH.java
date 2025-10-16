@@ -127,8 +127,8 @@ public class HomeRH extends Application{
 		left.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("HomeRH.css").toExternalForm());
-		scene.getStylesheets().add(getClass().getResource("BarraLateral.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/HomeRH.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
