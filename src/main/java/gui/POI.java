@@ -2,7 +2,9 @@ package gui;
 
 
 
+import dao.ColaboradorDAO;
 import dao.PdiDAO;
+import model.Colaborador;
 import model.Pdi;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -15,13 +17,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+
+
 public class POI {
     public static void main(String[] args) throws IOException {
 
         List<Pdi> lista = new PdiDAO().listAll();
 
-
-        String filePath = "D:\\Documentos\\Project\\Metas.xlsx";
+        String filePath = "C:\\Users\\Fatec\\Documents\\Project\\Metas.xlsx";
         File myFile = new File(filePath);
 
         Workbook workbook = new XSSFWorkbook();
@@ -38,9 +41,16 @@ public class POI {
 
         int rowNum = 1;
         for (Pdi pdi : lista){
+            int colaboradorId = pdi.getColaborador_id();
+            ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
+            Colaborador colaborador = colaboradorDAO.getColaboradorById(colaboradorId);
+
             Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(pdi.getId());
-            row.createCell(1).setCellValue(pdi.getObjetivo());
+            row.createCell(0).setCellValue(colaborador.getNome());
+            row.createCell(1).setCellValue(colaborador.getSetor());
+            row.createCell(2).setCellValue(pdi.getObjetivo());
+            row.createCell(3).setCellValue(pdi.getPrazo());
+            row.createCell(4).setCellValue(pdi.getStatus().ordinal());
         }
 
 
