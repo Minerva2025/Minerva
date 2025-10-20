@@ -120,14 +120,11 @@ public class CadastroUsuarios extends Application {
 		
 		ComboBox<String> setor = new ComboBox<>();
 		setor.getItems().addAll(
-		    "Desenvolvimento",
-		    "Produto",
-		    "Vendas e Marketing",
-		    "Suporte",
-		    "DevOps",
-		    "Financeiro",
-		    "Pesquisa e Inovação",
-		    "Gestão de Projetos"
+			"Desenvolvimento",
+			"Marketing",
+			"Suporte",
+			"Financeiro", 
+			"Pesquisa e Inovação"
 		);
 		setor.setPromptText("Setor");
 		setor.getStyleClass().add("input");
@@ -256,7 +253,7 @@ public class CadastroUsuarios extends Application {
 		        Funcao funcaoSelecionada = funcao.getValue();
 		        String experienciaStr = experiencia.getText();
 		        String obsStr = obs.getText();
-		        String setorStr = setor.isVisible() ? setor.getPromptText() : null;
+                String setorStr = setor.isVisible() ? setor.getValue() : null;
 
 
 		        if (nomeStr.isEmpty() || cpfStr.isEmpty() || senhaStr.isEmpty() || dataNascimento == null || funcaoSelecionada == null) {
