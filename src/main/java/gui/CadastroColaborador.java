@@ -96,14 +96,11 @@ public class CadastroColaborador extends Application {
 		
 		ComboBox<String> setor = new ComboBox<>();
 		setor.getItems().addAll(
-		    "Desenvolvimento",
-		    "Produto",
-		    "Vendas e Marketing",
-		    "Suporte",
-		    "DevOps",
-		    "Financeiro",
-		    "Pesquisa e Inovação",
-		    "Gestão de Projetos"
+			"Desenvolvimento",
+			"Marketing",
+			"Suporte",
+			"Financeiro", 
+			"Pesquisa e Inovação"
 		);
 		setor.setPromptText("Setor");
 		setor.getStyleClass().add("input");
