@@ -1,6 +1,8 @@
 package gui;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import dao.ColaboradorDAO;
 import dao.PdiDAO;
@@ -26,39 +28,42 @@ import model.Colaborador;
 import model.Pdi;
 import model.Usuario;
 
-public class EquipesGA extends Application{
+public class EquipesGG extends Application{
 	
     private Usuario logado;
 
-    public EquipesGA(Usuario usuarioLogado) {
+    public EquipesGG(Usuario usuarioLogado) {
         this.logado = usuarioLogado;
     }
 
-	public void start(Stage equipesgaStage) {
+	public void start(Stage equipesggStage) {
 		
 		PdiDAO pdiDAO = new PdiDAO();
 		ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
 
-		List<Colaborador> colaboradoresSetor = colaboradorDAO.findBySetor(logado.getSetor());
-		int totalColaboradores = colaboradoresSetor.size();
- 
-		 int pdiAtivoCount = 0;
-		 int pdiInativoCount = 0;
-		 int pdiConcluidoCount = 0;
-		 
-		 for (Colaborador c : colaboradoresSetor) {
-		     List<Pdi> pdis = pdiDAO.findByColaborador(c.getId());
-		     for (Pdi pdi : pdis) {
-		          switch (pdi.getStatus()) {
-		             case EM_ANDAMENTO, ATRASADO -> pdiAtivoCount++;
-		             case NAO_INICIADO -> pdiInativoCount++;
-		             case CONCLUIDO -> pdiConcluidoCount++;
-		         }
-		     }
-		 }
+		List<Colaborador> colaboradorescard = colaboradorDAO.listAll();
 		
-		Text titulo = new Text(logado.getSetor());
-		titulo.setId("titulo");
+		Map<String, List<Colaborador>> colaboradoresPorSetor = colaboradorescard.stream()
+			    .collect(Collectors.groupingBy(Colaborador::getSetor));
+		
+		int totalColaboradores = colaboradorDAO.listAll().size();
+		 
+		 List<Pdi> todosPdis = pdiDAO.listAll();
+		 
+		 int pdiAtivoCount = 0; // EM_ANDAMENTO e ATRASADO
+		 int pdiInativoCount = 0; // NAO_INICIADO
+		 int pdiConcluidoCount = 0; // CONCLUIDO
+		 
+		 for (Pdi pdi : todosPdis) {
+		        switch (pdi.getStatus()) {
+		            case EM_ANDAMENTO, ATRASADO -> pdiAtivoCount++;
+		            case NAO_INICIADO -> pdiInativoCount++;
+		            case CONCLUIDO -> pdiConcluidoCount++;
+		        }
+		    }
+		
+		Text titulo = new Text("Visão Geral");
+		titulo.getStyleClass().add("titulo");
 
 		HBox tituloBox = new HBox(titulo);
 		tituloBox.setAlignment(Pos.CENTER_LEFT);
@@ -89,74 +94,68 @@ public class EquipesGA extends Application{
 		HBox container = new HBox(150);
 		container.setId("container");
 		container.getChildren().addAll(colaboradores, pdiAtivo, pdiInativo, pdiConcluido);
-		
-		
-//		Text buscarColaboradores = new Text("Buscar colaboradores");
-//		buscarColaboradores.setId("buscarColaboradores");
+				
+		VBox setoresContainer = new VBox(60);
+		setoresContainer.setId("setoresContainer");
+		setoresContainer.setAlignment(Pos.TOP_CENTER);
 
-		// Envolve o texto em um HBox alinhado à esquerda
-//		HBox buscarBox = new HBox(buscarColaboradores);
-//		buscarBox.setAlignment(Pos.CENTER_LEFT);
-//		buscarBox.setPadding(new Insets(0, 0, 0, 80));
+		for (Map.Entry<String, List<Colaborador>> entry : colaboradoresPorSetor.entrySet()) {
+		    String nomeSetor = entry.getKey();
+		    List<Colaborador> colaboradoresSetor = entry.getValue();
 
-		TextField searchField = new TextField();
-		searchField.setPromptText("Pesquisar");
-		searchField.setPrefWidth(280);
-		searchField.getStyleClass().add("search-field");
+		    Text tituloSetor = new Text(nomeSetor);
+		    tituloSetor.getStyleClass().add("titulo");
 
-		Button searchButton = new Button("\uD83D\uDD0D");
-		searchButton.getStyleClass().add("icon-button");
+		    TextField searchField = new TextField();
+		    searchField.setPromptText("Pesquisar");
+		    searchField.setPrefWidth(280);
+		    searchField.getStyleClass().add("search-field");
 
-//		Button filterButton = new Button("Filtrar");
-//		filterButton.getStyleClass().add("filter-button");
+		    Button searchButton = new Button("\uD83D\uDD0D");
+		    searchButton.getStyleClass().add("icon-button");
 
-		HBox searchBar = new HBox(10, searchField, searchButton);
-		searchBar.setPadding(new Insets(10, 0, 10, 80)); // recuo igual
-		searchBar.setPrefWidth(600);
-		searchBar.getStyleClass().add("search-bar");
-		searchBar.setAlignment(Pos.CENTER_LEFT);
-		HBox.setHgrow(searchField, Priority.ALWAYS);
+		    HBox searchBar = new HBox(10, searchField, searchButton);
+		    searchBar.setAlignment(Pos.CENTER_LEFT);
+		    searchBar.setPadding(new Insets(5, 0, 10, 80));
+		    searchBar.setPrefWidth(600);
+		    searchBar.getStyleClass().add("search-bar");
+		    HBox.setHgrow(searchField, Priority.ALWAYS);
 
-		searchBar.setSpacing(0);
-        
-		searchBar.setAlignment(Pos.CENTER_RIGHT);
+		    VBox tituloEbarra = new VBox(20, tituloSetor, searchBar);
+		    tituloEbarra.setAlignment(Pos.CENTER_LEFT);
+		    tituloEbarra.setPadding(new Insets(0, 0, 0, 0	));
 
-        //fim da barra de pesquisa
-        
-		VBox colaboradoresContainer = new VBox(90);
-		colaboradoresContainer.setId("colaboradoresContainer");
-		colaboradoresContainer.getChildren().add(searchBar);
-        
-        GridPane gridColaboradores = new GridPane();
-        gridColaboradores.setHgap(40);
-        gridColaboradores.setVgap(40);
-        gridColaboradores.setAlignment(Pos.CENTER);
-        gridColaboradores.setPadding(new Insets(20, 80, 60, 80));
-        gridColaboradores.setMaxWidth(1400);
-	
-        int col = 0;
-        int row = 0;
-        for (Colaborador c : colaboradoresSetor) {
-            double progresso = calcularProgressoMedio(pdiDAO, c.getId());
-            VBox balao = criarBalaoColaborador(c, progresso);
-            balao.setPrefWidth(500);
-            gridColaboradores.add(balao, col, row);
-            col++;
-            if (col > 1) { 
-                col = 0;
-                row++;
-            }
-        }
-	
-	    colaboradoresContainer.getChildren().add(gridColaboradores);
-	    colaboradoresContainer.setSpacing(40);
-	    colaboradoresContainer.setPadding(new Insets(30, 0, 0, 0));
+		    GridPane gridSetor = new GridPane();
+		    gridSetor.setHgap(40);
+		    gridSetor.setVgap(40);
+		    gridSetor.setAlignment(Pos.CENTER);
+		    gridSetor.setPadding(new Insets(20, 0, 60, 0));
+
+		    int col = 0;
+		    int row = 0;
+		    for (Colaborador c : colaboradoresSetor) {
+		        double progresso = calcularProgressoMedio(pdiDAO, c.getId());
+		        VBox balao = criarBalaoColaborador(c, progresso);
+		        balao.prefWidthProperty().bind(gridSetor.widthProperty().divide(2));
+		        gridSetor.add(balao, col, row);
+
+		        col++;
+		        if (col > 1) {
+		            col = 0;
+		            row++;
+		        }
+		    }
+
+		    VBox setorBox = new VBox(20, tituloEbarra, gridSetor);
+		    setorBox.setAlignment(Pos.TOP_CENTER);
+		    setoresContainer.getChildren().add(setorBox);
+		}
 	
 	    VBox center = new VBox(60);
 	    center.setId("center");
 	    center.setAlignment(Pos.TOP_CENTER);
 	    center.setPadding(new Insets(60, 80, 80, 80));
-	    center.getChildren().addAll(tituloBox, container, blob1, blob2, blob3, colaboradoresContainer);
+	    center.getChildren().addAll(tituloBox, container, setoresContainer);
 
 		ScrollPane scrollCenter = new ScrollPane(center);
 		scrollCenter.setFitToWidth(true);
@@ -164,7 +163,7 @@ public class EquipesGA extends Application{
 		scrollCenter.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scrollCenter.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 		
-	    BarraLateralGA barra = new BarraLateralGA(logado);
+	    BarraLateralGG barra = new BarraLateralGG(logado);
 	
 		HBox root = new HBox();
 		root.setStyle("-fx-background-color: #1E1E1E");
@@ -174,7 +173,7 @@ public class EquipesGA extends Application{
 		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/gui/EquipesGA.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("EquipesGG.css").toExternalForm());
 
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
@@ -197,14 +196,14 @@ public class EquipesGA extends Application{
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
 	
-		equipesgaStage.setScene(scene);
-		equipesgaStage.setFullScreen(true);
-		equipesgaStage.setFullScreenExitHint("");
-		equipesgaStage.show();
+		equipesggStage.setScene(scene);
+		equipesggStage.setFullScreen(true);
+		equipesggStage.setFullScreenExitHint("");
+		equipesggStage.show();
 	
-		equipesgaStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+		equipesggStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
 		    if (isNowFocused) {
-		    	equipesgaStage.setFullScreen(true);
+		    	equipesggStage.setFullScreen(true);
 		    }
 		});
 	
@@ -217,7 +216,8 @@ public class EquipesGA extends Application{
         for (Pdi p : pdis) {
             switch (p.getStatus()) {
                 case CONCLUIDO -> soma += 1.0;
-                case EM_ANDAMENTO, ATRASADO -> soma += 0.5;
+                case EM_ANDAMENTO -> soma += 0.5;
+                case ATRASADO -> soma -= 0.25;
                 case NAO_INICIADO -> soma += 0.0;
             }
         }
@@ -233,8 +233,6 @@ public class EquipesGA extends Application{
         Text nome = new Text(colaborador.getNome());
         nome.getStyleClass().add("colaborador-nome");
 
-        Text status = new Text("Ativo");
-        status.getStyleClass().add("colaborador-status");
 
         Text setor = new Text(colaborador.getSetor());
         setor.getStyleClass().add("colaborador-setor");
@@ -243,9 +241,12 @@ public class EquipesGA extends Application{
         cargo.getStyleClass().add("colaborador-cargo");
 
         ProgressBar progressoBar = new ProgressBar(progresso);
-        progressoBar.setPrefWidth(260);
+        progressoBar.setMaxWidth(Double.MAX_VALUE); 
+        HBox.setHgrow(progressoBar, Priority.ALWAYS);
+        progressoBar.setId("barra-progresso");
+        
 
-        Text progressoTxt = new Text((int) (progresso * 100) + "%");
+        Text progressoTxt = new Text(String.format("%.0f%%", progresso * 100));
         progressoTxt.getStyleClass().add("colaborador-progresso");
 
         HBox progressoBox = new HBox(10, progressoBar, progressoTxt);
@@ -256,7 +257,7 @@ public class EquipesGA extends Application{
         
         
 
-        card.getChildren().addAll(nome, status, setor, cargo, progressotexto, progressoBox);
+        card.getChildren().addAll(nome, setor, cargo, progressotexto, progressoBox);
         return card;
     }
 		

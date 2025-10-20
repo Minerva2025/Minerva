@@ -84,7 +84,7 @@ public class LoginApp extends Application{
 		root.getChildren().addAll(layout, blob1, blob2, blob3);
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("LoginApp.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/LoginApp.css").toExternalForm());
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.10));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 

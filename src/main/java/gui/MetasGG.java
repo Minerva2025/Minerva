@@ -193,8 +193,8 @@ public class MetasGG extends Application {
 
 	    // cena e estilo
 	    Scene scene = new Scene(root, 1000, 600);
-	    scene.getStylesheets().add(getClass().getResource("Metas.css").toExternalForm());
-	    scene.getStylesheets().add(getClass().getResource("BarraLateral.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 	    
 	    metasggStage.setScene(scene);
 	    metasggStage.setFullScreen(true);

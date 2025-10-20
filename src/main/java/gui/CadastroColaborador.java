@@ -96,14 +96,11 @@ public class CadastroColaborador extends Application {
 		
 		ComboBox<String> setor = new ComboBox<>();
 		setor.getItems().addAll(
-		    "Desenvolvimento",
-		    "Produto",
-		    "Vendas e Marketing",
-		    "Suporte",
-		    "DevOps",
-		    "Financeiro",
-		    "Pesquisa e Inovação",
-		    "Gestão de Projetos"
+			"Desenvolvimento",
+			"Marketing",
+			"Suporte",
+			"Financeiro", 
+			"Pesquisa e Inovação"
 		);
 		setor.setPromptText("Setor");
 		setor.getStyleClass().add("input");
@@ -176,7 +173,7 @@ public class CadastroColaborador extends Application {
 		root.setCenter(stack);
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("Cadastro.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/Cadastro.css").toExternalForm());
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty());
