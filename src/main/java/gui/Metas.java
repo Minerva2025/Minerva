@@ -21,7 +21,6 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Colaborador;
-import model.Funcao;
 import model.Pdi;
 import model.Status;
 import model.Usuario;
@@ -33,9 +32,9 @@ import java.time.format.DateTimeFormatter;
 
 import dao.ColaboradorDAO;
 import dao.PdiDAO;
-import gui.BarraLateralRH;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import util.POIExcelExporter;
 
 public class Metas extends Application {
 
@@ -52,6 +51,7 @@ public class Metas extends Application {
 	
 	public void start(Stage metasStage) {
 		setupBotaoExportar();
+        setupBotaoExportarExcel();
 		
 		// cria barra lateral
 	    BarraLateralRH barra = new BarraLateralRH(logado);
@@ -162,8 +162,9 @@ public class Metas extends Application {
 	    tabela.getColumns().addAll(colNome, colSetor, colObjetivo, colPrazo, colStatus, colAcoes);
 	    
 	    //Botão exportar pdf
-	    HBox headerBox = new HBox(titulo, btnExportar);
-	    headerBox.setAlignment(Pos.CENTER);
+        HBox headerBox = new HBox(titulo, btnExportar, btnExportarExcel);
+        headerBox.setAlignment(Pos.CENTER);
+        headerBox.setSpacing(20);
 	    
         Text tituloCadastrar = new Text("Cadastrar Nova Meta");
         tituloCadastrar.setId("tituloCadastrar");
@@ -376,6 +377,41 @@ public class Metas extends Application {
     		
     		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
     	});
+    }
+
+    Button btnExportarExcel = new Button("Exportar Excel");
+
+    private void setupBotaoExportarExcel() {
+        btnExportarExcel.getStyleClass().add("botao-exportar");
+
+        btnExportarExcel.setOnAction(e -> {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Escolha onde salvar o arquivo Excel");
+
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx")
+            );
+
+            String fileName = "metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".xlsx";
+            fileChooser.setInitialFileName(fileName);
+
+            File pastaDownloads = new File(System.getProperty("user.home"), "Downloads");
+            if (pastaDownloads.exists()) {
+                fileChooser.setInitialDirectory(pastaDownloads);
+            }
+
+            File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+
+            if (!arquivoSelecionado.getName().toLowerCase().endsWith(".xlsx")) {
+                arquivoSelecionado = new File(arquivoSelecionado.getAbsolutePath() + ".xlsx");
+            }
+
+            POIExcelExporter.exportarParaExcel(arquivoSelecionado, dados);
+        });
     }
     
 }	
