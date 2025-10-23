@@ -21,18 +21,20 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Colaborador;
-import model.Funcao;
 import model.Pdi;
 import model.Status;
 import model.Usuario;
+import util.PDFExporter;
 
+import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import dao.ColaboradorDAO;
 import dao.PdiDAO;
-import gui.BarraLateralRH;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import util.POIExcelExporter;
 
 public class Metas extends Application {
 
@@ -48,7 +50,9 @@ public class Metas extends Application {
     }
 	
 	public void start(Stage metasStage) {
-
+		setupBotaoExportar();
+        setupBotaoExportarExcel();
+		
 		// cria barra lateral
 	    BarraLateralRH barra = new BarraLateralRH(logado);
 	    
@@ -156,6 +160,11 @@ public class Metas extends Application {
 
         
 	    tabela.getColumns().addAll(colNome, colSetor, colObjetivo, colPrazo, colStatus, colAcoes);
+	    
+	    //Botão exportar pdf
+        HBox headerBox = new HBox(titulo, btnExportar, btnExportarExcel);
+        headerBox.setAlignment(Pos.CENTER);
+        headerBox.setSpacing(20);
 	    
         Text tituloCadastrar = new Text("Cadastrar Nova Meta");
         tituloCadastrar.setId("tituloCadastrar");
@@ -301,7 +310,7 @@ public class Metas extends Application {
         cadastrar.add(cbStatus, 1, 1);
         cadastrar.add(boxBotao, 0, 2, 2, 1); 
         
-        coluna1.getChildren().addAll(titulo, tabelaContainer, boxTitulo, cadastrar);
+        coluna1.getChildren().addAll(titulo, tabelaContainer, headerBox, boxTitulo, cadastrar);
         
         
 	    // layout raiz
@@ -349,6 +358,60 @@ public class Metas extends Application {
         cbColaborador.setValue(null);
         cbColaborador.getEditor().clear();
         cbStatus.setValue(null);
+    }
+    
+    //Botão exportar pdf
+    Button btnExportar = new Button("Exportar PDF");
+    private void setupBotaoExportar() {
+    	btnExportar.getStyleClass().add("botao-exportar");
+    	
+    	btnExportar.setOnAction(e -> {
+    		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+    		fileChooser.setTitle("Salvar relatório PDF");
+    		
+    		
+    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
+    		fileChooser.setInitialFileName(fileName);
+    		
+    		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+    		
+    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+    	});
+    }
+
+    Button btnExportarExcel = new Button("Exportar Excel");
+
+    private void setupBotaoExportarExcel() {
+        btnExportarExcel.getStyleClass().add("botao-exportar");
+
+        btnExportarExcel.setOnAction(e -> {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Escolha onde salvar o arquivo Excel");
+
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx")
+            );
+
+            String fileName = "metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".xlsx";
+            fileChooser.setInitialFileName(fileName);
+
+            File pastaDownloads = new File(System.getProperty("user.home"), "Downloads");
+            if (pastaDownloads.exists()) {
+                fileChooser.setInitialDirectory(pastaDownloads);
+            }
+
+            File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+
+            if (!arquivoSelecionado.getName().toLowerCase().endsWith(".xlsx")) {
+                arquivoSelecionado = new File(arquivoSelecionado.getAbsolutePath() + ".xlsx");
+            }
+
+            POIExcelExporter.exportarParaExcel(arquivoSelecionado, dados);
+        });
     }
     
 }	
