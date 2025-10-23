@@ -46,3 +46,59 @@
 #blob1, #blob2, #blob3{
 	-fx-fill: #323232;
 }
+
+#chartsContainer{
+    -fx-padding: 30 0 20 0;
+    -fx-alignment: center-left;
+}
+
+
+.card{
+    -fx-background-color: #2A2A2A;
+    -fx-background-radius: 18;
+    -fx-min-width: 420px;
+    -fx-min-height: 240px;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.0, 0, 4);
+    -fx-border-color: transparent;
+}
+
+
+#boxChart1, #boxChart2{
+    -fx-alignment: center;
+}
+
+
+
+#alertBox{
+    -fx-padding: 28 0 0 10;
+    -fx-spacing: 6;
+}
+
+#alertTitle{
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 28px;
+    -fx-font-family: 'JuliusSansOne';
+    -fx-letter-spacing: 1.5px;
+}
+
+#alertMessage{
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 22px;
+    -fx-opacity: 0.9;
+    -fx-font-family: 'JuliusSansOne';
+}
+
+
+#alertBox {
+    -fx-background-color: transparent;
+    -fx-border-radius: 8;
+}
+
+
+@media screen and (max-width: 1280px) {
+    .card {
+        -fx-min-width: 340px;
+        -fx-min-height: 200px;
+    }
+}	
