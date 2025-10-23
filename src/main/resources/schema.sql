@@ -32,3 +32,8 @@ CREATE TABLE pdis (
     status ENUM('NAO_INICIADO','EM_ANDAMENTO','CONCLUIDO','ATRASADO') DEFAULT 'EM_ANDAMENTO',
     FOREIGN KEY (colaborador_id) REFERENCES colaboradores(id)
 );
+
+INSERT INTO usuarios
+(nome, cpf, senha, data_nascimento, funcao, experiencia, observacoes)
+VALUES
+('Guilherme Rosa','12345678910','123456','2006-11-16','GESTOR_GERAL','Testando','Teste');

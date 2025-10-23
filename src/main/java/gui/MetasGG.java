@@ -25,8 +25,11 @@ import model.Funcao;
 import model.Pdi;
 import model.Status;
 import model.Usuario;
+import util.PDFExporter;
 
+import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import dao.ColaboradorDAO;
 import dao.PdiDAO;
@@ -49,6 +52,7 @@ public class MetasGG extends Application {
     }
 	
 	public void start(Stage metasggStage) {
+		setupBotaoExportar();
 
 		// cria barra lateral
 	    BarraLateralGG barra = new BarraLateralGG(logado);
@@ -163,8 +167,12 @@ public class MetasGG extends Application {
 	    tabela.setMaxHeight(500);
 	    
 	    tabela.getColumns().addAll(colNome, colSetor, colObjetivo, colPrazo, colStatus, colAcoes);
+	    
+	    //Botão exportar pdf
+	    HBox headerBox = new HBox(titulo, btnExportar);
+	    headerBox.setAlignment(Pos.CENTER);
         
-        coluna1.getChildren().addAll(titulo, tabelaContainer);
+        coluna1.getChildren().addAll(titulo, tabelaContainer, headerBox);
         
         
 	    // layout raiz
@@ -199,5 +207,24 @@ public class MetasGG extends Application {
     private void carregarTabela() {
         dados = FXCollections.observableArrayList(pdiDAO.listAll());
         tabela.setItems(dados);
+    }
+    
+  //Botão exportar pdf
+    Button btnExportar = new Button("Exportar PDF");
+    private void setupBotaoExportar() {
+    	btnExportar.getStyleClass().add("botao-exportar");
+    	
+    	btnExportar.setOnAction(e -> {
+    		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+    		fileChooser.setTitle("Salvar relatório PDF");
+    		
+    		
+    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
+    		fileChooser.setInitialFileName(fileName);
+    		
+    		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+    		
+    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+    	});
     }
 }	
