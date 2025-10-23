@@ -135,3 +135,123 @@
 .combo-box .arrow {
     -fx-background-color: white;
 }
+
+
+
+/* METASGG */
+
+.chart-bar.default-color0 { -fx-bar-fill: #c2f0ef; }  /* Desenvolvimento */
+.chart-bar.default-color1 { -fx-bar-fill: #88ccc9; } /* Suporte */
+.chart-bar.default-color2 { -fx-bar-fill: #5ab2b0; } /* Marketing */
+.chart-bar.default-color3 { -fx-bar-fill: #267a78; } /* Financeiro */
+.chart-bar.default-color4 { -fx-bar-fill: #0b514f; } /* Pesquisa */
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.chart-bar {
+	-fx-bar-gap: 0px;  
+    -fx-background-radius: 8px; 
+    -fx-alignment: TOP_RIGHT; 
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent; 
+	-fx-padding: 0;   
+}
+
+.chart-horizontal-grid-lines,
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.axis .tick-mark {
+    -fx-stroke: transparent;
+}
+
+.axis .minor-tick-mark {
+    -fx-stroke: transparent; 
+}
+
+.axis-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.axis {
+    -fx-tick-label-fill: white;
+    -fx-font-size: 40px;
+}
+
+.chart-title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.root {
+    -fx-background-color: #1E1E1E;
+}
+
+.axis .tick-label {
+    -fx-alignment: center;
+}
+
+.table-view .column-header-background {
+    -fx-padding: 0 0 7 0; 
+}
+
+.btnVerMetas {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-background-radius: 30px;
+    -fx-cursor: hand;
+    -fx-padding: 10px 25px;
+}
+
+.btnExportarMetas {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-background-radius: 30px;
+    -fx-cursor: hand;
+    -fx-padding: 10px 25px;
+}
+
+.btnvoltar {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-background-radius: 30px;
+    -fx-cursor: hand;
+    -fx-padding: 10px 25px;
+}
+
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar .thumb {
+    -fx-background-color: #888; 
+    -fx-background-radius: 10; 
+    -fx-pref-width: 6; 
+    -fx-pref-height: 6;
+}
+
+.table-view .scroll-bar .thumb:hover {
+    -fx-background-color: #aaa; 
+}
+
+.table-view .scroll-bar .increment-arrow,
+.table-view .scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
