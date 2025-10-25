@@ -52,6 +52,13 @@ public class BarraLateralRH extends VBox {
 
         ToggleButton avaliacoes = new ToggleButton("Avaliações");
         avaliacoes.setId("avaliacoes");
+        avaliacoes.setOnAction(e -> {
+            Stage avaliacaorhStage = new Stage();
+            new AvaliacaoRH(logado).start(avaliacaorhStage);
+            
+            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stageAtual.close();
+        });
 
         // organiza os botões na vertical com espaçamento
         this.setSpacing(30);

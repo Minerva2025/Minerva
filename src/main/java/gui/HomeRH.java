@@ -87,44 +87,14 @@ public class HomeRH extends Application{
 		center.setId("center");
 		center.getChildren().addAll(titulo, container, blob1, blob2, blob3);
 		
-		ToggleButton inicio = new ToggleButton("Início");
-		inicio.setId("inicio");
-		
-        Button equipe = new Button("Equipe");
-        equipe.setOnAction(e -> {
-            Stage equipesrhStage = new Stage();
-            new EquipesRH(logado).start(equipesrhStage);
-            
-            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stageAtual.close();
-        });       
-        equipe.setId("equipe");
-        
-		ToggleButton relatorios = new ToggleButton("Relatórios");
-		relatorios.setId("relatorios");
-		
-		Button metas = new Button("Metas");
-		metas.setOnAction(e -> {
-	        Stage metasStage = new Stage();
-	        new Metas(logado).start(metasStage);	
-	        
-            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stageAtual.close();
-
-		});
-		metas.setId("metas");
-		ToggleButton avaliacoes = new ToggleButton("Avaliações");
-		avaliacoes.setId("avaliacoes");
-		
-		VBox left = new VBox(30, inicio, equipe, relatorios, metas, avaliacoes);
-		left.setId("left");
+		BarraLateralRH barra =  new BarraLateralRH(logado);
 		
 		HBox root = new HBox();
 		root.setStyle("-fx-background-color: #1E1E1E");
-		root.getChildren().addAll(left, center);
+		root.getChildren().addAll(barra, center);
 		
 		center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
-		left.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
+		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("/gui/HomeRH.css").toExternalForm());
