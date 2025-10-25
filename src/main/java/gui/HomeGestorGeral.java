@@ -10,6 +10,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
@@ -95,6 +96,8 @@ public class HomeGestorGeral extends Application {
         
    
         chartsContainer.setPrefWidth(Double.MAX_VALUE);
+        
+        VBox.setMargin(chartsContainer, new Insets(20, 45, 0, 0));
 
   
         StackPane boxChart1 = new StackPane();
