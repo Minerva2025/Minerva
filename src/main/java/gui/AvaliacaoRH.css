@@ -1,0 +1,80 @@
+#titulo{
+	-fx-fill: white;
+	-fx-font-size: 36px;
+	-fx-letter-spacing: 2px;
+}
+
+.combo-box {
+	-fx-background-color: transparent;
+	-fx-border-color: white;
+	-fx-border-width: 0 0 1 0;
+	-fx-prompt-text-fill: white;}
+.combo-box .list-cell {
+	-fx-text-fill: white;           
+	-fx-font-size: 20px;
+	-fx-font-family: 'JuliusSansOne';}
+.combo-box .list-view .list-cell {
+	-fx-text-fill: white;        
+	-fx-background-color: #1E1E1E;}
+
+#colab{
+	-fx-fill: white;
+	-fx-font-size:34px;
+}	
+
+#meta{
+	-fx-fill: white;
+	-fx-font-size:24px;
+	-fx-font-weight: 600;
+}
+
+#status{
+	-fx-fill: white;
+	-fx-font-size: 24px;
+	-fx-letter-spacing: 2px;
+	-fx-font-weight: 600;
+}
+
+#upload{
+	-fx-fill: white;
+	-fx-font-size: 24px;
+	-fx-letter-spacing: 2px;
+}
+
+#arquivoS{
+	-fx-fill: white;
+}
+
+#botao{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+	-fx-background-radius: 30px;
+	-fx-font-size: 20px;
+	-fx-cursor: hand;
+}
+
+#salvar{
+	-fx-background-color: #323232;
+	-fx-text-fill: white;
+	-fx-background-radius: 30px;
+	-fx-font-size: 20px;
+	-fx-cursor: hand;
+}
+
+.input {
+	-fx-background-color:transparent;
+	-fx-border-color:white;
+	-fx-border-width:0 0 1 0;
+	-fx-text-fill:white;
+	-fx-font-size:16px;
+	-fx-prompt-text-fill: white;
+	
+}
+
+#tela{
+	-fx-background-color: #1E1E1E;
+}
+		
+#blob1, #blob2, #blob3{
+		-fx-fill: #323232;
+	}
