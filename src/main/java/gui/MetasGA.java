@@ -149,10 +149,9 @@ public class MetasGA extends Application {
 		blob3.setEffect(blur);
 
         tabela = new TableView<>();
-        tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         carregarTabela(); 
-        tabela.setMinHeight(325);
-        tabela.setMaxHeight(325);
+        tabela.setMinHeight(350);
+        tabela.setMaxHeight(350);
         tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
         TableColumn<Pdi, String> colObjetivo = new TableColumn<>("Descrição");
@@ -233,8 +232,21 @@ public class MetasGA extends Application {
     		
     		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
     		
-    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+    		List<Pdi> todasMetas = pdiDAO.listAll().stream()
+    		        .filter(pdi -> {
+    		            Colaborador colab = colaboradorDAO.getColaboradorById(pdi.getColaborador_id());
+    		            return colab != null && logado.getSetor().equalsIgnoreCase(colab.getSetor());
+    		        })
+    		        .sorted(Comparator.comparing(Pdi::getPrazo))
+    		        .toList();
+
+    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(
+    		    FXCollections.observableArrayList(todasMetas),
+    		    file.getAbsolutePath()
+    		);
+
     	});
+    
         
         coluna1.getChildren().add(containerBotoes);
 

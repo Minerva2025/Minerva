@@ -29,7 +29,7 @@ public class MetasGGTotais {
         Label titulo = new Label("Metas Totais");
         titulo.setStyle("-fx-text-fill: white; -fx-font-size: 32px;");
         titulo.setAlignment(Pos.CENTER);
-        VBox.setMargin(titulo, new Insets(40, 0, 20, 0));
+        VBox.setMargin(titulo, new Insets(4, 0, 10, 0));
 
         VBox caixa = new VBox(20);
         caixa.setAlignment(Pos.CENTER);
