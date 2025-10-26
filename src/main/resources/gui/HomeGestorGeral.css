@@ -108,6 +108,10 @@
 
 /* --- Gráfico de Pizza --- */
 
+.chart-pie {
+    -fx-border-color: transparent;
+}
+
 /*cores*/
     .data0 { -fx-pie-color: #A8E6CF; }
 	.data1 { -fx-pie-color: #70C1B3; }
