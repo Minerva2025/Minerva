@@ -30,6 +30,10 @@ import java.util.stream.Collectors;
 import javafx.scene.Node;
 import java.util.ArrayList;
 import java.util.List;
+import util.PDFExporter;
+import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class MetasGA extends Application {
 
@@ -196,8 +200,11 @@ public class MetasGA extends Application {
 
         Button btnVerMetas = new Button("Ver Metas");
         btnVerMetas.getStyleClass().add("btnVerMetas"); 
+        
+        Button btnExportar = new Button("Exportar PDF");
+        btnExportar.getStyleClass().add("btnExportarMetas");
 
-        HBox containerBotoes = new HBox(15, btnVerMetas);
+        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar);
         containerBotoes.setAlignment(Pos.CENTER);
         containerBotoes.setPadding(new Insets(10, 0, 20, 0));
 
@@ -215,7 +222,20 @@ public class MetasGA extends Application {
             coluna1.getChildren().clear();
             coluna1.getChildren().add(novaTela);
         });
-
+        
+        btnExportar.setOnAction(e -> {
+    		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+    		fileChooser.setTitle("Salvar relatório PDF");
+    		
+    		
+    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
+    		fileChooser.setInitialFileName(fileName);
+    		
+    		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+    		
+    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+    	});
+        
         coluna1.getChildren().add(containerBotoes);
 
         HBox root = new HBox();
@@ -283,5 +303,4 @@ public class MetasGA extends Application {
         dados = FXCollections.observableArrayList(filtrados);
         tabela.setItems(dados);
     }
-
 }	

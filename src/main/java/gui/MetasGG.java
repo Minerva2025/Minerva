@@ -20,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.control.ScrollPane;
 import model.Pdi;
 import model.Status;
 import model.Usuario;
@@ -58,13 +59,19 @@ public class MetasGG extends Application {
     public void start(Stage metasggStage) {
 
         BarraLateralGG barra = new BarraLateralGG(logado);
+        
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background-color: transparent;");
 
         VBox coluna1 = new VBox();
         coluna1.setId("coluna1");
         coluna1.setAlignment(Pos.TOP_CENTER);
         coluna1.setSpacing(15);
         coluna1.setPadding(new Insets(15));
-
+        scrollPane.setContent(coluna1);
+        
         Text titulo = new Text("Gerenciar Metas");
         titulo.setId("titulo");
         titulo.setTextAlignment(TextAlignment.CENTER);
@@ -182,9 +189,10 @@ public class MetasGG extends Application {
         tabela = new TableView<>();
         tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         carregarTabela(); 
-        tabela.setMinHeight(325);
-        tabela.setMaxHeight(325);
+        tabela.setMinHeight(350);
+        tabela.setMaxHeight(350);
         tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        VBox.setVgrow(tabela, Priority.ALWAYS); 
         
         TableColumn<Pdi, String> colObjetivo = new TableColumn<>("Descrição");
         colObjetivo.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getObjetivo()));
@@ -231,11 +239,12 @@ public class MetasGG extends Application {
 
         Button btnVerMetas = new Button("Ver Metas");
         btnVerMetas.getStyleClass().add("btnVerMetas"); 
+        
+        Button btnExportar = new Button("Exportar PDF");
+        btnExportar.getStyleClass().add("botao-exportar");
+    	
 
-        Button btnExportarMetas = new Button("Exportar Metas");
-        btnExportarMetas.getStyleClass().add("btnExportarMetas"); 
-
-        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportarMetas);
+        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar);
         containerBotoes.setAlignment(Pos.CENTER);
         containerBotoes.setPadding(new Insets(10, 0, 20, 0));
 
@@ -253,11 +262,24 @@ public class MetasGG extends Application {
             coluna1.getChildren().clear();
             coluna1.getChildren().add(novaTela);
         });
-
+        
+        btnExportar.setOnAction(e -> {
+    		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+    		fileChooser.setTitle("Salvar relatório PDF");
+    		
+    		
+    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
+    		fileChooser.setInitialFileName(fileName);
+    		
+    		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+    		
+    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+    	});
+        
         coluna1.getChildren().add(containerBotoes);
 
         HBox root = new HBox();
-        root.getChildren().addAll(barra, coluna1);
+        root.getChildren().addAll(barra, scrollPane);
         root.setStyle("-fx-background-color: #1E1E1E");
 
         coluna1.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
@@ -337,22 +359,4 @@ public class MetasGG extends Application {
         return (concluidos * 100.0) / lista.size();
     }
     
-  //Botão exportar pdf
-    Button btnExportar = new Button("Exportar PDF");
-    private void setupBotaoExportar() {
-    	btnExportar.getStyleClass().add("botao-exportar");
-    	
-    	btnExportar.setOnAction(e -> {
-    		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
-    		fileChooser.setTitle("Salvar relatório PDF");
-    		
-    		
-    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
-    		fileChooser.setInitialFileName(fileName);
-    		
-    		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
-    		
-    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
-    	});
-    }
 }	
