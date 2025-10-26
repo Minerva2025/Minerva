@@ -36,6 +36,8 @@ import dao.PdiDAO;
 import dao.ColaboradorDAO;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
+import util.POIExcelExporter;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -241,9 +243,12 @@ public class MetasGG extends Application {
         
         Button btnExportar = new Button("Exportar PDF");
         btnExportar.getStyleClass().add("botao-exportar");
+
+        Button btnExportarExcel = new Button("Exportar Excel");
+        btnExportarExcel.getStyleClass().add("botão-exportar");
     	
 
-        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar);
+        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar, btnExportarExcel);
         containerBotoes.setAlignment(Pos.CENTER);
         containerBotoes.setPadding(new Insets(10, 0, 20, 0));
 
@@ -281,6 +286,44 @@ public class MetasGG extends Application {
     		);
 
     	});
+
+        btnExportarExcel.setOnAction(e -> {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Escolha onde salvar o arquivo Excel");
+
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx")
+            );
+
+            String fileName = "metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".xlsx";
+            fileChooser.setInitialFileName(fileName);
+
+            File pastaDownloads = new File(System.getProperty("user.home"), "Downloads");
+            if (pastaDownloads.exists()) {
+                fileChooser.setInitialDirectory(pastaDownloads);
+            }
+
+            File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+
+            if (!arquivoSelecionado.getName().toLowerCase().endsWith(".xlsx")) {
+                arquivoSelecionado = new File(arquivoSelecionado.getAbsolutePath() + ".xlsx");
+            }
+
+            List<Pdi> todasMetas = pdiDAO.listAll().stream()
+                    .filter(pdi -> {
+                        Colaborador colab = colaboradorDAO.getColaboradorById(pdi.getColaborador_id());
+                        return colab != null && logado.getSetor().equalsIgnoreCase(colab.getSetor());
+                    })
+                    .sorted(Comparator.comparing(Pdi::getPrazo))
+                    .toList();
+            FXCollections.observableArrayList(todasMetas);
+
+            POIExcelExporter.exportarParaExcel(arquivoSelecionado, todasMetas);
+        });
         
         coluna1.getChildren().add(containerBotoes);
 
