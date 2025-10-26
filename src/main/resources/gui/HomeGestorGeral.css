@@ -58,7 +58,8 @@
     -fx-background-radius: 18;
     -fx-min-width: 420px;
     -fx-min-height: 240px;
-    -fx-padding: 18;
+
+	    -fx-padding: 18;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.0, 0, 4);
     -fx-border-color: transparent;
 }
@@ -99,6 +100,158 @@
 @media screen and (max-width: 1280px) {
     .card {
         -fx-min-width: 340px;
-        -fx-min-height: 200px;
+        -fx-min-height: 500px;
     }
 }	
+
+/* --- ESTILOS ESPECÍFICOS DOS GRÁFICOS --- */
+
+/* --- Gráfico de Pizza --- */
+
+/*cores*/
+    .data0 { -fx-pie-color: #A8E6CF; }
+	.data1 { -fx-pie-color: #70C1B3; }
+	.data2 { -fx-pie-color: #2E8B78; }
+	.data3 { -fx-pie-color: #155E57; }
+
+/* Estilo da legenda do gráfico de pizza */
+.chart-legend {
+    -fx-background-color: transparent; 
+    -fx-text-fill: white; 
+    -fx-font-family: 'JuliusSansOne';
+    -fx-font-size: 13px; 
+    -fx-padding: 0 0 0 20px; 
+}
+
+/* Estilo de cada item individual da legenda */
+.chart-legend .chart-legend-item {
+    -fx-text-fill: #E0E0E0; 
+    -fx-padding: 2px 0;
+}
+
+/* Estilo do símbolo (quadradinho) de cada item da legenda */
+.chart-legend .chart-legend-item-symbol {
+    -fx-shape: "M0 0 H10 V10 H0 Z"; 
+    -fx-scale-x: 0.9; 
+    -fx-scale-y: 0.9;
+ 
+}
+
+/* --- Gráfico de Barras --- */
+
+/* Fundo do gráfico */
+.chart {
+    -fx-background-color: transparent;
+}
+
+/* Fundo da área de plot */
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+
+
+/* Remove o fundo da área de plot (onde as barras aparecem) */
+.chart-bar .chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+/* Estilo dos eixos */
+.axis {
+    -fx-font-family: 'JuliusSansOne';
+    -fx-font-size: 12px;
+    -fx-tick-label-fill: #E0E0E0;
+    -fx-stroke: #5A5A5A;
+    -fx-tick-mark-stroke: transparent;
+    -fx-opacity: 0.7;
+}
+
+/* Rótulos dos eixos */
+.axis-label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+	-fx-font-weight: 300;
+}
+
+
+
+/* Tirar linhas de grade */
+.chart-vertical-grid-lines,
+.chart-horizontal-grid-lines {
+    -fx-stroke: transparent;
+}
+
+
+#boxChart2 {
+    
+    -fx-bar-gap: 1; 
+    -fx-category-gap: 60px; 
+}
+
+/* Reduzir o gap do eixo X para forçar o ajuste */
+.bar-chart .axis-category {
+    -fx-padding: 0 30 0 30; 
+}
+
+/* --- Card de Tendência --- */
+#trendCard {
+    -fx-padding: 16px 20px 20px 20px;
+    -fx-background-color: #2B2B2B;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.4) , 30 , 0 , 0 , 5 );
+    -fx-pref-width: 300px; 
+    -fx-alignment: center;
+    
+}
+
+/* Título no card */
+#trendTitle {
+    -fx-font-size: 20px;
+    -fx-font-family: 'JuliusSansOne';
+    -fx-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+/* Labels */
+#trendLabel {
+    -fx-font-size: 14px;
+    -fx-fill: #D6D6D6;
+}
+
+/* Valores verdes e vermelhos */
+#trendValueGreen {
+    -fx-font-size: 20px;
+    -fx-fill: #6EF2C8;
+    -fx-font-weight: bold;
+}
+#trendValueRed {
+    -fx-font-size: 20px;
+    -fx-fill: #FF6B6B;
+    -fx-font-weight: bold;
+}
+
+#trendCard {
+    -fx-pref-width: 770;
+    -fx-max-width: 800;
+}
+
+
+/*Scrol-Pane*/
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 10px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #444;
+    -fx-background-radius: 6;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #2A2A2A;
+}
+
