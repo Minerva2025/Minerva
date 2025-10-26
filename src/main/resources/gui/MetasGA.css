@@ -1,0 +1,246 @@
+#coluna1 {
+    -fx-background-color: #1E1E1E;
+    -fx-padding: 40 0 0 50;
+}
+
+#titulo{
+	-fx-fill: white;
+	-fx-font-size: 48px;
+	-fx-font-family: 'JuliusSansOne';
+	-fx-letter-spacing: 2px;
+	-fx-alignment: left;
+	
+}
+
+#colaboradores{
+    -fx-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-family: 'JuliusSansOne';
+    -fx-letter-spacing: 2px;
+}
+
+#hboxColaboradores{
+	-fx-alignment: CENTER_LEFT;
+}
+
+#chartsContainer{
+    -fx-padding: 30 0 20 0;
+    -fx-alignment: center-left;
+}
+
+
+.card {
+    -fx-background-color: #2A2A2A;
+    -fx-background-radius: 12px;
+    -fx-padding: 30px;
+    -fx-effect: dropshadow(gaussian, #00000055, 10, 0, 0, 4);
+}
+
+#boxChart1 {
+-fx-background-color: #2A2A2A;
+    -fx-background-radius: 12px;
+    -fx-padding: 30px;
+
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, #00000055, 10, 0, 0, 4);
+
+    -fx-min-width: 600px;
+    -fx-max-width: 1200px;
+    -fx-pref-width: 1200px;
+    
+    -fx-spacing: 50px;
+}
+
+#metas-box {
+    -fx-spacing: 350px;
+    -fx-alignment: center;
+}
+
+#metas-box .text {
+    -fx-font-family: 'JuliusSansOne';
+    -fx-letter-spacing: 1px;
+}
+
+#metas-box .text {
+    -fx-fill: #cccccc;
+}
+
+#metas-box .valor {
+    -fx-fill: #4FC3C7;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.table-view {
+    -fx-background-color: #2b2b2b;
+    -fx-background-radius: 40;
+    -fx-border-radius: 40;
+    -fx-padding: 20;
+    -fx-border-width: 2;
+	-fx-pref-width: 1200;
+	-fx-max-width: 1200;   
+    -fx-pref-height: 200px;
+	-fx-text-fill: white;
+	-fx-border-insets: 0 0 10px 0;
+    -fx-background-insets: 0 0 10px 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #2b2b2b;
+    -fx-background-radius: 20 20 0 0;
+	-fx-text-fill: white
+
+}
+
+.table-view .column-header, 
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-alignment: Center;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+	-fx-cell-size: 30px;
+	-fx-text-fill: white
+
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #3c3c3c;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: Center;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-alignment: Center;
+    -fx-text-fill: white;
+}
+
+#blob1, #blob2, #blob3{
+	-fx-fill: #323232;
+}
+
+.chart-bar.default-color0 { -fx-bar-fill: #c2f0ef; }  /* Desenvolvimento */
+.chart-bar.default-color1 { -fx-bar-fill: #88ccc9; } /* Suporte */
+.chart-bar.default-color2 { -fx-bar-fill: #5ab2b0; } /* Marketing */
+.chart-bar.default-color3 { -fx-bar-fill: #267a78; } /* Financeiro */
+.chart-bar.default-color4 { -fx-bar-fill: #0b514f; } /* Pesquisa */
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.chart-bar {
+	-fx-bar-gap: 0px;  
+    -fx-background-radius: 8px; 
+    -fx-alignment: TOP_RIGHT; 
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent; 
+	-fx-padding: 0;   
+}
+
+.chart-horizontal-grid-lines,
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.axis .tick-mark {
+    -fx-stroke: transparent;
+}
+
+.axis .minor-tick-mark {
+    -fx-stroke: transparent; 
+}
+
+.axis-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.axis {
+    -fx-tick-label-fill: white;
+    -fx-font-size: 40px;
+}
+
+.chart-title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.root {
+    -fx-background-color: #1E1E1E;
+}
+
+.axis .tick-label {
+    -fx-alignment: center;
+}
+
+.table-view .column-header-background {
+    -fx-padding: 0 0 7 0; 
+}
+
+.btnVerMetas {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-background-radius: 30px;
+    -fx-cursor: hand;
+    -fx-padding: 10px 25px;
+}
+
+.btnExportarMetas {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-background-radius: 30px;
+    -fx-cursor: hand;
+    -fx-padding: 10px 25px;
+}
+
+.btnvoltar {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-background-radius: 30px;
+    -fx-cursor: hand;
+    -fx-padding: 10px 25px;
+}
+
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar .thumb {
+    -fx-background-color: #888; 
+    -fx-background-radius: 10; 
+    -fx-pref-width: 6; 
+    -fx-pref-height: 6;
+}
+
+.table-view .scroll-bar .thumb:hover {
+    -fx-background-color: #aaa; 
+}
+
+.table-view .scroll-bar .increment-arrow,
+.table-view .scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}

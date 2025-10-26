@@ -63,19 +63,19 @@ public class EquipesGA extends Application{
 		HBox tituloBox = new HBox(titulo);
 		tituloBox.setAlignment(Pos.CENTER_LEFT);
 		
-		Ellipse blob1 = new Ellipse(155, 155);
-		blob1.setId("blob1");
-		
-		Ellipse blob2 = new Ellipse(20, 20);
-		blob2.setId("blob2");
-		
-		Ellipse blob3 = new Ellipse(40, 40);
-		blob3.setId("blob3");
-		
-		GaussianBlur blur = new GaussianBlur(40);
-		blob1.setEffect(blur);
-		blob2.setEffect(blur);
-		blob3.setEffect(blur);
+//		Ellipse blob1 = new Ellipse(155, 155);
+//		blob1.setId("blob1");
+//		
+//		Ellipse blob2 = new Ellipse(20, 20);
+//		blob2.setId("blob2");
+//		
+//		Ellipse blob3 = new Ellipse(40, 40);
+//		blob3.setId("blob3");
+//		
+//		GaussianBlur blur = new GaussianBlur(40);
+//		blob1.setEffect(blur);
+//		blob2.setEffect(blur);
+//		blob3.setEffect(blur);
 		
 		Text colaboradores = new Text("Colaboradores: " + totalColaboradores);
 		colaboradores.setId("colaboradores");
@@ -139,7 +139,7 @@ public class EquipesGA extends Application{
         for (Colaborador c : colaboradoresSetor) {
             double progresso = calcularProgressoMedio(pdiDAO, c.getId());
             VBox balao = criarBalaoColaborador(c, progresso);
-            balao.setPrefWidth(500);
+	        balao.prefWidthProperty().bind(gridColaboradores.widthProperty().divide(2));
             gridColaboradores.add(balao, col, row);
             col++;
             if (col > 1) { 
@@ -156,7 +156,8 @@ public class EquipesGA extends Application{
 	    center.setId("center");
 	    center.setAlignment(Pos.TOP_CENTER);
 	    center.setPadding(new Insets(60, 80, 80, 80));
-	    center.getChildren().addAll(tituloBox, container, blob1, blob2, blob3, colaboradoresContainer);
+	    center.getChildren().addAll(tituloBox, container, colaboradoresContainer);
+//	    center.getChildren().addAll(tituloBox, container, blob1, blob2, blob3, colaboradoresContainer);
 
 		ScrollPane scrollCenter = new ScrollPane(center);
 		scrollCenter.setFitToWidth(true);
@@ -176,26 +177,26 @@ public class EquipesGA extends Application{
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("/gui/EquipesGA.css").toExternalForm());
 
-		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
-		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
-	
-		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
-		blob2.radiusYProperty().bind(blob2.radiusXProperty());
-	
-		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
-		blob3.radiusYProperty().bind(blob3.radiusXProperty());
-	
-		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
-		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
-	
-		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
-		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
-		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.3));
-	
-		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
-		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
-		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
+//		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
+//		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
+//	
+//		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
+//		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+//	
+//		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+//		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+//	
+//		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+//		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
+//		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
+//	
+//		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+//		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
+//		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.3));
+//	
+//		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+//		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
+//		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
 	
 		equipesgaStage.setScene(scene);
 		equipesgaStage.setFullScreen(true);
@@ -232,10 +233,6 @@ public class EquipesGA extends Application{
 
         Text nome = new Text(colaborador.getNome());
         nome.getStyleClass().add("colaborador-nome");
-
-        Text status = new Text("Ativo");
-        status.getStyleClass().add("colaborador-status");
-
         Text setor = new Text(colaborador.getSetor());
         setor.getStyleClass().add("colaborador-setor");
 
@@ -244,6 +241,7 @@ public class EquipesGA extends Application{
 
         ProgressBar progressoBar = new ProgressBar(progresso);
         progressoBar.setPrefWidth(260);
+        progressoBar.setId("barra-progresso");
 
         Text progressoTxt = new Text((int) (progresso * 100) + "%");
         progressoTxt.getStyleClass().add("colaborador-progresso");
@@ -256,7 +254,7 @@ public class EquipesGA extends Application{
         
         
 
-        card.getChildren().addAll(nome, status, setor, cargo, progressotexto, progressoBox);
+        card.getChildren().addAll(nome, setor, cargo, progressotexto, progressoBox);
         return card;
     }
 		

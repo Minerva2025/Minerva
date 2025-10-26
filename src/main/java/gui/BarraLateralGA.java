@@ -37,9 +37,17 @@ public class BarraLateralGA extends VBox {
 
         ToggleButton relatorios = new ToggleButton("Relatórios");
         relatorios.setId("relatorios");
-
-        ToggleButton metas = new ToggleButton("Metas");
+        
+        Button metas = new Button("Metas");
         metas.setId("metas");
+        metas.setOnAction(e -> {
+            Stage metasgaStage = new Stage();
+            new MetasGA(logado).start(metasgaStage);
+            
+            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stageAtual.close();
+        });
+        
 
         this.setSpacing(30);
         this.getChildren().addAll(inicio, equipe, relatorios, metas);
