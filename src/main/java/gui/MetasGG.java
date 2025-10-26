@@ -20,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.control.ScrollPane;
 import model.Pdi;
 import model.Status;
 import model.Usuario;
@@ -58,13 +59,19 @@ public class MetasGG extends Application {
     public void start(Stage metasggStage) {
 
         BarraLateralGG barra = new BarraLateralGG(logado);
+        
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background-color: transparent;");
 
         VBox coluna1 = new VBox();
         coluna1.setId("coluna1");
         coluna1.setAlignment(Pos.TOP_CENTER);
         coluna1.setSpacing(15);
         coluna1.setPadding(new Insets(15));
-
+        scrollPane.setContent(coluna1);
+        
         Text titulo = new Text("Gerenciar Metas");
         titulo.setId("titulo");
         titulo.setTextAlignment(TextAlignment.CENTER);
@@ -257,7 +264,7 @@ public class MetasGG extends Application {
         coluna1.getChildren().add(containerBotoes);
 
         HBox root = new HBox();
-        root.getChildren().addAll(barra, coluna1);
+        root.getChildren().addAll(barra, scrollPane);
         root.setStyle("-fx-background-color: #1E1E1E");
 
         coluna1.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
