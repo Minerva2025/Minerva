@@ -36,6 +36,8 @@ import dao.PdiDAO;
 import dao.ColaboradorDAO;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
+import util.POIExcelExporter;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -281,15 +283,31 @@ public class MetasGG extends Application {
 
         btnExportarExcel.setOnAction(e -> {
             javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
-            fileChooser.setTitle("Salvar relatório PDF");
+            fileChooser.setTitle("Escolha onde salvar o arquivo Excel");
 
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx")
+            );
 
-            String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
+            String fileName = "metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".xlsx";
             fileChooser.setInitialFileName(fileName);
 
-            File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            File pastaDownloads = new File(System.getProperty("user.home"), "Downloads");
+            if (pastaDownloads.exists()) {
+                fileChooser.setInitialDirectory(pastaDownloads);
+            }
 
-            boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+            File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+
+            if (!arquivoSelecionado.getName().toLowerCase().endsWith(".xlsx")) {
+                arquivoSelecionado = new File(arquivoSelecionado.getAbsolutePath() + ".xlsx");
+            }
+
+            POIExcelExporter.exportarParaExcel(arquivoSelecionado, dados);
         });
         
         coluna1.getChildren().add(containerBotoes);

@@ -31,6 +31,8 @@ import javafx.scene.Node;
 import java.util.ArrayList;
 import java.util.List;
 import util.PDFExporter;
+import util.POIExcelExporter;
+
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -240,16 +242,32 @@ public class MetasGA extends Application {
     	});
 
         btnExportarExcel.setOnAction(event -> {
-                    javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
-                    fileChooser.setTitle("Salvar relatório PDF");
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Escolha onde salvar o arquivo Excel");
 
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx")
+            );
 
-                    String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
-                    fileChooser.setInitialFileName(fileName);
+            String fileName = "metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".xlsx";
+            fileChooser.setInitialFileName(fileName);
 
-                    File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            File pastaDownloads = new File(System.getProperty("user.home"), "Downloads");
+            if (pastaDownloads.exists()) {
+                fileChooser.setInitialDirectory(pastaDownloads);
+            }
 
-                    boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+            File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+
+            if (!arquivoSelecionado.getName().toLowerCase().endsWith(".xlsx")) {
+                arquivoSelecionado = new File(arquivoSelecionado.getAbsolutePath() + ".xlsx");
+            }
+
+            POIExcelExporter.exportarParaExcel(arquivoSelecionado, dados);
                 });
 
 
