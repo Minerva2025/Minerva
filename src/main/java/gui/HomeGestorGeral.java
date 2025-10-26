@@ -110,6 +110,8 @@ public class HomeGestorGeral extends Application {
         
    
         chartsContainer.setPrefWidth(Double.MAX_VALUE);
+        
+        VBox.setMargin(chartsContainer, new Insets(20, 45, 0, 0));
 
   
         boxChart1 = new StackPane();
@@ -155,44 +157,44 @@ public class HomeGestorGeral extends Application {
         
      
         // CARD DE TENDÊNCIA 
-     
-        Text trendTitle = new Text("Tendência de conclusão");
-        trendTitle.setId("trendTitle"); 
-
-        Text concluidosLabel = new Text("PDIs concluídos");
-        concluidosLabel.setId("trendLabel");
-        Text concluidosValue = new Text("+ 5 %"); 
-        concluidosValue.setId("trendValueGreen"); 
-
-        VBox concluidosBox = new VBox(5, concluidosLabel, concluidosValue);
-        concluidosBox.setAlignment(Pos.CENTER);
-        
-        Text atrasadosLabel = new Text("PDIs atrasados");
-        atrasadosLabel.setId("trendLabel");
-        Text atrasadosValue = new Text("- 2 %"); 
-        atrasadosValue.setId("trendValueRed"); 
-
-        VBox atrasadosBox = new VBox(5, atrasadosLabel, atrasadosValue);
-        atrasadosBox.setAlignment(Pos.CENTER);
-
-        HBox trendDataHBox = new HBox(80, concluidosBox, atrasadosBox);
-        trendDataHBox.setAlignment(Pos.CENTER);
-
-        VBox trendVBox = new VBox(20, trendTitle, trendDataHBox); 
-        trendVBox.setAlignment(Pos.CENTER_LEFT);
-        trendVBox.setPadding(new javafx.geometry.Insets(5, 5, 5, 5));
-        
-        
-        trendCard = new StackPane();
-        trendCard.setId("trendCard"); 
-        trendCard.getStyleClass().add("card"); 
-        trendCard.getChildren().add(trendVBox);
+//     
+//        Text trendTitle = new Text("Tendência de conclusão");
+//        trendTitle.setId("trendTitle"); 
+//
+//        Text concluidosLabel = new Text("PDIs concluídos");
+//        concluidosLabel.setId("trendLabel");
+//        Text concluidosValue = new Text("+ 5 %"); 
+//        concluidosValue.setId("trendValueGreen"); 
+//
+//        VBox concluidosBox = new VBox(5, concluidosLabel, concluidosValue);
+//        concluidosBox.setAlignment(Pos.CENTER);
+//        
+//        Text atrasadosLabel = new Text("PDIs atrasados");
+//        atrasadosLabel.setId("trendLabel");
+//        Text atrasadosValue = new Text("- 2 %"); 
+//        atrasadosValue.setId("trendValueRed"); 
+//
+//        VBox atrasadosBox = new VBox(5, atrasadosLabel, atrasadosValue);
+//        atrasadosBox.setAlignment(Pos.CENTER);
+//
+//        HBox trendDataHBox = new HBox(80, concluidosBox, atrasadosBox);
+//        trendDataHBox.setAlignment(Pos.CENTER);
+//
+//        VBox trendVBox = new VBox(20, trendTitle, trendDataHBox); 
+//        trendVBox.setAlignment(Pos.CENTER_LEFT);
+//        trendVBox.setPadding(new javafx.geometry.Insets(5, 5, 5, 5));
+//        
+//        
+//        trendCard = new StackPane();
+//        trendCard.setId("trendCard"); 
+//        trendCard.getStyleClass().add("card"); 
+//        trendCard.getChildren().add(trendVBox);
      
         
         // ✅ Container responsável pela centralização
-        HBox trendContainer = new HBox(trendCard);
-        trendContainer.setAlignment(Pos.CENTER);
-        trendContainer.setPadding(new Insets(20, 0, 0, 0));
+//        HBox trendContainer = new HBox(trendCard);
+//        trendContainer.setAlignment(Pos.CENTER);
+//        trendContainer.setPadding(new Insets(20, 0, 0, 0));
 
         
         
@@ -200,26 +202,30 @@ public class HomeGestorGeral extends Application {
         VBox center = new VBox();
         center.setId("center");
        
-       
-        center.getChildren().addAll(titulo, container, chartsContainer, alertBox, trendContainer);
+        center.getChildren().addAll(titulo, container, chartsContainer, alertBox);
+//        center.getChildren().addAll(titulo, container, chartsContainer, alertBox, trendContainer);
         BarraLateralGG barra = new BarraLateralGG(logado);
 
        // Criando ScrollPane para o conteúdo central
-        ScrollPane scroll = new ScrollPane();
-        scroll.setContent(center);
+//        ScrollPane scroll = new ScrollPane();
+//        scroll.setContent(center);
 
         // ⚙️ Configurações do ScrollPane
         
-        scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
-        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS); // mostra a barra sempre
+//        scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+//        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS); // mostra a barra sempre
+
+//        HBox root = new HBox();
+//        root.setStyle("-fx-background-color: #1E1E1E");
+//        root.getChildren().addAll(barra, scroll);
 
         HBox root = new HBox();
         root.setStyle("-fx-background-color: #1E1E1E");
-        root.getChildren().addAll(barra, scroll);
+        root.getChildren().addAll(barra, center);
 
-        // Ajusta tamanhos responsivos
-        scroll.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
-        barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
+//        // Ajusta tamanhos responsivos
+//        scroll.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
+//        barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 
         
         
