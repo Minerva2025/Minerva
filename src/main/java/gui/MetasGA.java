@@ -205,7 +205,7 @@ public class MetasGA extends Application {
         btnExportar.getStyleClass().add("btnExportarMetas");
 
         Button btnExportarExcel = new Button("Exportar Excel");
-        btnExportar.getStyleClass().add("btnExportarMetas");
+        btnExportarExcel.getStyleClass().add("btnExportarMetas");
 
         HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar, btnExportarExcel);
         containerBotoes.setAlignment(Pos.CENTER);

@@ -244,7 +244,7 @@ public class MetasGG extends Application {
         btnExportar.getStyleClass().add("botao-exportar");
 
         Button btnExportarExcel = new Button("Exportar Excel");
-        btnExportar.getStyleClass().add("botão-exportar");
+        btnExportarExcel.getStyleClass().add("botão-exportar");
     	
 
         HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar, btnExportarExcel);
