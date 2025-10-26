@@ -189,9 +189,10 @@ public class MetasGG extends Application {
         tabela = new TableView<>();
         tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         carregarTabela(); 
-        tabela.setMinHeight(325);
-        tabela.setMaxHeight(325);
+        tabela.setMinHeight(350);
+        tabela.setMaxHeight(350);
         tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        VBox.setVgrow(tabela, Priority.ALWAYS); 
         
         TableColumn<Pdi, String> colObjetivo = new TableColumn<>("Descrição");
         colObjetivo.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getObjetivo()));
