@@ -78,7 +78,7 @@ public class MetasGG extends Application {
         titulo.setId("titulo");
         titulo.setTextAlignment(TextAlignment.CENTER);
         titulo.setStyle("-fx-font-size: 32px; -fx-fill: white;");
-        VBox.setMargin(titulo, new Insets(20, 0, 30, 0));
+        VBox.setMargin(titulo, new Insets(4, 0, 30, 0));
 
         CategoryAxis eixoX = new CategoryAxis();
         eixoX.setTickLabelsVisible(false);
@@ -189,7 +189,6 @@ public class MetasGG extends Application {
         topContainer.setPadding(new Insets(10));
 
         tabela = new TableView<>();
-        tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         carregarTabela(); 
         tabela.setMinHeight(350);
         tabela.setMaxHeight(350);
@@ -239,7 +238,7 @@ public class MetasGG extends Application {
         
         coluna1.getChildren().addAll(titulo, topContainer, tabela);
 
-        Button btnVerMetas = new Button("Ver Metas");
+        Button btnVerMetas = new Button("Ver Todas as Metas");
         btnVerMetas.getStyleClass().add("btnVerMetas"); 
         
         Button btnExportar = new Button("Exportar PDF");
@@ -278,7 +277,14 @@ public class MetasGG extends Application {
     		
     		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
     		
-    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+    		List<Pdi> todasMetas = pdiDAO.listAll();
+    		todasMetas.sort(Comparator.comparing(Pdi::getPrazo)); 
+
+    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(
+    		    FXCollections.observableArrayList(todasMetas),
+    		    file.getAbsolutePath()
+    		);
+
     	});
 
         btnExportarExcel.setOnAction(e -> {
