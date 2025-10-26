@@ -204,7 +204,10 @@ public class MetasGA extends Application {
         Button btnExportar = new Button("Exportar PDF");
         btnExportar.getStyleClass().add("btnExportarMetas");
 
-        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar);
+        Button btnExportarExcel = new Button("Exportar Excel");
+        btnExportar.getStyleClass().add("btnExportarMetas");
+
+        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar, btnExportarExcel);
         containerBotoes.setAlignment(Pos.CENTER);
         containerBotoes.setPadding(new Insets(10, 0, 20, 0));
 
@@ -235,6 +238,21 @@ public class MetasGA extends Application {
     		
     		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
     	});
+
+        btnExportarExcel.setOnAction(event -> {
+                    javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+                    fileChooser.setTitle("Salvar relatório PDF");
+
+
+                    String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
+                    fileChooser.setInitialFileName(fileName);
+
+                    File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+
+                    boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+                });
+
+
         
         coluna1.getChildren().add(containerBotoes);
 
