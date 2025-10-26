@@ -313,7 +313,16 @@ public class MetasGG extends Application {
                 arquivoSelecionado = new File(arquivoSelecionado.getAbsolutePath() + ".xlsx");
             }
 
-            POIExcelExporter.exportarParaExcel(arquivoSelecionado, dados);
+            List<Pdi> todasMetas = pdiDAO.listAll().stream()
+                    .filter(pdi -> {
+                        Colaborador colab = colaboradorDAO.getColaboradorById(pdi.getColaborador_id());
+                        return colab != null && logado.getSetor().equalsIgnoreCase(colab.getSetor());
+                    })
+                    .sorted(Comparator.comparing(Pdi::getPrazo))
+                    .toList();
+            FXCollections.observableArrayList(todasMetas);
+
+            POIExcelExporter.exportarParaExcel(arquivoSelecionado, todasMetas);
         });
         
         coluna1.getChildren().add(containerBotoes);
