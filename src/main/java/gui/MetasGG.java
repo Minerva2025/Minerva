@@ -238,11 +238,12 @@ public class MetasGG extends Application {
 
         Button btnVerMetas = new Button("Ver Metas");
         btnVerMetas.getStyleClass().add("btnVerMetas"); 
+        
+        Button btnExportar = new Button("Exportar PDF");
+        btnExportar.getStyleClass().add("botao-exportar");
+    	
 
-        Button btnExportarMetas = new Button("Exportar Metas");
-        btnExportarMetas.getStyleClass().add("btnExportarMetas"); 
-
-        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportarMetas);
+        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar);
         containerBotoes.setAlignment(Pos.CENTER);
         containerBotoes.setPadding(new Insets(10, 0, 20, 0));
 
@@ -260,7 +261,20 @@ public class MetasGG extends Application {
             coluna1.getChildren().clear();
             coluna1.getChildren().add(novaTela);
         });
-
+        
+        btnExportar.setOnAction(e -> {
+    		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+    		fileChooser.setTitle("Salvar relatório PDF");
+    		
+    		
+    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
+    		fileChooser.setInitialFileName(fileName);
+    		
+    		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+    		
+    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+    	});
+        
         coluna1.getChildren().add(containerBotoes);
 
         HBox root = new HBox();
@@ -344,22 +358,4 @@ public class MetasGG extends Application {
         return (concluidos * 100.0) / lista.size();
     }
     
-  //Botão exportar pdf
-    Button btnExportar = new Button("Exportar PDF");
-    private void setupBotaoExportar() {
-    	btnExportar.getStyleClass().add("botao-exportar");
-    	
-    	btnExportar.setOnAction(e -> {
-    		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
-    		fileChooser.setTitle("Salvar relatório PDF");
-    		
-    		
-    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
-    		fileChooser.setInitialFileName(fileName);
-    		
-    		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
-    		
-    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
-    	});
-    }
 }	
