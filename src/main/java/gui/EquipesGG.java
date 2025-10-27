@@ -8,9 +8,16 @@ import dao.ColaboradorDAO;
 import dao.PdiDAO;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
@@ -31,6 +38,8 @@ import model.Usuario;
 public class EquipesGG extends Application{
 	
     private Usuario logado;
+    private StackPane boxChart1;
+    private StackPane boxChart2;
 
     public EquipesGG(Usuario usuarioLogado) {
         this.logado = usuarioLogado;
@@ -94,6 +103,46 @@ public class EquipesGG extends Application{
 		HBox container = new HBox(150);
 		container.setId("container");
 		container.getChildren().addAll(colaboradores, pdiAtivo, pdiInativo, pdiConcluido);
+		
+        HBox chartsContainer = new HBox(30);
+        chartsContainer.setId("chartsContainer");
+
+        chartsContainer.setPrefWidth(Double.MAX_VALUE);
+        
+        VBox.setMargin(chartsContainer, new Insets(20, 45, 0, 0));
+
+  
+        boxChart1 = new StackPane();
+        boxChart1.setId("boxChart1");
+        boxChart1.getStyleClass().add("card");
+     
+        HBox.setHgrow(boxChart1, Priority.ALWAYS);
+        boxChart1.setMaxWidth(Double.MAX_VALUE);
+        boxChart1.setMinWidth(0);
+
+      
+        boxChart2 = new StackPane();
+        boxChart2.setId("boxChart2");
+        boxChart2.getStyleClass().add("card");
+    
+        HBox.setHgrow(boxChart1, Priority.ALWAYS);
+        boxChart2.setMaxWidth(Double.MAX_VALUE);
+        boxChart2.setMinWidth(0); 
+
+        chartsContainer.getChildren().addAll(boxChart1, boxChart2);
+        
+
+        double spacing = chartsContainer.getSpacing();
+        boxChart1.prefWidthProperty().bind(
+            chartsContainer.widthProperty().multiply(0.5).subtract(spacing / 2.0)
+        );
+        boxChart2.prefWidthProperty().bind(
+            chartsContainer.widthProperty().multiply(0.5).subtract(spacing / 2.0)
+        );
+
+        createCharts(todosPdis);
+
+     
 				
 		VBox setoresContainer = new VBox(60);
 		setoresContainer.setId("setoresContainer");
@@ -155,7 +204,7 @@ public class EquipesGG extends Application{
 	    center.setId("center");
 	    center.setAlignment(Pos.TOP_CENTER);
 	    center.setPadding(new Insets(60, 80, 80, 80));
-	    center.getChildren().addAll(tituloBox, container, setoresContainer);
+	    center.getChildren().addAll(tituloBox, container, chartsContainer, setoresContainer);
 
 		ScrollPane scrollCenter = new ScrollPane(center);
 		scrollCenter.setFitToWidth(true);
@@ -260,6 +309,107 @@ public class EquipesGG extends Application{
         card.getChildren().addAll(nome, setor, cargo, progressotexto, progressoBox);
         return card;
     }
+    
+    private void createCharts(List<Pdi> todosPdis) {
+        boxChart1.getChildren().clear();
+        boxChart2.getChildren().clear();
+
+        // Gráfico de Pizza
+        int concluidos = 0, ativos = 0, aIniciar = 0, atrasados = 0;
+        for (Pdi pdi : todosPdis) {
+            switch (pdi.getStatus()) {
+                case CONCLUIDO -> concluidos++;
+                case EM_ANDAMENTO -> ativos++;
+                case NAO_INICIADO -> aIniciar++;
+                case ATRASADO -> atrasados++;
+                default -> {} // Necessário para compilação
+            }
+        }
+        
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+            new PieChart.Data("PDIs concluídos", concluidos),
+            new PieChart.Data("PDIs ativos", ativos),
+            new PieChart.Data("PDIs a iniciar", aIniciar),
+            new PieChart.Data("PDIs atrasados", atrasados)
+        );
+        
+        final PieChart pieChart = new PieChart(pieChartData);
+        pieChart.setLegendVisible(true);
+        pieChart.setLabelsVisible(false);
+        pieChart.setLegendSide(javafx.geometry.Side.RIGHT);
+        
+        
+        // ✅ Fixar tamanho
+        pieChart.setPrefSize(300, 250);
+        pieChart.setMaxSize(600, 350);
+
+        
+        boxChart1.getChildren().add(pieChart);
+        
+     // Gráfico de Barras
+        final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+        
+        xAxis.setLabel("Divisão");
+        yAxis.setLabel("Evolução");
+
+        // Ocultar rótulos e ticks do eixo Y
+        yAxis.setTickLabelsVisible(false);
+        yAxis.setTickMarkVisible(false);
+        yAxis.setMinorTickVisible(false);
+
+        
+        barChart.setStyle("-fx-category-gap: 70px; -fx-bar-gap: 5px;");
+        
+       
+
+          // ✅ Fixar tamanho
+          barChart.setPrefSize(300, 250);
+          barChart.setMaxSize(600, 350);
+        
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("PDI's"); 
+
+        // Dados 
+        XYChart.Data<String, Number> dataDm = new XYChart.Data<>("Dm", concluidos);
+        dataDm.nodeProperty().addListener((obs, oldNode, newNode) -> {
+            if (newNode != null) {
+               
+            	// APLICAÇÃO DE ESTILO EM LINHA
+                newNode.setStyle("-fx-bar-fill: #A8E6CF;");
+               
+            }
+        });
+       
+        XYChart.Data<String, Number> dataCm = new XYChart.Data<>("Cm", ativos);
+        dataCm.nodeProperty().addListener((obs, oldNode, newNode) -> {
+            if (newNode != null) {
+                
+                newNode.setStyle("-fx-bar-fill: #70C1B3;");
+               
+            }
+        });
+
+        XYChart.Data<String, Number> dataSm = new XYChart.Data<>("Sm", aIniciar);
+        dataSm.nodeProperty().addListener((obs, oldNode, newNode) -> {
+            if (newNode != null) {
+               
+                newNode.setStyle("-fx-bar-fill: #2E8B78;");
+               
+            }
+        });
+        
+        
+        // Adiciona os dados
+        series.getData().addAll(dataDm, dataCm, dataSm);
+
+        // Adiciona a série ao gráfico
+        barChart.getData().add(series);
+        barChart.setLegendVisible(false);
+        boxChart2.getChildren().add(barChart);
+    }
+
 		
 	public static void main (String[]args) {
 		launch(args);

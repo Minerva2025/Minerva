@@ -18,7 +18,12 @@ import javafx.util.StringConverter;
 import model.Colaborador;
 import model.Pdi;
 import model.Usuario;
+import model.Status;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import dao.ColaboradorDAO;
 import dao.PdiDAO;
 import java.util.List;
@@ -29,6 +34,7 @@ public class AvaliacaoRH extends Application {
 	private Usuario logado;
 	private ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
 	private PdiDAO pdiDAO = new PdiDAO();
+	private File arquivoSelecionado = null;
 
 	public AvaliacaoRH(Usuario usuarioLogado) {
 		this.logado = usuarioLogado;
@@ -170,14 +176,7 @@ public class AvaliacaoRH extends Application {
 		Text meta = new Text("Meta Escolhida: ");
 		meta.setId("meta");
 
-		metas.setOnAction(event -> {
-			Pdi metaSelecionada = metas.getSelectionModel().getSelectedItem();
-			if (metaSelecionada != null) {
-				meta.setText(metaSelecionada.getObjetivo());
-			} else {
-				meta.setText("Meta Escolhida:");
-			}
-		});
+		
 
 		HBox combobox = new HBox(10);
 		combobox.getChildren().addAll(colaborador, metas);
@@ -188,6 +187,20 @@ public class AvaliacaoRH extends Application {
 		ComboBox<String> status = new ComboBox<>();
 		status.getItems().addAll("Não Iniciado", "Em Andamento", "Concluído", "Atrasado");
 
+		metas.setOnAction(event -> {
+		    Pdi metaSelecionada = metas.getSelectionModel().getSelectedItem();
+
+		    if (metaSelecionada != null) {
+		        meta.setText(metaSelecionada.getObjetivo());
+
+		        String statusAtual = traduzirStatus(metaSelecionada.getStatus());
+		        status.getSelectionModel().select(statusAtual);
+		    } else {
+		        meta.setText("Meta Escolhida:");
+		        status.getSelectionModel().clearSelection();
+		    }
+		});
+		
 		Text upload = new Text("Upload de arquivo:");
 		upload.setId("upload");
 
@@ -195,7 +208,7 @@ public class AvaliacaoRH extends Application {
 		botao.setId("botao");
 		Text arquivoS = new Text("Nenhum arquivo selecionado");
 		arquivoS.setId("arquivoS");
-
+		
 		botao.setOnAction(event -> {
 			FileChooser arquiv = new FileChooser();
 			arquiv.setTitle("Escolha um arquivo");
@@ -203,8 +216,9 @@ public class AvaliacaoRH extends Application {
 			arquiv.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF", "*.pdf"),
 					new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg"));
 
-			File arquivo = arquiv.showOpenDialog(null);
+			File arquivo = arquiv.showOpenDialog(avaliacaorhStage);
 			if (arquivo != null) {
+				arquivoSelecionado = arquivo;
 				arquivoS.setText(arquivo.getName());
 
 			}
@@ -215,7 +229,70 @@ public class AvaliacaoRH extends Application {
 		arquivoBox.getChildren().addAll(botao, arquivoS);
 
 		Button salvar = new Button("Salvar");
-		salvar.setId("salvar"); // fazer botão funcionar
+		salvar.setId("salvar"); 
+		
+		salvar.setOnAction(event -> {
+		    Pdi metaSelecionada = metas.getSelectionModel().getSelectedItem(); 
+		    String statusSelecionado = status.getSelectionModel().getSelectedItem(); 
+
+		    if (metaSelecionada != null && statusSelecionado != null) {
+		        Status novoStatus = null;
+		        switch (statusSelecionado) {
+		            case "Não Iniciado":
+		                novoStatus = Status.NAO_INICIADO;
+		                break;
+		            case "Em Andamento":
+		                novoStatus = Status.EM_ANDAMENTO;
+		                break;
+		            case "Concluído":
+		                novoStatus = Status.CONCLUIDO;
+		                break;
+		            case "Atrasado":
+		                novoStatus = Status.ATRASADO;
+		                break;
+		        }
+		        
+		        if (novoStatus != null) {
+		            metaSelecionada.setStatus(novoStatus);
+		            pdiDAO.update(metaSelecionada);
+
+
+		            if (arquivoSelecionado != null) { 
+		                File pastaUploads = new File(System.getProperty("user.dir") + "/uploads");
+		                if (!pastaUploads.exists()) pastaUploads.mkdirs();
+
+		                File destino = new File(pastaUploads, arquivoSelecionado.getName());
+
+		                try (FileChannel source = new FileInputStream(arquivoSelecionado).getChannel();
+		                     FileChannel dest = new FileOutputStream(destino).getChannel()) {
+		                    dest.transferFrom(source, 0, source.size());
+		                } catch (IOException e) {
+		                    e.printStackTrace();
+		                }
+		                
+		                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+		                alerta.setTitle("Sucesso");
+		                alerta.setHeaderText(null);
+		                alerta.setContentText("Dados salvos com sucesso!");
+		                alerta.initOwner(avaliacaorhStage);
+		                alerta.initModality(Modality.WINDOW_MODAL); 
+		                DialogPane dialogPane = alerta.getDialogPane();
+		                dialogPane.setStyle("-fx-background-color: white");
+		                alerta.showAndWait();
+		                
+		               
+		                colaborador.getSelectionModel().clearSelection();
+		                metas.getItems().clear();
+		                metas.getSelectionModel().clearSelection();
+		                status.getSelectionModel().clearSelection();
+		                arquivoSelecionado = null;
+		                arquivoS.setText("Nenhum arquivo selecionado");
+		                meta.setText("Meta Escolhida:");
+		                colab.setText("Colaborador:");
+		            }
+		        }
+		    }
+		});
 
 		HBox button = new HBox(20);
 		button.setAlignment(Pos.CENTER);
@@ -281,6 +358,17 @@ public class AvaliacaoRH extends Application {
 		avaliacaorhStage.show();
 	}
 
+	private String traduzirStatus(Status status) {
+	    if (status == null) return null;
+	    switch (status) {
+	        case NAO_INICIADO: return "Não Iniciado";
+	        case EM_ANDAMENTO: return "Em Andamento";
+	        case CONCLUIDO: return "Concluído";
+	        case ATRASADO: return "Atrasado";
+	        default: return status.name();
+	    }
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
