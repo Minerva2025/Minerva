@@ -5,17 +5,32 @@
 }
 
 .combo-box {
-	-fx-background-color: transparent;
-	-fx-border-color: white;
-	-fx-border-width: 0 0 1 0;
-	-fx-prompt-text-fill: white;}
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-width: 0 0 1 0;
+    -fx-prompt-text-fill: white; 
+}
+
 .combo-box .list-cell {
-	-fx-text-fill: white;           
-	-fx-font-size: 20px;
-	-fx-font-family: 'JuliusSansOne';}
+    -fx-text-fill: white;           
+    -fx-font-size: 16px;
+    -fx-font-family: 'JuliusSansOne';
+}
+
 .combo-box .list-view .list-cell {
-	-fx-text-fill: white;        
-	-fx-background-color: #1E1E1E;}
+    -fx-text-fill: white;        
+    -fx-background-color: #1E1E1E; 
+}
+
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.combo-box .arrow {
+    -fx-background-color: white;
+}
 
 #colab{
 	-fx-fill: white;
@@ -73,6 +88,10 @@
 
 #tela{
 	-fx-background-color: #1E1E1E;
+}
+
+.root {
+    -fx-background-color: #1E1E1E;
 }
 		
 #blob1, #blob2, #blob3{
