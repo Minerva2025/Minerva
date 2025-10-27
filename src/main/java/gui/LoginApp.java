@@ -86,6 +86,8 @@ public class LoginApp extends Application{
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("/gui/LoginApp.css").toExternalForm());
 		
+		loginButton.setDefaultButton(true);
+		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.10));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
