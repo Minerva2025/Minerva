@@ -276,6 +276,10 @@ public class MetasGG extends Application {
     		fileChooser.setInitialFileName(fileName);
     		
     		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (file == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
     		
     		List<Pdi> todasMetas = pdiDAO.listAll();
     		todasMetas.sort(Comparator.comparing(Pdi::getPrazo)); 
