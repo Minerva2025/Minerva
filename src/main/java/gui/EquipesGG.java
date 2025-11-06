@@ -180,20 +180,33 @@ public class EquipesGG extends Application{
 		    gridSetor.setAlignment(Pos.CENTER);
 		    gridSetor.setPadding(new Insets(20, 0, 60, 0));
 
-		    int col = 0;
-		    int row = 0;
-		    for (Colaborador c : colaboradoresSetor) {
-		        double progresso = calcularProgressoMedio(pdiDAO, c.getId());
-		        VBox balao = criarBalaoColaborador(c, progresso);
-		        balao.prefWidthProperty().bind(gridSetor.widthProperty().divide(2));
-		        gridSetor.add(balao, col, row);
+		    Runnable atualizarGrid = () -> {
+		        gridSetor.getChildren().clear();
+		        String filtro = searchField.getText().toLowerCase();
+		        int col = 0;
+		        int row = 0;
+		        boolean encontrou = false;
 
-		        col++;
-		        if (col > 1) {
-		            col = 0;
-		            row++;
+		        for (Colaborador c : colaboradoresSetor) {
+		            if (c.getNome().toLowerCase().contains(filtro)) {
+		                double progresso = calcularProgressoMedio(pdiDAO, c.getId());
+		                VBox balao = criarBalaoColaborador(c, progresso);
+		                balao.prefWidthProperty().bind(gridSetor.widthProperty().divide(2));
+		                gridSetor.add(balao, col, row);
+		                col++;
+		                if (col > 1) {
+		                    col = 0;
+		                    row++;
+		                }
+		            }
 		        }
-		    }
+		    };
+
+		    // Preenche inicialmente todos
+		    atualizarGrid.run();
+
+		    // Atualiza conforme o usuário digita
+		    searchField.textProperty().addListener((obs, oldVal, newVal) -> atualizarGrid.run());
 
 		    VBox setorBox = new VBox(20, tituloEbarra, gridSetor);
 		    setorBox.setAlignment(Pos.TOP_CENTER);
