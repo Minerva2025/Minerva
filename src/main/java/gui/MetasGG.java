@@ -62,21 +62,17 @@ public class MetasGG extends Application {
 
         BarraLateralGG barra = new BarraLateralGG(logado);
         
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setStyle("-fx-background-color: transparent;");
 
         VBox coluna1 = new VBox();
         coluna1.setId("coluna1");
         coluna1.setAlignment(Pos.TOP_CENTER);
         coluna1.setSpacing(15);
         coluna1.setPadding(new Insets(15));
-        scrollPane.setContent(coluna1);
+        coluna1.setStyle("-fx-background-color: #1E1E1E;");
         
         Text titulo = new Text("Gerenciar Metas");
         titulo.setId("titulo");
-        titulo.setTextAlignment(TextAlignment.CENTER);
+        titulo.setTextAlignment(TextAlignment.CENTER); 
         titulo.setStyle("-fx-font-size: 32px; -fx-fill: white;");
         VBox.setMargin(titulo, new Insets(4, 0, 30, 0));
 
@@ -245,7 +241,7 @@ public class MetasGG extends Application {
         btnExportar.getStyleClass().add("botao-exportar");
 
         Button btnExportarExcel = new Button("Exportar Excel");
-        btnExportarExcel.getStyleClass().add("botão-exportar");
+        btnExportarExcel.getStyleClass().add("botao-exportar");
     	
 
         HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar, btnExportarExcel);
@@ -332,7 +328,7 @@ public class MetasGG extends Application {
         coluna1.getChildren().add(containerBotoes);
 
         HBox root = new HBox();
-        root.getChildren().addAll(barra, scrollPane);
+        root.getChildren().addAll(barra, coluna1);
         root.setStyle("-fx-background-color: #1E1E1E");
 
         coluna1.prefWidthProperty().bind(root.widthProperty().multiply(0.85));

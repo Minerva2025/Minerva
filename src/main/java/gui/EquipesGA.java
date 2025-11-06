@@ -134,19 +134,32 @@ public class EquipesGA extends Application{
         gridColaboradores.setPadding(new Insets(20, 80, 60, 80));
         gridColaboradores.setMaxWidth(1400);
 	
-        int col = 0;
-        int row = 0;
-        for (Colaborador c : colaboradoresSetor) {
-            double progresso = calcularProgressoMedio(pdiDAO, c.getId());
-            VBox balao = criarBalaoColaborador(c, progresso);
-	        balao.prefWidthProperty().bind(gridColaboradores.widthProperty().divide(2));
-            gridColaboradores.add(balao, col, row);
-            col++;
-            if (col > 1) { 
-                col = 0;
-                row++;
+        Runnable atualizarGrid = () -> {
+            gridColaboradores.getChildren().clear();
+            String filtro = searchField.getText().toLowerCase();
+
+            int col = 0;
+            int row = 0;
+
+            for (Colaborador c : colaboradoresSetor) {
+                if (c.getNome().toLowerCase().contains(filtro)) {
+                    double progresso = calcularProgressoMedio(pdiDAO, c.getId());
+                    VBox balao = criarBalaoColaborador(c, progresso);
+                    balao.prefWidthProperty().bind(gridColaboradores.widthProperty().divide(2));
+                    gridColaboradores.add(balao, col, row);
+
+                    col++;
+                    if (col > 1) {
+                        col = 0;
+                        row++;
+                    }
+                }
             }
-        }
+        };
+
+        atualizarGrid.run();
+
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> atualizarGrid.run());
 	
 	    colaboradoresContainer.getChildren().add(gridColaboradores);
 	    colaboradoresContainer.setSpacing(40);
