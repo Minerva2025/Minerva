@@ -31,6 +31,8 @@ import javafx.scene.Node;
 import java.util.ArrayList;
 import java.util.List;
 import util.PDFExporter;
+import util.POIExcelExporter;
+
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -203,7 +205,10 @@ public class MetasGA extends Application {
         Button btnExportar = new Button("Exportar PDF");
         btnExportar.getStyleClass().add("btnExportarMetas");
 
-        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar);
+        Button btnExportarExcel = new Button("Exportar Excel");
+        btnExportarExcel.getStyleClass().add("btnExportarMetas");
+
+        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar, btnExportarExcel);
         containerBotoes.setAlignment(Pos.CENTER);
         containerBotoes.setPadding(new Insets(10, 0, 20, 0));
 
@@ -231,6 +236,10 @@ public class MetasGA extends Application {
     		fileChooser.setInitialFileName(fileName);
     		
     		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (file == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
     		
     		List<Pdi> todasMetas = pdiDAO.listAll().stream()
     		        .filter(pdi -> {
@@ -246,7 +255,47 @@ public class MetasGA extends Application {
     		);
 
     	});
-    
+
+        btnExportarExcel.setOnAction(event -> {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Escolha onde salvar o arquivo Excel");
+
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx")
+            );
+
+            String fileName = "metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".xlsx";
+            fileChooser.setInitialFileName(fileName);
+
+            File pastaDownloads = new File(System.getProperty("user.home"), "Downloads");
+            if (pastaDownloads.exists()) {
+                fileChooser.setInitialDirectory(pastaDownloads);
+            }
+
+            File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+
+            if (!arquivoSelecionado.getName().toLowerCase().endsWith(".xlsx")) {
+                arquivoSelecionado = new File(arquivoSelecionado.getAbsolutePath() + ".xlsx");
+            }
+
+            List<Pdi> todasMetas = pdiDAO.listAll().stream()
+                    .filter(pdi -> {
+                        Colaborador colab = colaboradorDAO.getColaboradorById(pdi.getColaborador_id());
+                        return colab != null && logado.getSetor().equalsIgnoreCase(colab.getSetor());
+                    })
+                    .sorted(Comparator.comparing(Pdi::getPrazo))
+                    .toList();
+            FXCollections.observableArrayList(todasMetas);
+
+
+            POIExcelExporter.exportarParaExcel(arquivoSelecionado, todasMetas);
+                });
+
+
         
         coluna1.getChildren().add(containerBotoes);
 
