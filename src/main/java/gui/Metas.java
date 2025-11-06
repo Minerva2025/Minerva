@@ -373,9 +373,13 @@ public class Metas extends Application {
     		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
     		fileChooser.setInitialFileName(fileName);
     		
-    		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
-    		
-    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, file.getAbsolutePath());
+    		File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+            
+            boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, arquivoSelecionado.getAbsolutePath());
     	});
     }
 
