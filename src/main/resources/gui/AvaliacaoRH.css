@@ -4,6 +4,12 @@
 	-fx-letter-spacing: 2px;
 }
 
+#subtit{
+	-fx-fill:white;
+	fx-font-size:20px;
+}
+
+/*------------------------------------*/
 .combo-box {
     -fx-background-color: transparent;
     -fx-border-color: white;
@@ -11,13 +17,17 @@
     -fx-prompt-text-fill: white; 
 }
 
-.combo-box .list-cell {
-    -fx-text-fill: white;           
-    -fx-font-size: 16px;
-    -fx-font-family: 'JuliusSansOne';
+.combo-box-base{
+	-fx-background-color: transparent;
 }
 
-.combo-box .list-view .list-cell {
+.combo-box .list-cell {
+	-fx-background-color:transparent;
+    -fx-text-fill: white;           
+    -fx-font-size: 18px;
+}
+
+.combo-box .list-view {
     -fx-text-fill: white;        
     -fx-background-color: #1E1E1E; 
 }
@@ -32,15 +42,44 @@
     -fx-background-color: white;
 }
 
+.combo-box{
+	-fx-background-color:transparent;
+	-fx-text-fill:white;
+}
+
+.input {
+    -fx-background-color: transparent; 
+    -fx-text-fill: white; 
+    -fx-border-color: transparent; 
+}
+/*------------------------------------*/
+
 #colab{
 	-fx-fill: white;
-	-fx-font-size:34px;
+	-fx-font-size:26px;
+	-fx-font-weight:600;
 }	
+
+#cargo{
+	-fx-fill: white;
+	-fx-font-size: 16px;
+}
+
+#setor{
+	-fx-fill:white;
+	-fx-font-size:16px;
+}
+
+/*------------------------------------*/
 
 #meta{
 	-fx-fill: white;
 	-fx-font-size:24px;
-	-fx-font-weight: 600;
+}
+
+#data{
+	-fx-fill:white;
+	-fx-font-size:15px;
 }
 
 #status{
@@ -52,21 +91,24 @@
 
 #upload{
 	-fx-fill: white;
-	-fx-font-size: 24px;
-	-fx-letter-spacing: 2px;
+	-fx-font-size: 18px;
 }
 
-#arquivoS{
-	-fx-fill: white;
+/*------------------------------------*/
 }
 
-#botao{
-	-fx-background-color: #323232;
-	-fx-text-fill: white;
-	-fx-background-radius: 30px;
+#upload{
+	-fx-fill:white;
 	-fx-font-size: 20px;
+}
+
+#arquivo{
+	-fx-fill:white;
+	-fx-font-size:16px;
 	-fx-cursor: hand;
 }
+
+/*------------------------------------*/
 
 #salvar{
 	-fx-background-color: #323232;
@@ -76,15 +118,7 @@
 	-fx-cursor: hand;
 }
 
-.input {
-	-fx-background-color:transparent;
-	-fx-border-color:white;
-	-fx-border-width:0 0 1 0;
-	-fx-text-fill:white;
-	-fx-font-size:16px;
-	-fx-prompt-text-fill: white;
-	
-}
+/*------------------------------------*/
 
 #tela{
 	-fx-background-color: #1E1E1E;
