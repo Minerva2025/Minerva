@@ -1,0 +1,41 @@
+ /* Fundo principal da área de conteúdo */
+
+#main-content-area {
+
+-fx-background-color: #1E1E1E; 
+
+}
+
+#center{
+	-fx-background-color: #1E1E1E;
+	-fx-padding: 110 0 0 45
+}
+
+
+
+/* Título principal */
+
+#titulo{
+
+-fx-fill: white;
+
+-fx-font-size: 40px;
+
+-fx-font-family: 'JuliusSansOne';
+
+-fx-letter-spacing: 2px;
+
+-fx-margin : 10px;
+
+}
+
+
+
+.button {
+
+-fx-text-fill: white;
+
+-fx-cursor: hand;
+
+}
+

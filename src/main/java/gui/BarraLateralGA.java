@@ -35,8 +35,16 @@ public class BarraLateralGA extends VBox {
         });
         equipe.setId("equipe");
 
-        ToggleButton relatorios = new ToggleButton("Relatórios");
+        Button relatorios = new Button("Relatórios");
         relatorios.setId("relatorios");
+        relatorios.setOnAction(e -> {
+            Stage relatoriosgaStage = new Stage();
+            new RelatoriosGA(logado).start(relatoriosgaStage);
+            
+            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stageAtual.close();
+        });
+        
         
         Button metas = new Button("Metas");
         metas.setId("metas");
