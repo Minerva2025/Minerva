@@ -339,9 +339,11 @@ public class AvaliacaoRH extends Application {
 
 		
 		Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 		scene.getStylesheets().add(getClass().getResource("/gui/HomeRH.css").toExternalForm());
 		scene.getStylesheets().add(getClass().getResource("/gui/AvaliacaoRH.css").toExternalForm());
-		scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
+
 
 		center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
 		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));

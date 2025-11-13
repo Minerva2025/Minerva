@@ -1,5 +1,5 @@
 @font-face{
-	font-family: 'JuliusSansOne';
+	font-family: 'Kodchasan';
 	src: url(fonts/JuliusSansOne-Regular.ttf);
 }
 
@@ -10,14 +10,14 @@
 #titulo-cadastro-rh{
 	-fx-fill: white;
 	-fx-font-size: 36px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 }
 
 .infos {
 	-fx-fill: white;
 	-fx-font-size: 26px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 	
 }

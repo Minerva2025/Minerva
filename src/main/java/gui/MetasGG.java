@@ -72,8 +72,6 @@ public class MetasGG extends Application {
         
         Text titulo = new Text("Gerenciar Metas");
         titulo.setId("titulo");
-        titulo.setTextAlignment(TextAlignment.CENTER); 
-        titulo.setStyle("-fx-font-size: 32px; -fx-fill: white;");
         VBox.setMargin(titulo, new Insets(4, 0, 30, 0));
 
         CategoryAxis eixoX = new CategoryAxis();
@@ -335,8 +333,10 @@ public class MetasGG extends Application {
         barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 
         Scene scene = new Scene(root, 1000, 600);
-        scene.getStylesheets().add(getClass().getResource("Metas.css").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("BarraLateral.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
+
 
         metasggStage.setScene(scene);
         metasggStage.setFullScreen(true);

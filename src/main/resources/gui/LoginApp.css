@@ -1,8 +1,3 @@
-@font-face{
-	font-family: 'JuliusSansOne';
-	src: url(fonts/JuliusSansOne-Regular.ttf);
-}
-
 #login-layout{
 	-fx-background-color: #1E1E1E
 }
@@ -10,7 +5,7 @@
 #titulo-text{
 	-fx-fill: white;
 	-fx-font-size: 64px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 }
 

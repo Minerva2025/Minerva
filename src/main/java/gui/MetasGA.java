@@ -132,8 +132,6 @@ public class MetasGA extends Application {
 
         Text titulo = new Text("Gerenciar Metas");
         titulo.setId("titulo");
-        titulo.setTextAlignment(TextAlignment.CENTER);
-        titulo.setStyle("-fx-font-size: 32px; -fx-fill: white;");
         VBox.setMargin(titulo, new Insets(20, 0, 30, 0));
         
         Ellipse blob1 = new Ellipse();
@@ -307,8 +305,10 @@ public class MetasGA extends Application {
         barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 
         Scene scene = new Scene(root, 1000, 600);
-        scene.getStylesheets().add(getClass().getResource("MetasGA.css").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("BarraLateral.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/MetasGA.css").toExternalForm());
+
         
         blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 

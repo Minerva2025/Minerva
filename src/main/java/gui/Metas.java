@@ -331,8 +331,10 @@ public class Metas extends Application {
 
 	    // cena e estilo
 	    Scene scene = new Scene(root, 1000, 600);
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 	    scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
-	    scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
+
 	    
 	    metasStage.setScene(scene);
 	    metasStage.setFullScreen(true);

@@ -6,7 +6,7 @@
 #titulo{
 	-fx-fill: white;
 	-fx-font-size: 48px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 	-fx-alignment: left;
 	
@@ -19,7 +19,7 @@
 #colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido{
 	-fx-fill: white;
 	-fx-font-size: 18px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 }
 
@@ -33,7 +33,7 @@
 #inicio, #equipe, #relatorios, #metas, #avaliacoes{
 	-fx-text-fill: white;
 	-fx-font-size: 20px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 	-fx-background-color: transparent;
 	-fx-border-color: transparent
@@ -43,7 +43,7 @@
 #buscarColaboradores {
     -fx-fill: white;
     -fx-font-size: 18px;
-    -fx-font-family: 'JuliusSansOne';
+    -fx-font-family: 'Kodchasan';
     -fx-letter-spacing: 2px;
 }
 

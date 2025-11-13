@@ -54,8 +54,13 @@ public class RelatoriosGA extends Application {
         center.getChildren().add(mainReportContent);
         // ------------------------------------
         
+<<<<<<< Updated upstream
         // A BARRA LATERAL 
         
+=======
+        // A BARRA LATERAL
+        center.getChildren().addAll(titulo);
+>>>>>>> Stashed changes
         BarraLateralGA barraLateral = new BarraLateralGA(logado);
     
         
@@ -70,6 +75,7 @@ public class RelatoriosGA extends Application {
         
         // CSSs
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/RelatoriosGA.css").toExternalForm()); 
 
