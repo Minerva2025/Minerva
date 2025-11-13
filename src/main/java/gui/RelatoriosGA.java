@@ -54,13 +54,8 @@ public class RelatoriosGA extends Application {
         center.getChildren().add(mainReportContent);
         // ------------------------------------
         
-<<<<<<< Updated upstream
-        // A BARRA LATERAL 
-        
-=======
+
         // A BARRA LATERAL
-        center.getChildren().addAll(titulo);
->>>>>>> Stashed changes
         BarraLateralGA barraLateral = new BarraLateralGA(logado);
     
         
