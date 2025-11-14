@@ -98,11 +98,12 @@
     -fx-background-color: #323232;
     -fx-background-radius: 15;
     -fx-padding: 20;
-    -fx-pref-width: 480; /* largura base maior */
+    -fx-pref-width: 480; 
     -fx-effect: dropshadow(gaussian, #00000055, 10, 0.3, 0, 3);
     -fx-border-color: rgba(255, 255, 255, 0.05);
     -fx-border-radius: 15;
     -fx-transition: all 0.3s ease;
+	-fx-font-family: 'Kodchasan';
 }
 
 .colaborador-card:hover {

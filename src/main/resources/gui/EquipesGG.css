@@ -98,11 +98,12 @@
     -fx-background-color: #323232;
     -fx-background-radius: 15;
     -fx-padding: 20;
-    -fx-pref-width: 480; /* largura base maior */
+    -fx-pref-width: 480; 
     -fx-effect: dropshadow(gaussian, #00000055, 10, 0.3, 0, 3);
     -fx-border-color: rgba(255, 255, 255, 0.05);
     -fx-border-radius: 15;
     -fx-transition: all 0.3s ease;
+    -fx-font-family: 'Kodchasan'
 }
 
 .colaborador-card:hover {
@@ -182,13 +183,11 @@
     -fx-border-color: transparent;
 }
 
-/*cores*/
     .data0 { -fx-pie-color: #A8E6CF; }
 	.data1 { -fx-pie-color: #70C1B3; }
 	.data2 { -fx-pie-color: #2E8B78; }
 	.data3 { -fx-pie-color: #155E57; }
 
-/* Estilo da legenda do gráfico de pizza */
 .chart-legend {
     -fx-background-color: transparent; 
     -fx-text-fill: white; 
@@ -197,13 +196,11 @@
     -fx-padding: 0 0 0 20px; 
 }
 
-/* Estilo de cada item individual da legenda */
 .chart-legend .chart-legend-item {
     -fx-text-fill: #E0E0E0; 
     -fx-padding: 2px 0;
 }
 
-/* Estilo do símbolo (quadradinho) de cada item da legenda */
 .chart-legend .chart-legend-item-symbol {
     -fx-shape: "M0 0 H10 V10 H0 Z"; 
     -fx-scale-x: 0.9; 
@@ -213,24 +210,20 @@
 
 /* --- Gráfico de Barras --- */
 
-/* Fundo do gráfico */
 .chart {
     -fx-background-color: transparent;
 }
 
-/* Fundo da área de plot */
 .chart-plot-background {
     -fx-background-color: transparent;
 }
 
 
 
-/* Remove o fundo da área de plot (onde as barras aparecem) */
 .chart-bar .chart-plot-background {
     -fx-background-color: transparent;
 }
 
-/* Estilo dos eixos */
 .axis {
     -fx-font-family: 'Kodchasan';
     -fx-font-size: 12px;
@@ -240,7 +233,6 @@
     -fx-opacity: 0.7;
 }
 
-/* Rótulos dos eixos */
 .axis-label {
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 14px;
@@ -249,7 +241,6 @@
 
 
 
-/* Tirar linhas de grade */
 .chart-vertical-grid-lines,
 .chart-horizontal-grid-lines {
     -fx-stroke: transparent;
