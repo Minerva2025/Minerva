@@ -188,6 +188,8 @@ public class EquipesGA extends Application{
 		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 		scene.getStylesheets().add(getClass().getResource("/gui/EquipesGA.css").toExternalForm());
 
 //		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));

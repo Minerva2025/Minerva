@@ -1,10 +1,5 @@
- /* Fundo principal da área de conteúdo */
 
-#main-content-area {
-
--fx-background-color: #1E1E1E; 
-
-}
+/* Fundo principal da área de conteúdo */
 
 #center{
 	-fx-background-color: #1E1E1E;
@@ -21,12 +16,22 @@
 
 -fx-font-size: 40px;
 
--fx-font-family: 'JuliusSansOne';
+-fx-font-family: 'Kodchasan';
 
--fx-letter-spacing: 2px;
 
--fx-margin : 10px;
+}
 
+.label {
+    -fx-text-fill: #FFFFFF; 
+    -fx-font-family: 'JuliusSansOne';
+}
+
+/* Estilo para TextFields */
+.text-field {
+    -fx-background-color: #5A5A5A;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #AAAAAA;
+    -fx-background-radius: 8;
 }
 
 
@@ -37,5 +42,106 @@
 
 -fx-cursor: hand;
 
+}
+
+
+
+/* Estilo base para os cards  */
+.chart-card {
+    -fx-background-color: #2D2D2D; 
+    -fx-background-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-alignment: CENTER; 
+}
+
+
+/* Remove o fundo padrão branco dos gráficos */
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-content {
+    -fx-background-color: transparent;
+}
+
+/* Estilos para legendas e eixos */
+.chart-legend {
+    -fx-text-fill: white;
+    -fx-font-family: 'JuliusSansOne';
+	-fx-background-color: transparent;
+}
+.axis-label {
+    -fx-text-fill: white;
+    -fx-font-family: 'JuliusSansOne';
+}
+.axis {
+    -fx-tick-label-fill: white;
+    -fx-font-family: 'JuliusSansOne';
+}
+
+/* Remover linhas de grid padrão */
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: transparent;
+}
+
+/* Estilo do botão "Ver mais" */
+.btn-ver-mais {
+    -fx-background-color: #4A4A4A;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: normal;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-alignment: CENTER;
+}
+.btn-ver-mais:hover {
+    -fx-background-color: #5A5A5A;
+}
+
+/* Estilo para o card do colaborador */
+.employee-card {
+    -fx-background-color: #2D2D2D; 
+    -fx-background-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Container de busca */
+.search-area {
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 10;
+    -fx-padding: 10 0 10 0;
+}
+
+/* ---  BOTÃO FILTRAR --- */
+.btn-filtrar {
+    -fx-background-color: #4A4A4A; 
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: normal;
+    -fx-background-radius: 8;
+    -fx-padding: 8 15; 
+}
+.btn-filtrar:hover {
+    -fx-background-color: #5A5A5A;
+}
+
+/* --- CORREÇÃO DAS CORES DA LEGENDA DO GRÁFICO DE PIZZA --- */
+
+/* Cor para o primeiro item da legenda */
+.data0 {
+    -fx-background-color: #A8E6CF; /* Verde claro */
+}
+
+/* Cor para o segundo item da legenda */
+.data1 {
+    -fx-background-color: #70C1B3; /* Verde médio */
+}
+
+/* Cor para o terceiro item da legenda */
+.data2 {
+    -fx-background-color: #2E8B78; /* Verde escuro */
 }
 

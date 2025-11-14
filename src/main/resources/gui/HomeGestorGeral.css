@@ -11,7 +11,7 @@
 #titulo{
 	-fx-fill: white;
 	-fx-font-size: 48px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 	
 }
@@ -23,7 +23,7 @@
 #colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido{
 	-fx-fill: white;
 	-fx-font-size: 18px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 }
 
@@ -37,7 +37,7 @@
 #inicio, #equipe, #relatorios, #metas{
 	-fx-text-fill: white;
 	-fx-font-size: 20px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 	-fx-background-color: transparent;
 	-fx-border-color: transparent
@@ -79,7 +79,7 @@
 #alertTitle{
     -fx-fill: #FFFFFF;
     -fx-font-size: 28px;
-    -fx-font-family: 'JuliusSansOne';
+    -fx-font-family: 'Kodchasan';
     -fx-letter-spacing: 1.5px;
 }
 
@@ -87,7 +87,7 @@
     -fx-fill: #FFFFFF;
     -fx-font-size: 22px;
     -fx-opacity: 0.9;
-    -fx-font-family: 'JuliusSansOne';
+    -fx-font-family: 'Kodchasan';
 }
 
 
@@ -122,7 +122,7 @@
 .chart-legend {
     -fx-background-color: transparent; 
     -fx-text-fill: white; 
-    -fx-font-family: 'JuliusSansOne';
+    -fx-font-family: 'Kodchasan';
     -fx-font-size: 13px; 
     -fx-padding: 0 0 0 20px; 
 }
@@ -162,7 +162,7 @@
 
 /* Estilo dos eixos */
 .axis {
-    -fx-font-family: 'JuliusSansOne';
+    -fx-font-family: 'Kodchasan';
     -fx-font-size: 12px;
     -fx-tick-label-fill: #E0E0E0;
     -fx-stroke: #5A5A5A;
@@ -211,7 +211,7 @@
 /* Título no card */
 #trendTitle {
     -fx-font-size: 20px;
-    -fx-font-family: 'JuliusSansOne';
+    -fx-font-family: 'Kodchasan';
     -fx-fill: #FFFFFF;
     -fx-font-weight: bold;
 }

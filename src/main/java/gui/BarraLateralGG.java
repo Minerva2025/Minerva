@@ -16,6 +16,7 @@ public class BarraLateralGG extends VBox {
         this.setId("left");
 
         // Botões
+        // Botão de início
         Button inicio = new Button("Início");
         inicio.setId("inicio");
         inicio.setOnAction(e -> {
@@ -26,7 +27,7 @@ public class BarraLateralGG extends VBox {
             stageAtual.close();
         });
         
-
+        // Botão das Equipes
         Button equipe = new Button("Equipe");
         equipe.setOnAction(e -> {
             Stage equipesggStage = new Stage();
@@ -37,9 +38,18 @@ public class BarraLateralGG extends VBox {
         });
         equipe.setId("equipe");
 
-        ToggleButton relatorios = new ToggleButton("Relatórios");
+        // Botão dos Relatorios
+        Button relatorios = new Button("Relatorios");
+        relatorios.setOnAction(event -> {
+            Stage relatoriosggStage = new Stage();
+            new RelatoriosGG(logado).start(relatoriosggStage);
+
+            Stage stageAtual = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stageAtual.close();
+        } );
         relatorios.setId("relatorios");
 
+        // Botão das Metas
         Button metas = new Button("Metas");
         metas.setOnAction(e -> {
             Stage metasggStage = new Stage();

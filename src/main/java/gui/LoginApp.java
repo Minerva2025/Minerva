@@ -84,6 +84,7 @@ public class LoginApp extends Application{
 		root.getChildren().addAll(layout, blob1, blob2, blob3);
 		
 		Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
 		scene.getStylesheets().add(getClass().getResource("/gui/LoginApp.css").toExternalForm());
 		
 		loginButton.setDefaultButton(true);
