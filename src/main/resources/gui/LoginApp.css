@@ -17,6 +17,7 @@
 	-fx-font-size:24px;
 	-fx-prompt-text-fill: white;
 	-fx-pref-width: 705px;
+	-fx-font-family: 'Kodchasan';
 }
 
 #login-botao{
@@ -26,7 +27,7 @@
 	-fx-padding: 10 25 10 25;
 	-fx-font-size: 20px;
 	-fx-cursor: hand;
-
+	-fx-font-family: 'Kodchasan';
 }
 
 #blob1{
