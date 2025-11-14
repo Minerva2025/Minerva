@@ -1,4 +1,7 @@
 @font-face {
-    font-family: 'Kodchasan';
-    src: url('/gui/fonts/Kodchasan-Regular.ttf');
+    src: url('fonts/Kodchasan-Regular.ttf');
+}
+
+@font-face {
+    src: url('fonts/JuliusSansOne-Regular.ttf');
 }

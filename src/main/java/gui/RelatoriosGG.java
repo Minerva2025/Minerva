@@ -29,18 +29,18 @@ public class RelatoriosGG extends Application {
         // Objeto Barra Lateral
         BarraLateralGG barra = new BarraLateralGG(logado);
 
-        VBox relatoriosgg = new VBox();
-        relatoriosgg.setId("relatoriosgg");
-        relatoriosgg.setAlignment(Pos.TOP_CENTER);
-        relatoriosgg.setSpacing(15);
-        relatoriosgg.setPadding(new Insets(15));
-        relatoriosgg.setStyle("-fx-background-color: #1E1E1E;");
+        VBox center = new VBox();
+        center.setId("relatoriosgg");
+        center.setAlignment(Pos.TOP_CENTER);
+        center.setSpacing(15);
+        center.setPadding(new Insets(15));
+        center.setStyle("-fx-background-color: #1E1E1E;");
 
         Text titulo = new Text("Relatórios de PDIs");
         titulo.setId("titulo");
         VBox.setMargin(titulo, new Insets(4, 0, 30, 0));
 
-        relatoriosgg.getChildren().addAll(titulo);
+        center.getChildren().addAll(titulo);
 
 
 
@@ -49,10 +49,10 @@ public class RelatoriosGG extends Application {
 
         HBox root = new HBox();
         root.setStyle("-fx-background-color: #1E1E1E");
-        root.getChildren().addAll(barra, relatoriosgg);
+        root.getChildren().addAll(barra, center);
 
         barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
-        relatoriosgg.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
+        center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
 
 
         // Scene
