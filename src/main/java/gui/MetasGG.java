@@ -3,6 +3,7 @@ package gui;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,7 +16,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -73,6 +76,20 @@ public class MetasGG extends Application {
         Text titulo = new Text("Gerenciar Metas");
         titulo.setId("titulo");
         VBox.setMargin(titulo, new Insets(4, 0, 30, 0));
+        
+        Ellipse blob1 = new Ellipse();
+		blob1.setId("blob1");
+		
+		Ellipse blob2 = new Ellipse();
+		blob2.setId("blob2");
+		
+		Ellipse blob3 = new Ellipse();
+		blob3.setId("blob3");
+		
+		GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
 
         CategoryAxis eixoX = new CategoryAxis();
         eixoX.setTickLabelsVisible(false);
@@ -230,7 +247,7 @@ public class MetasGG extends Application {
                
         tabela.getColumns().addAll( colResponsavel,colDivisao, colObjetivo, colPrazo, colStatus);
         
-        coluna1.getChildren().addAll(titulo, topContainer, tabela);
+        coluna1.getChildren().addAll(titulo, topContainer, tabela, blob1, blob2, blob3);
 
         Button btnVerMetas = new Button("Ver Todas as Metas");
         btnVerMetas.getStyleClass().add("btnVerMetas"); 
@@ -336,7 +353,30 @@ public class MetasGG extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
+        
+        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(0.01));
+		blob1.setManaged(false);
+
+		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.2));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(1.02));
+		blob2.setManaged(false);
+
+		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.6));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.1));
+		blob3.setManaged(false);
 
         metasggStage.setScene(scene);
         metasggStage.setFullScreen(true);

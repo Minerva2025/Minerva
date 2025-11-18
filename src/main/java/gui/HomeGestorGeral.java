@@ -202,7 +202,7 @@ public class HomeGestorGeral extends Application {
         VBox center = new VBox();
         center.setId("center");
        
-        center.getChildren().addAll(titulo, container, chartsContainer, alertBox);
+        center.getChildren().addAll(titulo, container, chartsContainer, alertBox, blob1, blob2, blob3);
 //        center.getChildren().addAll(titulo, container, chartsContainer, alertBox, trendContainer);
         BarraLateralGG barra = new BarraLateralGG(logado);
 
@@ -243,20 +243,20 @@ public class HomeGestorGeral extends Application {
         blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
         blob2.radiusYProperty().bind(blob2.radiusXProperty());
 
-        blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+        blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
         blob3.radiusYProperty().bind(blob3.radiusXProperty());
 
         StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
-        blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
+        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.70));
+        blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.85));
 
-        StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
-        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
-        blob2.translateYProperty().bind(scene.heightProperty().multiply(0.3));
+        StackPane.setAlignment(blob2, Pos.TOP_RIGHT);
+        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.56));
+        blob2.translateYProperty().bind(scene.heightProperty().multiply(-1.12));
 
-        StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
-        blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
-        blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
+        StackPane.setAlignment(blob3, Pos.BOTTOM_RIGHT);
+        blob3.translateXProperty().bind(scene.widthProperty().multiply(0.4));
+        blob3.translateYProperty().bind(scene.heightProperty().multiply(-0.28));
 
         homeggStage.setScene(scene);
         homeggStage.setFullScreen(true);

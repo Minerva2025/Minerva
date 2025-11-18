@@ -73,23 +73,24 @@ public class EquipesGG extends Application{
 		
 		Text titulo = new Text("Visão Geral");
 		titulo.getStyleClass().add("titulo");
-
-		HBox tituloBox = new HBox(titulo);
-		tituloBox.setAlignment(Pos.CENTER_LEFT);
 		
-		Ellipse blob1 = new Ellipse(155, 155);
+		Ellipse blob1 = new Ellipse();
 		blob1.setId("blob1");
 		
-		Ellipse blob2 = new Ellipse(20, 20);
+		Ellipse blob2 = new Ellipse();
 		blob2.setId("blob2");
 		
-		Ellipse blob3 = new Ellipse(40, 40);
+		Ellipse blob3 = new Ellipse();
 		blob3.setId("blob3");
 		
 		GaussianBlur blur = new GaussianBlur(40);
 		blob1.setEffect(blur);
 		blob2.setEffect(blur);
 		blob3.setEffect(blur);
+		
+		HBox tituloBox = new HBox(titulo);
+		tituloBox.setAlignment(Pos.CENTER_LEFT);
+		
 		
 		Text colaboradores = new Text("Colaboradores: " + totalColaboradores);
 		colaboradores.setId("colaboradores");
@@ -217,7 +218,7 @@ public class EquipesGG extends Application{
 	    center.setId("center");
 	    center.setAlignment(Pos.TOP_CENTER);
 	    center.setPadding(new Insets(60, 80, 80, 80));
-	    center.getChildren().addAll(tituloBox, container, chartsContainer, setoresContainer);
+	    center.getChildren().addAll(tituloBox, container, chartsContainer, setoresContainer, blob1, blob2, blob3);
 
 		ScrollPane scrollCenter = new ScrollPane(center);
 		scrollCenter.setFitToWidth(true);
@@ -239,26 +240,29 @@ public class EquipesGG extends Application{
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 		scene.getStylesheets().add(getClass().getResource("/gui/EquipesGG.css").toExternalForm());
 
-		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
+		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.06));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
-	
-		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
+
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
 		blob2.radiusYProperty().bind(blob2.radiusXProperty());
-	
-		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.025));
 		blob3.radiusYProperty().bind(blob3.radiusXProperty());
-	
+		
 		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
-		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
-	
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.35));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.01));
+		blob1.setManaged(false);
+
 		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
-		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
-		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.3));
-	
-		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
-		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
-		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.83));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.53));
+		blob2.setManaged(false);
+
+		StackPane.setAlignment(blob3, Pos.TOP_RIGHT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.48));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.062));
+		blob3.setManaged(false);
 	
 		equipesggStage.setScene(scene);
 		equipesggStage.setFullScreen(true);

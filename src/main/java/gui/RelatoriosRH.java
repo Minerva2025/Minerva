@@ -3,6 +3,7 @@ package gui;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -13,7 +14,9 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -61,7 +64,21 @@ public class RelatoriosRH extends Application {
         Text titulo = new Text("Relatório de PDIs");
         titulo.setId("titulo");
         VBox.setMargin(titulo, new Insets(4, 0, 30, 0));
-
+        
+        Ellipse blob1 = new Ellipse();
+        blob1.setId("blob1");
+        
+        Ellipse blob2 = new Ellipse();
+        blob2.setId("blob2");
+        
+        Ellipse blob3 = new Ellipse();
+        blob3.setId("blob3");
+        
+        GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
+		
         CategoryAxis eixoX = new CategoryAxis();
         eixoX.setTickLabelsVisible(false);
         eixoX.setTickMarkVisible(false);
@@ -197,7 +214,7 @@ public class RelatoriosRH extends Application {
         tituloMeio.getStyleClass().add("titulo");
         VBox.setMargin(tituloMeio, new Insets(30, 0, 20, 0)); 
 
-        coluna1.getChildren().add(tituloMeio);
+        coluna1.getChildren().addAll(tituloMeio, blob1, blob2, blob3);
 
       
         VBox relatorioColaborador = new VBox(15);
@@ -275,7 +292,31 @@ public class RelatoriosRH extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/RelatoriosRH.css").toExternalForm());
+        
+        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.06));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.025));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+		
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.35));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.01));
+		blob1.setManaged(false);
+
+		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.83));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.53));
+		blob2.setManaged(false);
+
+		StackPane.setAlignment(blob3, Pos.TOP_RIGHT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.48));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.062));
+		blob3.setManaged(false);
+		
         metasggStage.setScene(scene);
         metasggStage.setFullScreen(true);
         metasggStage.setFullScreenExitHint("");

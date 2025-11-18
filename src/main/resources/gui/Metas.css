@@ -265,3 +265,7 @@
     -fx-background-color: transparent;
     -fx-padding: 0;
 }
+
+#blob1, #blob2, #blob3{
+	-fx-fill: #323232
+}
