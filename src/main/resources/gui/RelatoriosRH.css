@@ -1,0 +1,226 @@
+
+.root-rh {
+    -fx-background-color: #1E1E1E;
+}
+
+.scroll-pane-rh {
+    -fx-background: #1E1E1E;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+}
+
+#coluna1 {
+    -fx-background-color: #1E1E1E;
+}
+
+#titulo{
+	-fx-fill: white;
+	-fx-font-size: 40px;
+	-fx-font-family: 'Kodchasan';
+}
+
+.caixa-relatorio {
+    -fx-background-color: #2C2C2C;
+    -fx-background-radius: 15;
+}
+
+.titulo-grafico {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.titulo-alerta {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.titulo-relatorio-colab {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.titulo-pdis-colab {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.label-alerta {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
+
+.label-dado {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+.label-alerta-bold {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+
+.area-filtro {
+    -fx-background-radius: 8;
+    -fx-padding: 5;
+	-fx-background-color: #3A3A3A; 
+	-fx-border-color: #444444;
+	-fx-border-radius: 8;
+}
+
+.area-filtro .combo-box-base {
+    -fx-background-color: #3A3A3A;
+    -fx-text-fill: white;
+}
+
+.area-filtro .list-cell {
+    -fx-background-color: #3A3A3A;
+    -fx-text-fill: white;
+}
+
+.area-filtro .list-view {
+    -fx-background-color: #3A3A3A;
+}
+
+
+.chart {
+    -fx-background-color: transparent;
+}
+
+.default-color0.chart-bar { -fx-bar-fill: #c2f0ef; } /* Concluído */
+.default-color1.chart-bar { -fx-bar-fill: #5ab2b0; } /* Em Andamento */
+.default-color2.chart-bar { -fx-bar-fill: #267a78; } /* Não Iniciado */
+.default-color3.chart-bar { -fx-bar-fill: #0b514f; } /* Atrasado */
+
+.chart-axis {
+    -fx-tick-label-fill: white;
+}
+
+
+
+.progress-bar {
+    -fx-accent: #5ab2b0;
+    -fx-control-inner-background: #3A3A3A;
+}
+
+.progress-bar .track {
+    -fx-background-color: #3A3A3A;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #5ab2b0;
+}
+
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-background-radius: 40;
+    -fx-border-radius: 40;
+    -fx-padding: 20;
+    -fx-border-width: 2;
+	-fx-pref-width: 1200;
+	-fx-max-width: 1200;   
+    -fx-pref-height: 200px;
+	-fx-text-fill: white;
+	-fx-border-insets: 0 0 10px 0;
+    -fx-background-insets: 0 0 10px 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20 20 0 0;
+	-fx-text-fill: white
+}
+
+.table-view .column-header, 
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-alignment: Center;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+	-fx-cell-size: 30px;
+	-fx-text-fill: white
+
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #3c3c3c;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: Center;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-alignment: Center;
+    -fx-text-fill: white;
+}
+
+.status-nao-iniciado {
+    -fx-text-fill: gray;
+}
+
+.status-em-andamento {
+    -fx-text-fill: orange;
+}
+
+.status-concluido {
+    -fx-text-fill: green;
+    -fx-font-weight: bold;
+}
+
+.status-atrasado {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+}
+
+.separator {
+    -fx-background-color: #444444;
+}
+
+.separator:horizontal .line {
+    -fx-border-color: #444444;
+    -fx-border-width: 1;
+}
+
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+	-fx-background-color: #888; 
+	    -fx-background-radius: 10; 
+	    -fx-pref-width: 6; 
+	    -fx-pref-height: 6;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+	-fx-background-color: transparent;
+	    -fx-padding: 0;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #aaa; 
+}
