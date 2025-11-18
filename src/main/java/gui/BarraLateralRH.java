@@ -37,8 +37,16 @@ public class BarraLateralRH extends VBox {
         });
         equipe.setId("equipe");
 
-        ToggleButton relatorios = new ToggleButton("Relatórios");
+        Button relatorios = new Button("Relatórios");
         relatorios.setId("relatorios");
+        relatorios.setOnAction(e -> {
+            Stage relatoriosrhStage = new Stage();
+            new RelatoriosRH(logado).start(relatoriosrhStage);
+            
+            Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stageAtual.close();
+        });
+
 
         Button metas = new Button("Metas");
         metas.setOnAction(e -> {

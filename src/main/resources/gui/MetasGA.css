@@ -83,6 +83,7 @@
 	-fx-text-fill: white;
 	-fx-border-insets: 0 0 10px 0;
     -fx-background-insets: 0 0 10px 0;
+	-fx-font-family: 'Kodchasan';
 }
 
 .table-view .column-header-background {

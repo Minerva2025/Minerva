@@ -39,7 +39,7 @@ public class LoginApp extends Application{
 		blob2.setEffect(blur);
 		blob3.setEffect(blur);
 		
-		Text titulo = new Text("LOGIN");
+		Text titulo = new Text("Login");
 		titulo.setId("titulo-text");
 		
 		TextField cpfField = new TextField();

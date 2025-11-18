@@ -101,7 +101,8 @@ public class MetasGA extends Application {
 
 		HBox metasBox = new HBox(50);
 		metasBox.setId("metas-box");
-		metasBox.setStyle("-fx-alignment: center;");
+		metasBox.setStyle("-fx-alignment: center; -fx-font-family: 'Kodchasan';"
+				+ "");
 		metasBox.getChildren().addAll(andamentoBox, concluidasBox, atrasadasBox);
 
 		StackPane boxChart1 = new StackPane();
