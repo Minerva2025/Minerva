@@ -69,7 +69,6 @@
 }
 
 
-
 #alertBox{
     -fx-padding: 28 0 0 10;
     -fx-spacing: 6;
@@ -170,4 +169,7 @@
     -fx-alignment: center;
 }
 
+#blob1, #blob2, #blob3{
+	-fx-fill: #323232
+}
 

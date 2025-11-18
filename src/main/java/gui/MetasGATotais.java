@@ -1,13 +1,17 @@
 package gui;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Ellipse;
 import model.Pdi;
 import model.Status;
 import model.Usuario;
@@ -31,6 +35,20 @@ public class MetasGATotais {
         titulo.setStyle("-fx-text-fill: white; -fx-font-size: 32px;");
         titulo.setAlignment(Pos.CENTER);
         VBox.setMargin(titulo, new Insets(40, 0, 20, 0));
+        
+        Ellipse blob1 = new Ellipse();
+		blob1.setId("blob1");
+		
+		Ellipse blob2 = new Ellipse();
+		blob2.setId("blob2");
+		
+		Ellipse blob3 = new Ellipse();
+		blob3.setId("blob3");
+		
+		GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
 
         VBox caixa = new VBox(20);
         caixa.setAlignment(Pos.CENTER);
@@ -102,8 +120,32 @@ public class MetasGATotais {
 
         VBox.setMargin(btnVoltar, new Insets(20, 0, 0, 0));
         caixa.getChildren().addAll(tabelaTodas, btnVoltar);
-        root.getChildren().addAll(titulo, caixa);
+        root.getChildren().addAll(titulo, caixa, blob1, blob2, blob3);
+        
+        blob1.radiusXProperty().bind(Bindings.multiply(root.widthProperty(), 0.07));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
+		blob2.radiusXProperty().bind(Bindings.multiply(root.widthProperty(), 0.05));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+
+		blob3.radiusXProperty().bind(Bindings.multiply(root.widthProperty(), 0.02));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(root.widthProperty().multiply(0.72));
+		blob1.translateYProperty().bind(root.heightProperty().multiply(-0.02));
+		blob1.setManaged(false);
+
+		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+		blob2.translateXProperty().bind(root.widthProperty().multiply(0.2));
+		blob2.translateYProperty().bind(root.heightProperty().multiply(0.98));
+		blob2.setManaged(false);
+
+		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+		blob3.translateXProperty().bind(root.widthProperty().multiply(0.6));
+		blob3.translateYProperty().bind(root.heightProperty().multiply(0.1));
+		blob3.setManaged(false);
+        
         return root;
     }
 

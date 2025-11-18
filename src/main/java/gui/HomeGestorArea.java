@@ -73,19 +73,19 @@ public class HomeGestorArea extends Application {
         Text titulo = new Text("Bem-vindo " + primeiroNome + "!");
         titulo.setId("titulo");
 
-//        Ellipse blob1 = new Ellipse();
-//        blob1.setId("blob1");
-//
-//        Ellipse blob2 = new Ellipse();
-//        blob2.setId("blob2");
-//
-//        Ellipse blob3 = new Ellipse();
-//        blob3.setId("blob3");
-//
-//        GaussianBlur blur = new GaussianBlur(40);
-//        blob1.setEffect(blur);
-//        blob2.setEffect(blur);
-//        blob3.setEffect(blur);
+        Ellipse blob1 = new Ellipse();
+        blob1.setId("blob1");
+        
+        Ellipse blob2 = new Ellipse();
+        blob2.setId("blob2");
+        
+        Ellipse blob3 = new Ellipse();
+        blob3.setId("blob3");
+        
+        GaussianBlur blur = new GaussianBlur(40);
+        blob1.setEffect(blur);
+        blob2.setEffect(blur);
+        blob3.setEffect(blur);
 
         Text colaboradores = new Text("Colaboradores: " + totalColaboradoresSetor);
         colaboradores.setId("colaboradores");
@@ -115,13 +115,11 @@ public class HomeGestorArea extends Application {
         boxChart1.setMaxWidth(Double.MAX_VALUE);
         boxChart1.setMinWidth(0);
 
-        //Gráfico
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Status dos PDIs");
 
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Quantidade de PDIs");
-
 
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
         barChart.setTitle("Evolução do Setor");
@@ -130,14 +128,11 @@ public class HomeGestorArea extends Application {
         barChart.setCategoryGap(25);
         barChart.setBarGap(10);
 
-        // Busca todos os PDIs do setor do gestor logado
         List<Pdi> pdisSetor = pdiDAO.findBySetor(logado.getSetor());
 
-        // Agrupa os PDIs por status e conta quantos há em cada
         Map<Status, Long> contagemPorStatus = pdisSetor.stream()
             .collect(Collectors.groupingBy(Pdi::getStatus, Collectors.counting()));
 
-        // Cria a série de dados para o gráfico
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         serie.getData().add(new XYChart.Data<>("Não iniciado", contagemPorStatus.getOrDefault(Status.NAO_INICIADO, 0L)));
         serie.getData().add(new XYChart.Data<>("Em andamento", contagemPorStatus.getOrDefault(Status.EM_ANDAMENTO, 0L)));
@@ -153,14 +148,12 @@ public class HomeGestorArea extends Application {
             serie.getData().get(3).getNode().getStyleClass().add("barra-concluido");
         });
 
-        // Estilo visual
         barChart.setStyle("-fx-background-color: transparent; -fx-text-fill: white;");
         xAxis.setTickLabelFill(javafx.scene.paint.Color.WHITE);
         yAxis.setTickLabelFill(javafx.scene.paint.Color.WHITE);
         barChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         barChart.setLegendVisible(false);
 
-        // Adiciona o gráfico no boxChart1
         boxChart1.getChildren().add(barChart);
 
         StackPane boxChart2 = new StackPane();
@@ -179,7 +172,7 @@ public class HomeGestorArea extends Application {
 
         VBox alertList = new VBox(30);
         alertList.setAlignment(Pos.TOP_LEFT);
-        // --- Lógica de contagem de alertas ---
+
         long pdisAtrasados = pdisDoSetor.stream()
                 .filter(p -> p.getStatus() == Status.ATRASADO)
                 .count();
@@ -198,7 +191,6 @@ public class HomeGestorArea extends Application {
                 .distinct()
                 .count();
 
-        // --- Montagem dos alertas ---
         if (funcionariosComPdiAtrasado > 0) {
             alertList.getChildren().add(criarAlerta("• " + funcionariosComPdiAtrasado + " funcionário(s) com PDI(s) atrasado"));
         }
@@ -211,14 +203,12 @@ public class HomeGestorArea extends Application {
             alertList.getChildren().add(criarAlerta("• " + pdisAtrasados + " PDI(s) atrasados"));
         }
 
-        // Se não houver alertas, mostra mensagem positiva
         if (alertList.getChildren().isEmpty()) {
             Label allGood = new Label("Tudo certo com este setor! ✅");
             allGood.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 16px;");
             alertList.getChildren().add(allGood);
         }
 
-        // Adiciona ao container e ao layout do boxChart2
         alertContainer.getChildren().addAll(alertTitle, alertList);
         boxChart2.getChildren().add(alertContainer);
         VBox.setMargin(alertContainer, new Insets(10, 0, 0, 15));
@@ -226,8 +216,6 @@ public class HomeGestorArea extends Application {
         alertContainer.setId("alertContainer");
         alertTitle.setId("alertTitle");
         alertList.setId("alertList");
-
-        // ======= FIM DO BLOCO DE ALERTAS =======
 
         chartsContainer.getChildren().addAll(boxChart1, boxChart2);
 
@@ -244,8 +232,7 @@ public class HomeGestorArea extends Application {
         VBox center = new VBox();
         center.setId("center");
        
-        center.getChildren().addAll(titulo, container, chartsContainer);
-//        center.getChildren().addAll(titulo, container, chartsContainer, blob1, blob2, blob3);
+        center.getChildren().addAll(titulo, container, chartsContainer, blob1, blob2, blob3);
 
         BarraLateralGA barra = new BarraLateralGA(logado);
 
@@ -261,26 +248,26 @@ public class HomeGestorArea extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/HomeGestorArea.css").toExternalForm());
 
-//        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
-//        blob1.radiusYProperty().bind(blob1.radiusXProperty());
-//
-//        blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
-//        blob2.radiusYProperty().bind(blob2.radiusXProperty());
-//
-//        blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
-//        blob3.radiusYProperty().bind(blob3.radiusXProperty());
-//
-//        StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-//        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
-//        blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
-//
-//        StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
-//        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
-//        blob2.translateYProperty().bind(scene.heightProperty().multiply(0.3));
-//
-//        StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
-//        blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
-//        blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
+        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
+        blob1.radiusYProperty().bind(blob1.radiusXProperty());
+
+        blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.04));
+        blob2.radiusYProperty().bind(blob2.radiusXProperty());
+
+        blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
+        blob3.radiusYProperty().bind(blob3.radiusXProperty());
+
+        StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.70));
+        blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.95));
+
+        StackPane.setAlignment(blob2, Pos.TOP_RIGHT);
+        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.53));
+        blob2.translateYProperty().bind(scene.heightProperty().multiply(-1.22));
+
+        StackPane.setAlignment(blob3, Pos.BOTTOM_RIGHT);
+        blob3.translateXProperty().bind(scene.widthProperty().multiply(0.4));
+        blob3.translateYProperty().bind(scene.heightProperty().multiply(-0.38));
 
         homeggStage.setScene(scene);
         homeggStage.setFullScreen(true);

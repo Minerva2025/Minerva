@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,9 +16,11 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Colaborador;
@@ -33,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import dao.ColaboradorDAO;
 import dao.PdiDAO;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import util.POIExcelExporter;
 
@@ -62,6 +66,20 @@ public class Metas extends Application {
 	    Text titulo = new Text("Gerenciar Metas");
 	    titulo.setId("titulo");
 	    VBox.setMargin(titulo, new Insets(0, 0, 25, 0));
+	    
+	    Ellipse blob1 = new Ellipse();
+	    blob1.setId("blob1");
+	    
+	    Ellipse blob2 = new Ellipse();
+	    blob2.setId("blob2");
+	    
+	    Ellipse blob3 = new Ellipse();
+	    blob3.setId("blob3");
+	    
+	    GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
 	   
 	    tabela = new TableView<>();
 	    carregarTabela();
@@ -310,7 +328,7 @@ public class Metas extends Application {
         cadastrar.add(cbStatus, 1, 1);
         cadastrar.add(boxBotao, 0, 2, 2, 1); 
         
-        coluna1.getChildren().addAll(titulo, tabelaContainer, headerBox, boxTitulo, cadastrar);
+        coluna1.getChildren().addAll(titulo, tabelaContainer, headerBox, boxTitulo, cadastrar, blob1, blob2, blob3);
         
         
 	    // layout raiz
@@ -334,7 +352,30 @@ public class Metas extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 	    scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
+	    
+	    blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.015));
+		blob1.setManaged(false);
+
+		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.2));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(1.025));
+		blob2.setManaged(false);
+
+		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.6));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.012));
+		blob3.setManaged(false);
 	    
 	    metasStage.setScene(scene);
 	    metasStage.setFullScreen(true);

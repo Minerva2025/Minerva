@@ -48,6 +48,20 @@ public class AvaliacaoRH extends Application {
 		Text titulo = new Text("Avaliações");
 		titulo.setId("titulo");
 		
+		Ellipse blob1 = new Ellipse();
+		blob1.setId("blob1");
+		
+		Ellipse blob2 = new Ellipse();
+		blob2.setId("blob2");
+		
+		Ellipse blob3 = new Ellipse();
+		blob3.setId("blob3");
+		
+		GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
+		
 		//===========================================//
 		
 		Text subtit = new Text("Buscar colaborador");
@@ -318,7 +332,7 @@ public class AvaliacaoRH extends Application {
 		center.setPadding(new Insets(20, 20, 20, 20));
 		center.setSpacing(50);
 		center.setAlignment(Pos.TOP_LEFT);
-		center.getChildren().addAll(titulo, pesquisa, infoscolab, infosmeta, uploadArquivo, button);
+		center.getChildren().addAll(titulo, pesquisa, infoscolab, infosmeta, uploadArquivo, button, blob1, blob2, blob3);
 		
 		VBox tela = new VBox();
 		tela.setAlignment(Pos.TOP_LEFT);
@@ -348,8 +362,29 @@ public class AvaliacaoRH extends Application {
 		center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
 		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 
-		
+		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.035));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.35));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.01));
+		blob1.setManaged(false);
+
+		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.82));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.98));
+		blob2.setManaged(false);
+
+		StackPane.setAlignment(blob3, Pos.TOP_RIGHT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.5));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.1));
+		blob3.setManaged(false);
 
 		avaliacaorhStage.setScene(scene);
 		avaliacaorhStage.setFullScreen(true);

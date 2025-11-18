@@ -224,3 +224,7 @@
 .scroll-bar .thumb:hover {
     -fx-background-color: #aaa; 
 }
+
+#blob1, #blob2, #blob3{
+	-fx-fill: #323232;
+}

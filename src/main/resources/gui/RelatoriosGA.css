@@ -145,3 +145,7 @@
     -fx-background-color: #2E8B78; /* Verde escuro */
 }
 
+#blob1, #blob2, #blob3{
+	-fx-fill: #323232;
+}
+

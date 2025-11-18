@@ -4,3 +4,7 @@
     -fx-font-family: 'Kodchasan';
     -fx-letter-spacing: 2px;
 }
+
+#blob1, #blob2, #blob3{
+	-fx-fill: #323232;
+}
