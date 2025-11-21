@@ -10,6 +10,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -32,6 +34,10 @@ public class RelatoriosGG extends Application {
     PdiDAO pdiDAO = new PdiDAO();
     ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
     List<Colaborador> colaboradores = colaboradorDAO.listAll();
+    Colaborador ultimoColaborador = colaboradores.getLast();
+    private TextField barraDePesquisa;
+    private Colaborador relatorio;
+    private Text nameCardTitulo;
 
 
     private Usuario logado;
@@ -153,14 +159,69 @@ public class RelatoriosGG extends Application {
 
         boxPieChart.getChildren().add(pieChart);
 
-        // Graficos HBox
+        // Gráficos HBox
 
         HBox graficos = new HBox();
 
         graficos.getChildren().addAll(boxBarchart,boxPieChart);
 
+        // VBox Seção de Cards
+
+        VBox cards = new VBox();
+
+        // Barra de pesquisa
+
+        VBox cardsBoxTop = new VBox();
+        Text cardsTitulo = new Text("Buscar relátorios");
+
+        HBox cardsBarraDePesquisa = new HBox();
+        barraDePesquisa = new TextField("Pesquisar");
+
+        Button filtrar_btn = new Button("Filtrar");
+        filtrar_btn.setOnAction(event -> {
+            String filtro = barraDePesquisa.getText();
+            List<Colaborador> colaboradoresFiltrados = this.colaboradorDAO.findByNome(filtro);
+
+            if (colaboradoresFiltrados != null && !colaboradoresFiltrados.isEmpty()) {
+                this.relatorio = colaboradoresFiltrados.get(0);
+                // Atualiza o texto do nameCardTitulo
+                nameCardTitulo.setText(relatorio.getNome());
+            } else {
+                this.relatorio = null;
+                nameCardTitulo.setText("Nenhum colaborador encontrado");
+            }
+        });
+
+        cardsBarraDePesquisa.getChildren().addAll(barraDePesquisa,filtrar_btn);
+
+        cardsBoxTop.getChildren().addAll(cardsTitulo,cardsBarraDePesquisa);
+
+        // Cards Relatorios por nome
+
+        VBox nameCard = new VBox();
+        HBox nameCardInfos = new HBox();
+
+        nameCardTitulo = new Text(ultimoColaborador);
+
+        nameCardInfos.getChildren().add(nameCardTitulo);
+        nameCard.getChildren().add(nameCardInfos);
+
+
+
+
+
+
+
+
+
+
+
+
+        cards.getChildren().addAll(cardsBoxTop,nameCard);
+
+
         // AddAll do Center
-        center.getChildren().addAll(boxTitulo,graficos);
+        center.getChildren().addAll(boxTitulo,graficos,cards);
 
 
         // HBox root
@@ -207,5 +268,6 @@ public class RelatoriosGG extends Application {
         relatoriosggStage.setFullScreen(true);
         relatoriosggStage.setFullScreenExitHint("");
         relatoriosggStage.show();
+
     }
 }
