@@ -26,6 +26,7 @@ import model.Pdi;
 import model.Status;
 import model.Usuario;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -34,10 +35,16 @@ public class RelatoriosGG extends Application {
     PdiDAO pdiDAO = new PdiDAO();
     ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
     List<Colaborador> colaboradores = colaboradorDAO.listAll();
-    Colaborador ultimoColaborador = colaboradores.getLast();
-    private TextField barraDePesquisa;
-    private Colaborador relatorio;
-    private Text nameCardTitulo;
+    private VBox cards;
+    private VBox cardsBoxTop;
+    private int limit = 1;
+    private List<String> setores = Arrays.asList(
+            "Desenvolvimento",
+            "Marketing",
+            "Suporte",
+            "Financeiro",
+            "Pesquisa e Inovação"
+    );
 
 
     private Usuario logado;
@@ -72,13 +79,13 @@ public class RelatoriosGG extends Application {
         // Blobs
         Ellipse blob1 = new Ellipse();
         blob1.setId("blob1");
-        
+
         Ellipse blob2 = new Ellipse();
         blob2.setId("blob2");
-        
+
         Ellipse blob3 = new Ellipse();
         blob3.setId("blob3");
-        
+
         GaussianBlur blur = new GaussianBlur(40);
 		blob1.setEffect(blur);
 		blob2.setEffect(blur);
@@ -137,8 +144,8 @@ public class RelatoriosGG extends Application {
         }
 
         for(Colaborador colaborador : colaboradores){
-            serieConcluido.getData().add(new XYChart.Data<>(colaborador.getSetor(),totalConcluido));
-            serieAndamento.getData().add(new XYChart.Data<>(colaborador.getSetor(),totalAndamento));
+            serieConcluido.getData().add(new XYChart.Data<>(colaborador.getSetor(), totalConcluido));
+            serieAndamento.getData().add(new XYChart.Data<>(colaborador.getSetor(), totalAndamento));
             serieNaoIniciado.getData().add(new XYChart.Data<>(colaborador.getSetor(), totalNaoIniciado));
             serieAtrasado.getData().add(new XYChart.Data<>(colaborador.getSetor(), totalAtrasado));
         }
@@ -167,30 +174,18 @@ public class RelatoriosGG extends Application {
 
         // VBox Seção de Cards
 
-        VBox cards = new VBox();
+        cards = new VBox();
 
         // Barra de pesquisa
 
-        VBox cardsBoxTop = new VBox();
+        cardsBoxTop = new VBox();
         Text cardsTitulo = new Text("Buscar relátorios");
 
         HBox cardsBarraDePesquisa = new HBox();
-        barraDePesquisa = new TextField("Pesquisar");
+        TextField barraDePesquisa = new TextField("Pesquisar");
 
         Button filtrar_btn = new Button("Filtrar");
-        filtrar_btn.setOnAction(event -> {
-            String filtro = barraDePesquisa.getText();
-            List<Colaborador> colaboradoresFiltrados = this.colaboradorDAO.findByNome(filtro);
-
-            if (colaboradoresFiltrados != null && !colaboradoresFiltrados.isEmpty()) {
-                this.relatorio = colaboradoresFiltrados.get(0);
-                // Atualiza o texto do nameCardTitulo
-                nameCardTitulo.setText(relatorio.getNome());
-            } else {
-                this.relatorio = null;
-                nameCardTitulo.setText("Nenhum colaborador encontrado");
-            }
-        });
+        filtrar_btn.setOnAction(event -> filtrarColaboradores(barraDePesquisa.getText().toLowerCase()));
 
         cardsBarraDePesquisa.getChildren().addAll(barraDePesquisa,filtrar_btn);
 
@@ -198,26 +193,110 @@ public class RelatoriosGG extends Application {
 
         // Cards Relatorios por nome
 
-        VBox nameCard = new VBox();
-        HBox nameCardInfos = new HBox();
+        totalConcluido = 0;
+        totalAtrasado = 0;
+        totalAndamento = 0;
 
-        nameCardTitulo = new Text(ultimoColaborador);
+        cards.getChildren().add(cardsBoxTop);
 
-        nameCardInfos.getChildren().add(nameCardTitulo);
-        nameCard.getChildren().add(nameCardInfos);
+        limit = 1;
+        int contador = 0;
 
+        for(Colaborador relatorio: colaboradores){
+            if(contador >= limit) break;
+            contador++;
 
+            List<Pdi> listaDePdis = pdiDAO.findByColaborador(relatorio.getId());
 
+            int totalConcluidoPorColaborador = (int) listaDePdis.stream()
+                    .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
+                    .count();
+            totalConcluido = totalConcluido + totalConcluidoPorColaborador;
 
+            int totalAndamentoPorColaborador = (int) listaDePdis.stream()
+                    .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
+                    .count();
+            totalAndamento = totalAndamento + totalAndamentoPorColaborador;
 
+            int totalAtrasadoPorColaborador = (int) listaDePdis.stream()
+                    .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
+                    .count();
+            totalAtrasado = totalAtrasado + totalAtrasadoPorColaborador;
 
+            HBox nameCard = new HBox();
+            VBox nameCardInfos = new VBox();
 
+            Text nameCardTitulo = new Text(relatorio.getNome());
+            Text nameCardSetor = new Text(relatorio.getSetor());
+            Text nameCardCargo = new Text(relatorio.getCargo());
 
+            ObservableList<PieChart.Data> nameCardPieChartData = FXCollections.observableArrayList(
+                    new PieChart.Data("Metas em andamento", totalAndamento),
+                    new PieChart.Data("Metas concluidas", totalConcluido),
+                    new PieChart.Data("Metas atrasadas", totalAtrasado)
+            );
+            PieChart nameCardPieChart = new PieChart(nameCardPieChartData);
 
+            nameCardInfos.getChildren().addAll(nameCardTitulo, nameCardSetor, nameCardCargo);
+            nameCard.getChildren().addAll(nameCardInfos, nameCardPieChart);
 
+            cards.getChildren().add(nameCard);
 
+            Button maisNameCards = new Button("Ver mais relatórios de colaboradores");
+            cards.getChildren().add(maisNameCards);
+        }
 
-        cards.getChildren().addAll(cardsBoxTop,nameCard);
+        // Cards Relatorios por setor
+
+        contador = 0;
+
+        for (String setor : setores) {
+            if (contador >= limit) break;
+            contador++;
+
+            List<Colaborador> colaboradoresDoSetor = colaboradorDAO.findBySetor(setor);
+
+            totalConcluido = 0;
+            totalAndamento = 0;
+            totalAtrasado = 0;
+
+            for (Colaborador c : colaboradoresDoSetor) {
+                List<Pdi> listaDePdis = pdiDAO.findByColaborador(c.getId());
+
+                totalConcluido += (int) listaDePdis.stream()
+                        .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
+                        .count();
+
+                totalAndamento += (int) listaDePdis.stream()
+                        .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
+                        .count();
+
+                totalAtrasado += (int) listaDePdis.stream()
+                        .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
+                        .count();
+            }
+
+            HBox setorCard = new HBox();
+            VBox setorInfos = new VBox();
+
+            Text setorTitulo = new Text(setor);
+            Text totalColaboradores = new Text("Colaboradores: " + colaboradoresDoSetor.size());
+
+            ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
+                    new PieChart.Data("Metas em andamento", totalAndamento),
+                    new PieChart.Data("Metas concluidas", totalConcluido),
+                    new PieChart.Data("Metas atrasadas", totalAtrasado)
+            );
+            PieChart chart = new PieChart(pieData);
+
+            setorInfos.getChildren().addAll(setorTitulo, totalColaboradores);
+            setorCard.getChildren().addAll(setorInfos, chart);
+
+            cards.getChildren().add(setorCard);
+        }
+
+        Button maisSetorCards = new Button("Ver mais relatórios de divisões do setor");
+        cards.getChildren().add(maisSetorCards);
 
 
         // AddAll do Center
@@ -239,9 +318,9 @@ public class RelatoriosGG extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/RelatoriosGG.css").toExternalForm());
-        
+
         blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
-		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
+		blob1.radiusYProperty().bind(blob1.radiusXProperty());
 
 		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
 		blob2.radiusYProperty().bind(blob2.radiusXProperty());
@@ -268,6 +347,58 @@ public class RelatoriosGG extends Application {
         relatoriosggStage.setFullScreen(true);
         relatoriosggStage.setFullScreenExitHint("");
         relatoriosggStage.show();
-
     }
+
+    // Métodos
+
+    private void filtrarColaboradores(String pesquisa) {
+
+        cards.getChildren().clear();
+        cards.getChildren().add(cardsBoxTop);
+
+        int contador = 0;
+
+        for (Colaborador relatorios : colaboradores) {
+            if (contador >= limit) break;
+
+            boolean incluiCard = relatorios.getNome().toLowerCase().contains(pesquisa)
+                    || relatorios.getSetor().toLowerCase().contains(pesquisa)
+                    || relatorios.getCargo().toLowerCase().contains(pesquisa);
+
+            if (incluiCard) {
+                contador++;
+
+                HBox nameCard = new HBox();
+                VBox nameCardInfos = new VBox();
+
+                Text nameCardTitulo = new Text(relatorios.getNome());
+                Text nameCardSetor = new Text(relatorios.getSetor());
+                Text nameCardCargo = new Text(relatorios.getCargo());
+
+                List<Pdi> listaDePdis = pdiDAO.findByColaborador(relatorios.getId());
+                int totalConcluido = (int) listaDePdis.stream()
+                        .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
+                        .count();
+                int totalAndamento = (int) listaDePdis.stream()
+                        .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
+                        .count();
+                int totalAtrasado = (int) listaDePdis.stream()
+                        .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
+                        .count();
+
+                PieChart nameCardChart = new PieChart(FXCollections.observableArrayList(
+                        new PieChart.Data("Metas em andamento", totalAndamento),
+                        new PieChart.Data("Metas concluidas", totalConcluido),
+                        new PieChart.Data("Metas atrasadas", totalAtrasado)
+                ));
+
+                nameCardInfos.getChildren().addAll(nameCardTitulo, nameCardSetor, nameCardCargo);
+                nameCard.getChildren().addAll(nameCardInfos, nameCardChart);
+
+                cards.getChildren().add(nameCard);
+            }
+        }
+    }
+
+
 }
