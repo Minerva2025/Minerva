@@ -27,7 +27,9 @@ import model.Status;
 import model.Usuario;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class RelatoriosGG extends Application {
@@ -37,6 +39,8 @@ public class RelatoriosGG extends Application {
     List<Colaborador> colaboradores = colaboradorDAO.listAll();
     private VBox cards;
     private VBox cardsBoxTop;
+    private VBox nameCardsContainer;
+    private VBox setorCardsContainer;
     private int limit = 1;
     private List<String> setores = Arrays.asList(
             "Desenvolvimento",
@@ -92,7 +96,6 @@ public class RelatoriosGG extends Application {
 		blob3.setEffect(blur);
 
         // BarChart
-
         VBox boxBarchart = new VBox();
 
         CategoryAxis xAxis = new CategoryAxis();
@@ -114,48 +117,42 @@ public class RelatoriosGG extends Application {
         XYChart.Series<String, Number> serieAtrasado = new XYChart.Series<>();
         serieAtrasado.setName("Atrasado");
 
-        int totalConcluido = 0;
-        int totalAndamento = 0;
-        int totalNaoIniciado = 0;
-        int totalAtrasado = 0;
+        Map<String, int[]> totalPorSetor = new HashMap<>();
 
-        for(Colaborador colaborador : colaboradores){
+        for (Colaborador colaborador : colaboradores) {
             List<Pdi> listaDePdis = pdiDAO.findByColaborador(colaborador.getId());
 
-            int totalConcluidoPorColaborador = (int) listaDePdis.stream()
-                    .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
-                    .count();
-            totalConcluido = totalConcluido + totalConcluidoPorColaborador;
+            int[] totais = totalPorSetor.getOrDefault(colaborador.getSetor(), new int[4]);
 
-            int totalAndamentoPorColaborador = (int) listaDePdis.stream()
-                    .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
-                    .count();
-            totalAndamento = totalAndamento + totalAndamentoPorColaborador;
+            totais[0] += listaDePdis.stream().filter(pdi -> pdi.getStatus() == Status.CONCLUIDO).count();
+            totais[1] += listaDePdis.stream().filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO).count();
+            totais[2] += listaDePdis.stream().filter(pdi -> pdi.getStatus() == Status.NAO_INICIADO).count();
+            totais[3] += listaDePdis.stream().filter(pdi -> pdi.getStatus() == Status.ATRASADO).count();
 
-            int totalNaoIniciadoPorColaborador = (int) listaDePdis.stream()
-                    .filter(pdi -> pdi.getStatus() == Status.NAO_INICIADO)
-                    .count();
-            totalNaoIniciado = totalNaoIniciado + totalNaoIniciadoPorColaborador;
-
-            int totalAtrasadoPorColaborador = (int) listaDePdis.stream()
-                    .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
-                    .count();
-            totalAtrasado = totalAtrasado + totalAtrasadoPorColaborador;
+            totalPorSetor.put(colaborador.getSetor(), totais);
         }
 
-        for(Colaborador colaborador : colaboradores){
-            serieConcluido.getData().add(new XYChart.Data<>(colaborador.getSetor(), totalConcluido));
-            serieAndamento.getData().add(new XYChart.Data<>(colaborador.getSetor(), totalAndamento));
-            serieNaoIniciado.getData().add(new XYChart.Data<>(colaborador.getSetor(), totalNaoIniciado));
-            serieAtrasado.getData().add(new XYChart.Data<>(colaborador.getSetor(), totalAtrasado));
+        for (String setor : totalPorSetor.keySet()) {
+            int[] totais = totalPorSetor.get(setor);
+            serieConcluido.getData().add(new XYChart.Data<>(setor, totais[0]));
+            serieAndamento.getData().add(new XYChart.Data<>(setor, totais[1]));
+            serieNaoIniciado.getData().add(new XYChart.Data<>(setor, totais[2]));
+            serieAtrasado.getData().add(new XYChart.Data<>(setor, totais[3]));
         }
 
         barChart.getData().addAll(serieConcluido,serieAndamento,serieNaoIniciado,serieAtrasado);
         boxBarchart.getChildren().add(barChart);
 
         // PieChart
-
         VBox boxPieChart = new VBox();
+
+        int totalAndamento = totalPorSetor.values().stream()
+                .mapToInt(totais -> totais[1])
+                .sum();
+
+        int totalAtrasado = totalPorSetor.values().stream()
+                .mapToInt(totais -> totais[3])
+                .sum();
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                 new PieChart.Data("Metas em andamento", totalAndamento),
@@ -167,17 +164,14 @@ public class RelatoriosGG extends Application {
         boxPieChart.getChildren().add(pieChart);
 
         // Gráficos HBox
-
         HBox graficos = new HBox();
 
         graficos.getChildren().addAll(boxBarchart,boxPieChart);
 
         // VBox Seção de Cards
-
         cards = new VBox();
 
         // Barra de pesquisa
-
         cardsBoxTop = new VBox();
         Text cardsTitulo = new Text("Buscar relátorios");
 
@@ -192,111 +186,22 @@ public class RelatoriosGG extends Application {
         cardsBoxTop.getChildren().addAll(cardsTitulo,cardsBarraDePesquisa);
 
         // Cards Relatorios por nome
+        nameCardsContainer = new VBox();
+        criarNameCards(colaboradores);
 
-        totalConcluido = 0;
-        totalAtrasado = 0;
-        totalAndamento = 0;
+        Button maisNameCards_btn = new Button("Ver mais relatórios de colaboradores");
 
-        cards.getChildren().add(cardsBoxTop);
 
-        limit = 1;
-        int contador = 0;
-
-        for(Colaborador relatorio: colaboradores){
-            if(contador >= limit) break;
-            contador++;
-
-            List<Pdi> listaDePdis = pdiDAO.findByColaborador(relatorio.getId());
-
-            int totalConcluidoPorColaborador = (int) listaDePdis.stream()
-                    .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
-                    .count();
-            totalConcluido = totalConcluido + totalConcluidoPorColaborador;
-
-            int totalAndamentoPorColaborador = (int) listaDePdis.stream()
-                    .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
-                    .count();
-            totalAndamento = totalAndamento + totalAndamentoPorColaborador;
-
-            int totalAtrasadoPorColaborador = (int) listaDePdis.stream()
-                    .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
-                    .count();
-            totalAtrasado = totalAtrasado + totalAtrasadoPorColaborador;
-
-            HBox nameCard = new HBox();
-            VBox nameCardInfos = new VBox();
-
-            Text nameCardTitulo = new Text(relatorio.getNome());
-            Text nameCardSetor = new Text(relatorio.getSetor());
-            Text nameCardCargo = new Text(relatorio.getCargo());
-
-            ObservableList<PieChart.Data> nameCardPieChartData = FXCollections.observableArrayList(
-                    new PieChart.Data("Metas em andamento", totalAndamento),
-                    new PieChart.Data("Metas concluidas", totalConcluido),
-                    new PieChart.Data("Metas atrasadas", totalAtrasado)
-            );
-            PieChart nameCardPieChart = new PieChart(nameCardPieChartData);
-
-            nameCardInfos.getChildren().addAll(nameCardTitulo, nameCardSetor, nameCardCargo);
-            nameCard.getChildren().addAll(nameCardInfos, nameCardPieChart);
-
-            cards.getChildren().add(nameCard);
-
-            Button maisNameCards = new Button("Ver mais relatórios de colaboradores");
-            cards.getChildren().add(maisNameCards);
-        }
 
         // Cards Relatorios por setor
+        setorCardsContainer = new VBox();
+        criarSetorCards(setores);
 
-        contador = 0;
+        Button maisSetorCards_btn = new Button("Ver mais relatórios de divisões do setor");
 
-        for (String setor : setores) {
-            if (contador >= limit) break;
-            contador++;
 
-            List<Colaborador> colaboradoresDoSetor = colaboradorDAO.findBySetor(setor);
-
-            totalConcluido = 0;
-            totalAndamento = 0;
-            totalAtrasado = 0;
-
-            for (Colaborador c : colaboradoresDoSetor) {
-                List<Pdi> listaDePdis = pdiDAO.findByColaborador(c.getId());
-
-                totalConcluido += (int) listaDePdis.stream()
-                        .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
-                        .count();
-
-                totalAndamento += (int) listaDePdis.stream()
-                        .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
-                        .count();
-
-                totalAtrasado += (int) listaDePdis.stream()
-                        .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
-                        .count();
-            }
-
-            HBox setorCard = new HBox();
-            VBox setorInfos = new VBox();
-
-            Text setorTitulo = new Text(setor);
-            Text totalColaboradores = new Text("Colaboradores: " + colaboradoresDoSetor.size());
-
-            ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
-                    new PieChart.Data("Metas em andamento", totalAndamento),
-                    new PieChart.Data("Metas concluidas", totalConcluido),
-                    new PieChart.Data("Metas atrasadas", totalAtrasado)
-            );
-            PieChart chart = new PieChart(pieData);
-
-            setorInfos.getChildren().addAll(setorTitulo, totalColaboradores);
-            setorCard.getChildren().addAll(setorInfos, chart);
-
-            cards.getChildren().add(setorCard);
-        }
-
-        Button maisSetorCards = new Button("Ver mais relatórios de divisões do setor");
-        cards.getChildren().add(maisSetorCards);
+        // AddAll do Cards
+        cards.getChildren().addAll(cardsBoxTop,nameCardsContainer,maisNameCards_btn, setorCardsContainer, maisSetorCards_btn);
 
 
         // AddAll do Center
@@ -313,7 +218,6 @@ public class RelatoriosGG extends Application {
 
 
         // Scene
-
         Scene scene = new Scene(root, 1000, 600);
         scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
@@ -352,10 +256,6 @@ public class RelatoriosGG extends Application {
     // Métodos
 
     private void filtrarColaboradores(String pesquisa) {
-
-        cards.getChildren().clear();
-        cards.getChildren().add(cardsBoxTop);
-
         int contador = 0;
 
         for (Colaborador relatorios : colaboradores) {
@@ -366,39 +266,113 @@ public class RelatoriosGG extends Application {
                     || relatorios.getCargo().toLowerCase().contains(pesquisa);
 
             if (incluiCard) {
-                contador++;
-
-                HBox nameCard = new HBox();
-                VBox nameCardInfos = new VBox();
-
-                Text nameCardTitulo = new Text(relatorios.getNome());
-                Text nameCardSetor = new Text(relatorios.getSetor());
-                Text nameCardCargo = new Text(relatorios.getCargo());
-
-                List<Pdi> listaDePdis = pdiDAO.findByColaborador(relatorios.getId());
-                int totalConcluido = (int) listaDePdis.stream()
-                        .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
-                        .count();
-                int totalAndamento = (int) listaDePdis.stream()
-                        .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
-                        .count();
-                int totalAtrasado = (int) listaDePdis.stream()
-                        .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
-                        .count();
-
-                PieChart nameCardChart = new PieChart(FXCollections.observableArrayList(
-                        new PieChart.Data("Metas em andamento", totalAndamento),
-                        new PieChart.Data("Metas concluidas", totalConcluido),
-                        new PieChart.Data("Metas atrasadas", totalAtrasado)
-                ));
-
-                nameCardInfos.getChildren().addAll(nameCardTitulo, nameCardSetor, nameCardCargo);
-                nameCard.getChildren().addAll(nameCardInfos, nameCardChart);
-
-                cards.getChildren().add(nameCard);
+                nameCardsContainer.getChildren().clear();
+                List<Colaborador> filtrados = colaboradores.stream()
+                        .filter(relatorio -> relatorio.getNome().toLowerCase().contains(pesquisa)
+                                || relatorio.getSetor().toLowerCase().contains(pesquisa)
+                                || relatorio.getCargo().toLowerCase().contains(pesquisa))
+                        .toList();
+                criarNameCards(filtrados);
             }
         }
     }
+
+    private void criarNameCards(List<Colaborador> lista) {
+        int totalConcluido = 0;
+        int totalAndamento = 0;
+        int totalAtrasado = 0;
+        int contador = 0;
+
+        for (Colaborador relatorio : lista) {
+            if (contador >= limit) break;
+            contador++;
+
+            List<Pdi> listaDePdis = pdiDAO.findByColaborador(relatorio.getId());
+
+            int totalConcluidoPorColaborador = (int) listaDePdis.stream()
+                    .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
+                    .count();
+            totalConcluido += totalConcluidoPorColaborador;
+
+            int totalAndamentoPorColaborador = (int) listaDePdis.stream()
+                    .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
+                    .count();
+            totalAndamento += totalAndamentoPorColaborador;
+
+            int totalAtrasadoPorColaborador = (int) listaDePdis.stream()
+                    .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
+                    .count();
+            totalAtrasado += totalAtrasadoPorColaborador;
+
+            HBox nameCard = new HBox();
+            VBox nameCardInfos = new VBox();
+
+            Text nameCardTitulo = new Text(relatorio.getNome());
+            Text nameCardSetor = new Text(relatorio.getSetor());
+            Text nameCardCargo = new Text(relatorio.getCargo());
+
+            PieChart nameCardPieChart = new PieChart(FXCollections.observableArrayList(
+                    new PieChart.Data("Metas em andamento", totalAndamento),
+                    new PieChart.Data("Metas concluídas", totalConcluido),
+                    new PieChart.Data("Metas atrasadas", totalAtrasado)
+            ));
+
+            nameCardInfos.getChildren().addAll(nameCardTitulo, nameCardSetor, nameCardCargo);
+            nameCard.getChildren().addAll(nameCardInfos, nameCardPieChart);
+
+            nameCardsContainer.getChildren().add(nameCard);
+        }
+    }
+
+    private void criarSetorCards(List<String> setores) {
+        int contador = 0;
+
+        for (String setor : setores) {
+            if (contador >= limit) break;
+            contador++;
+
+            List<Colaborador> colaboradoresDoSetor = colaboradorDAO.findBySetor(setor);
+
+            int totalConcluido = 0;
+            int totalAndamento = 0;
+            int totalAtrasado = 0;
+
+            for (Colaborador relatorio : colaboradoresDoSetor) {
+                List<Pdi> listaDePdis = pdiDAO.findByColaborador(relatorio.getId());
+
+                totalConcluido += (int) listaDePdis.stream()
+                        .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
+                        .count();
+
+                totalAndamento += (int) listaDePdis.stream()
+                        .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
+                        .count();
+
+                totalAtrasado += (int) listaDePdis.stream()
+                        .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
+                        .count();
+            }
+
+            HBox setorCard = new HBox();
+            VBox setorCardInfos = new VBox();
+
+            Text setorTitulo = new Text(setor);
+            Text totalColaboradores = new Text("Colaboradores: " + colaboradoresDoSetor.size());
+
+            PieChart chart = new PieChart(FXCollections.observableArrayList(
+                    new PieChart.Data("Metas em andamento", totalAndamento),
+                    new PieChart.Data("Metas concluidas", totalConcluido),
+                    new PieChart.Data("Metas atrasadas", totalAtrasado)
+            ));
+
+            setorCardInfos.getChildren().addAll(setorTitulo, totalColaboradores);
+            setorCard.getChildren().addAll(setorCardInfos, chart);
+
+            setorCardsContainer.getChildren().add(setorCard);
+        }
+    }
+
+
 
 
 }
