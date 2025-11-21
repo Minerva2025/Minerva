@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.Button;
@@ -80,21 +81,6 @@ public class RelatoriosGG extends Application {
 
         boxTitulo.getChildren().add(titulo);
 
-        // Blobs
-        Ellipse blob1 = new Ellipse();
-        blob1.setId("blob1");
-
-        Ellipse blob2 = new Ellipse();
-        blob2.setId("blob2");
-
-        Ellipse blob3 = new Ellipse();
-        blob3.setId("blob3");
-
-        GaussianBlur blur = new GaussianBlur(40);
-		blob1.setEffect(blur);
-		blob2.setEffect(blur);
-		blob3.setEffect(blur);
-
         // BarChart
         VBox boxBarchart = new VBox();
 
@@ -160,12 +146,10 @@ public class RelatoriosGG extends Application {
         );
 
         PieChart pieChart = new PieChart(pieChartData);
-
         boxPieChart.getChildren().add(pieChart);
 
         // Gráficos HBox
         HBox graficos = new HBox();
-
         graficos.getChildren().addAll(boxBarchart,boxPieChart);
 
         // VBox Seção de Cards
@@ -182,7 +166,6 @@ public class RelatoriosGG extends Application {
         filtrar_btn.setOnAction(event -> filtrarColaboradores(barraDePesquisa.getText().toLowerCase()));
 
         cardsBarraDePesquisa.getChildren().addAll(barraDePesquisa,filtrar_btn);
-
         cardsBoxTop.getChildren().addAll(cardsTitulo,cardsBarraDePesquisa);
 
         // Cards Relatorios por nome
@@ -190,15 +173,41 @@ public class RelatoriosGG extends Application {
         criarNameCards(colaboradores);
 
         Button maisNameCards_btn = new Button("Ver mais relatórios de colaboradores");
+        maisNameCards_btn.setOnAction(event -> {
+            Stage relatoriosggcolaboradoresStage = new Stage();
+            new RelatoriosGGColaboradores(logado).start(relatoriosggcolaboradoresStage);
 
-
+            Stage stageAtual = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stageAtual.close();
+        });
 
         // Cards Relatorios por setor
         setorCardsContainer = new VBox();
         criarSetorCards(setores);
 
         Button maisSetorCards_btn = new Button("Ver mais relatórios de divisões do setor");
+        maisSetorCards_btn.setOnAction(event -> {
+            Stage relatoriosggsetoresStage = new Stage();
+            new RelatoriosGGSetores(logado).start(relatoriosggsetoresStage);
 
+            Stage stageAtual = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stageAtual.close();
+        });
+
+        // Blobs
+        Ellipse blob1 = new Ellipse();
+        blob1.setId("blob1");
+
+        Ellipse blob2 = new Ellipse();
+        blob2.setId("blob2");
+
+        Ellipse blob3 = new Ellipse();
+        blob3.setId("blob3");
+
+        GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
 
         // AddAll do Cards
         cards.getChildren().addAll(cardsBoxTop,nameCardsContainer,maisNameCards_btn, setorCardsContainer, maisSetorCards_btn);
@@ -254,7 +263,6 @@ public class RelatoriosGG extends Application {
     }
 
     // Métodos
-
     private void filtrarColaboradores(String pesquisa) {
         int contador = 0;
 
