@@ -14,9 +14,11 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -82,17 +84,25 @@ public class RelatoriosGG extends Application {
         boxTitulo.getChildren().add(titulo);
 
         // BarChart
-        VBox boxBarchart = new VBox();
+        VBox barChartContainer = new VBox();
+        barChartContainer.getStyleClass().add("chartContainer");
+
 
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Setor");
 
-        NumberAxis yAxis = new NumberAxis();
+
+        NumberAxis yAxis = new NumberAxis(0,20,1);
         yAxis.setLabel("Evolução");
+        yAxis.setTickLabelsVisible(false);
+        yAxis.setTickMarkVisible(false);
+        yAxis.setMinorTickVisible(false);
 
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
-        barChart.setTitle("Evolução das metas por setor.");
-        barra.setId("barchart");
+        barChart.setTitle("Evolução");
+        barChart.setHorizontalGridLinesVisible(false);
+        barChart.setVerticalGridLinesVisible(false);
+        barChart.setMaxSize(600,350);
 
         XYChart.Series<String, Number> serieConcluido = new XYChart.Series<>();
         serieConcluido.setName("Concluido");
@@ -127,10 +137,12 @@ public class RelatoriosGG extends Application {
         }
 
         barChart.getData().addAll(serieConcluido,serieAndamento,serieNaoIniciado,serieAtrasado);
-        boxBarchart.getChildren().add(barChart);
+        barChartContainer.getChildren().add(barChart);
+
 
         // PieChart
-        VBox boxPieChart = new VBox();
+        VBox pieChartContainer = new VBox();
+        pieChartContainer.getStyleClass().add("chartContainer");
 
         int totalAndamento = totalPorSetor.values().stream()
                 .mapToInt(totais -> totais[1])
@@ -146,23 +158,34 @@ public class RelatoriosGG extends Application {
         );
 
         PieChart pieChart = new PieChart(pieChartData);
-        boxPieChart.getChildren().add(pieChart);
+        pieChartContainer.getChildren().add(pieChart);
+        pieChart.setMaxSize(600,350);
 
         // Gráficos HBox
         HBox graficos = new HBox();
-        graficos.getChildren().addAll(boxBarchart,boxPieChart);
+        graficos.setSpacing(30);
+        graficos.setPadding(new Insets(15));
+        graficos.setAlignment(Pos.CENTER);
+        graficos.getChildren().addAll(barChartContainer,pieChartContainer);
 
         // VBox Seção de Cards
         cards = new VBox();
+        cards.setSpacing(15);
+        cards.setPadding(new Insets(15));
 
         // Barra de pesquisa
-        cardsBoxTop = new VBox();
+        cardsBoxTop = new VBox(15);
         Text cardsTitulo = new Text("Buscar relátorios");
+        cardsTitulo.setId("cardsTitle");
 
-        HBox cardsBarraDePesquisa = new HBox();
+        HBox cardsBarraDePesquisa = new HBox(15);
+        cardsBarraDePesquisa.setId("barraDePesquisa");
         TextField barraDePesquisa = new TextField("Pesquisar");
+        barraDePesquisa.setId("textfield_barraDePesquisa");
+        barraDePesquisa.setPrefSize(800,275);
 
         Button filtrar_btn = new Button("Filtrar");
+        filtrar_btn.getStyleClass().add("filtrar_btn");
         filtrar_btn.setOnAction(event -> filtrarColaboradores(barraDePesquisa.getText().toLowerCase()));
 
         cardsBarraDePesquisa.getChildren().addAll(barraDePesquisa,filtrar_btn);
@@ -170,9 +193,17 @@ public class RelatoriosGG extends Application {
 
         // Cards Relatorios por nome
         nameCardsContainer = new VBox();
+        nameCardsContainer.getStyleClass().add("nameCardsContainer");
         criarNameCards(colaboradores);
 
+
+        VBox maisNameCardsContainer = new VBox(15);
+        maisNameCardsContainer.setAlignment(Pos.CENTER);
+
         Button maisNameCards_btn = new Button("Ver mais relatórios de colaboradores");
+        maisNameCards_btn.setId("maisNameCards_btn");
+        maisNameCards_btn.getStyleClass().add("btn");
+        maisNameCards_btn.setAlignment(Pos.CENTER);
         maisNameCards_btn.setOnAction(event -> {
             Stage relatoriosggcolaboradoresStage = new Stage();
             new RelatoriosGGColaboradores(logado).start(relatoriosggcolaboradoresStage);
@@ -180,12 +211,18 @@ public class RelatoriosGG extends Application {
             Stage stageAtual = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stageAtual.close();
         });
+        maisNameCardsContainer.getChildren().add(maisNameCards_btn);
 
         // Cards Relatorios por setor
         setorCardsContainer = new VBox();
+        setorCardsContainer.getStyleClass().add("setorCardsContainer");
         criarSetorCards(setores);
 
+        VBox maisSetorCardsContainer = new VBox(15);
+        maisSetorCardsContainer.setAlignment(Pos.CENTER);
+
         Button maisSetorCards_btn = new Button("Ver mais relatórios de divisões do setor");
+        maisSetorCards_btn.getStyleClass().add("btn");
         maisSetorCards_btn.setOnAction(event -> {
             Stage relatoriosggsetoresStage = new Stage();
             new RelatoriosGGSetores(logado).start(relatoriosggsetoresStage);
@@ -193,6 +230,8 @@ public class RelatoriosGG extends Application {
             Stage stageAtual = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stageAtual.close();
         });
+        maisSetorCardsContainer.getChildren().addAll(maisSetorCards_btn);
+
 
         // Blobs
         Ellipse blob1 = new Ellipse();
@@ -210,7 +249,7 @@ public class RelatoriosGG extends Application {
 		blob3.setEffect(blur);
 
         // AddAll do Cards
-        cards.getChildren().addAll(cardsBoxTop,nameCardsContainer,maisNameCards_btn, setorCardsContainer, maisSetorCards_btn);
+        cards.getChildren().addAll(cardsBoxTop,nameCardsContainer,maisNameCardsContainer, setorCardsContainer, maisSetorCardsContainer);
 
 
         // AddAll do Center

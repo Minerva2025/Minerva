@@ -1,10 +1,90 @@
-#titulo{
+/* Topo da pagina */
+#titulo {
+  -fx-fill: white;
+  -fx-font-size: 48px;
+  -fx-font-family: "Kodchasan";
+  -fx-letter-spacing: 2px;
+}
+/* Graficos */
+.chartContainer {
+  -fx-background-color: #323232cc;
+  -fx-background-radius: 30;
+  -fx-padding: 20;
+}
+.chart {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+  -fx-fill: white;
+}
+.chart .chart-plot-background {
+  -fx-background-color: transparent;
+}
+.label {
+  -fx-text-fill: #ffffff;
+  -fx-font-family: "JuliusSansOne";
+}
+.chart-bar .x-axis .axis-label {
     -fx-fill: white;
-    -fx-font-size: 48px;
-    -fx-font-family: 'Kodchasan';
-    -fx-letter-spacing: 2px;
 }
 
-#blob1, #blob2, #blob3{
-	-fx-fill: #323232;
+.chart-bar .x-axis .tick-label {
+    -fx-fill: white;
+    -fx-font-size: 14px;
+}
+
+.chart-bar.default-color0 {
+    -fx-bar-fill: #4CAF50;
+}
+.chart-bar.default-color0 {
+    -fx-bar-fill: #49ACA0;
+}
+.chart-bar.default-color1 {
+    -fx-bar-fill: #86D2C9;
+}
+.chart-bar.default-color2 {
+    -fx-bar-fill: #24776D;
+}
+.chart-bar.default-color3 {
+    -fx-bar-fill: #2C8E83;
+}
+/* Barra de pesquisa/Filtro */
+#cardsTitle {
+  -fx-fill: #ffffff;
+  -fx-font-size: 20;
+  -fx-font-family: "Kodchasan";
+}
+#textfield_barraDePesquisa {
+  -fx-background-color: #323232cc;
+  -fx-background-radius: 15;
+  -fx-text-fill: #ffffff;
+}
+.filtrar_btn {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+}
+.btn {
+  -fx-background-color: #323232;
+  -fx-text-fill: white;
+  -fx-font-size: 18px;
+  -fx-background-radius: 30px;
+  -fx-cursor: hand;
+  -fx-padding: 10px 25px;
+}
+/* Cards de colaborador por nome */
+.nameCardsContainer {
+  -fx-background-color: #323232cc;
+  -fx-background-radius: 30;
+  -fx-padding: 20;
+}
+/* Cards de colaborador por setor */
+.setorCardsContainer {
+  -fx-background-color: #323232cc;
+  -fx-background-radius: 30;
+  -fx-padding: 20;
+}
+/* Blobs */
+#blob1,
+#blob2,
+#blob3 {
+  -fx-fill: #323232;
 }
