@@ -80,6 +80,11 @@ public class AvaliacaoRH extends Application {
 
 		ObservableList<Colaborador> todosColaboradores = FXCollections.observableArrayList(colaboradorDAO.listAll());
 		colaborador.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+			Colaborador selecionado = colaborador.getSelectionModel().getSelectedItem();
+			if (selecionado != null) {
+				return;
+			}
+			
 			if (newValue == null || newValue.isEmpty()) {
 				// apenas limpa a seleção e não altera os itens
 				colaborador.getSelectionModel().clearSelection();
@@ -277,13 +282,19 @@ public class AvaliacaoRH extends Application {
 		    Pdi metaSelecionada = metas.getSelectionModel().getSelectedItem(); 
 		    String statusSelecionado = status.getSelectionModel().getSelectedItem(); 
 
-		    if (metaSelecionada != null && statusSelecionado != null) {
-		        Status novoStatus = Status.valueOf(statusSelecionado);
-		        
-		        metaSelecionada.setStatus(novoStatus);
-		        pdiDAO.update(metaSelecionada);
-		        
-		      
+		    if (metaSelecionada == null || statusSelecionado == null) {
+		    	Alert erro = new Alert(Alert.AlertType.ERROR);
+		        erro.setTitle("Erro");
+		        erro.setHeaderText(null);
+		        erro.setContentText("Selecione uma meta e um status antes de salvar.");
+		        erro.showAndWait();
+		        return; 
+		    }
+		    
+		    Status novoStatus = converterParaEnum(statusSelecionado);
+		    metaSelecionada.setStatus(novoStatus);
+		    pdiDAO.update(metaSelecionada);
+		    
 		   if (arquivoSelecionado != null) { 
 		                File pastaUploads = new File(System.getProperty("user.dir") + "/uploads");
 		                if (!pastaUploads.exists()) pastaUploads.mkdirs();
@@ -296,28 +307,30 @@ public class AvaliacaoRH extends Application {
 		                } catch (IOException e) {
 		                    e.printStackTrace();
 		                }
+		   }
 		                
-		                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-		                alerta.setTitle("Sucesso");
-		                alerta.setHeaderText(null);
-		                alerta.setContentText("Dados salvos com sucesso!");
-		                alerta.initOwner(avaliacaorhStage);
-		                alerta.initModality(Modality.WINDOW_MODAL); 
-		                DialogPane dialogPane = alerta.getDialogPane();
-		                dialogPane.setStyle("-fx-background-color: white");
-		                alerta.showAndWait();
-		                
+		   Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+		   alerta.setTitle("Sucesso");
+		   alerta.setHeaderText(null);
+		   alerta.setContentText("Dados salvos com sucesso!");
+		   alerta.initOwner(avaliacaorhStage);
+		   alerta.initModality(Modality.WINDOW_MODAL); 
+		   DialogPane dialogPane = alerta.getDialogPane();
+		   dialogPane.setStyle("-fx-background-color: white");
+		   alerta.showAndWait();             
+		                          
 		               
-		                colaborador.getSelectionModel().clearSelection();
-		                metas.getItems().clear();
-		                metas.getSelectionModel().clearSelection();
-		                status.getSelectionModel().clearSelection();
-		                arquivoSelecionado = null;
-		                arquivoEscolher.setText("Nenhum arquivo selecionado");
-		                meta.setText("Meta Escolhida");
-		                colab.setText("Colaborador");
-		            }
-		        }
+		   colaborador.getSelectionModel().clearSelection();
+		   metas.getSelectionModel().clearSelection();		   
+		   status.getSelectionModel().clearSelection();   
+		                
+		   arquivoSelecionado = null;		           
+		   arquivoEscolher.setText("Nenhum arquivo selecionado");		                
+		            
+		   meta.setText("Meta Escolhida");		   
+		   colab.setText("Colaborador");
+		  
+		        
 		});
 
 		HBox button = new HBox(20);
@@ -408,6 +421,21 @@ public class AvaliacaoRH extends Application {
 		            return status.name();
 		    }
 		}
+	
+	private Status converterParaEnum(String texto) {
+	    switch (texto) {
+	        case "Não Iniciado":
+	            return Status.NAO_INICIADO;
+	        case "Em Andamento":
+	            return Status.EM_ANDAMENTO;
+	        case "Concluído":
+	            return Status.CONCLUIDO;
+	        case "Atrasado":
+	            return Status.ATRASADO;
+	        default:
+	            return null;
+	    }
+	}
 	
 	public static void main(String[] args) {
 		launch(args);
