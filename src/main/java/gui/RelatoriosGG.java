@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -14,11 +13,9 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -40,10 +37,8 @@ public class RelatoriosGG extends Application {
     PdiDAO pdiDAO = new PdiDAO();
     ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
     List<Colaborador> colaboradores = colaboradorDAO.listAll();
-    private VBox cards;
-    private VBox cardsBoxTop;
-    private VBox nameCardsContainer;
-    private VBox setorCardsContainer;
+
+    // Funcionalidade nos métodos
     private int limit = 1;
     private List<String> setores = Arrays.asList(
             "Desenvolvimento",
@@ -52,6 +47,11 @@ public class RelatoriosGG extends Application {
             "Financeiro",
             "Pesquisa e Inovação"
     );
+
+    // Cards
+    private VBox cards;
+    private VBox nameCardsContainer;
+    private VBox setorCardsContainer;
 
 
     private Usuario logado;
@@ -64,146 +64,152 @@ public class RelatoriosGG extends Application {
 
         // VBox center
         VBox center = new VBox();
-        center.setId("relatoriosgg");
-        center.setAlignment(Pos.TOP_CENTER);
-        center.setSpacing(15);
-        center.setPadding(new Insets(15));
-        center.setStyle("-fx-background-color: #1E1E1E;");
+        center.setId("center");
 
         // VBox titulo
-        VBox boxTitulo = new VBox();
-        boxTitulo.setId("boxTitulo");
-        boxTitulo.setAlignment(Pos.TOP_LEFT);
-        boxTitulo.setSpacing(15);
-        boxTitulo.setPadding(new Insets(30));
+        VBox tituloContainer = new VBox();
 
         Text titulo = new Text("Relatórios de PDIs");
         titulo.setId("titulo");
-        VBox.setMargin(titulo, new Insets(4, 0, 30, 0));
 
-        boxTitulo.getChildren().add(titulo);
+        tituloContainer.getChildren().add(titulo);
 
         // BarChart
-        VBox barChartContainer = new VBox();
-        barChartContainer.getStyleClass().add("chartContainer");
+        // VBox Container do Grafico de Barras
+        StackPane barChartContainer = new StackPane();
+        barChartContainer.getStyleClass().add("chart_container");
 
-
+        // Eixo X
         CategoryAxis xAxis = new CategoryAxis();
+        xAxis.getStyleClass().add("barchart_xAxis");
         xAxis.setLabel("Setor");
+        xAxis.setCategories(FXCollections.observableArrayList("DD", "DM", "DS", "DF", "DPI"));
 
-
-        NumberAxis yAxis = new NumberAxis(0,20,1);
+        // EixoY
+        NumberAxis yAxis = new NumberAxis(0,10,1);
         yAxis.setLabel("Evolução");
-        yAxis.setTickLabelsVisible(false);
-        yAxis.setTickMarkVisible(false);
-        yAxis.setMinorTickVisible(false);
+        yAxis.getStyleClass().add("barchart_yAxis");
 
+
+        // Gráfico de Barras
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
-        barChart.setTitle("Evolução");
-        barChart.setHorizontalGridLinesVisible(false);
-        barChart.setVerticalGridLinesVisible(false);
-        barChart.setMaxSize(600,350);
+        barChart.getStyleClass().add("barchart");
+        barChart.getStyleClass().add("chart");
+        barChart.setAnimated(false);
 
-        XYChart.Series<String, Number> serieConcluido = new XYChart.Series<>();
-        serieConcluido.setName("Concluido");
-        XYChart.Series<String, Number> serieAndamento = new XYChart.Series<>();
-        serieAndamento.setName("Em andamento");
-        XYChart.Series<String, Number> serieNaoIniciado = new XYChart.Series<>();
-        serieNaoIniciado.setName("Não iniciado");
-        XYChart.Series<String, Number> serieAtrasado = new XYChart.Series<>();
-        serieAtrasado.setName("Atrasado");
+// Sistema de Score
+        Map<String, Map<Status, Integer>> totalPorSetor = calcularPDITotalPorSetor(colaboradores);
+        Map<String, Integer> scores = calcularScorePorSetor(totalPorSetor);
 
-        Map<String, int[]> totalPorSetor = new HashMap<>();
+// Séries de dados dos Gráficos (Nomes)
 
-        for (Colaborador colaborador : colaboradores) {
-            List<Pdi> listaDePdis = pdiDAO.findByColaborador(colaborador.getId());
+        XYChart.Series<String, Number> serieDesenvolvimento = new XYChart.Series<>();
+        serieDesenvolvimento.setName("DD");
 
-            int[] totais = totalPorSetor.getOrDefault(colaborador.getSetor(), new int[4]);
+        XYChart.Series<String, Number> serieMarketing = new XYChart.Series<>();
+        serieMarketing.setName("DM");
 
-            totais[0] += listaDePdis.stream().filter(pdi -> pdi.getStatus() == Status.CONCLUIDO).count();
-            totais[1] += listaDePdis.stream().filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO).count();
-            totais[2] += listaDePdis.stream().filter(pdi -> pdi.getStatus() == Status.NAO_INICIADO).count();
-            totais[3] += listaDePdis.stream().filter(pdi -> pdi.getStatus() == Status.ATRASADO).count();
+        XYChart.Series<String, Number> serieSuporte = new XYChart.Series<>();
+        serieSuporte.setName("DS");
 
-            totalPorSetor.put(colaborador.getSetor(), totais);
+        XYChart.Series<String, Number> serieFinanceiro = new XYChart.Series<>();
+        serieFinanceiro.setName("DF");
+
+        XYChart.Series<String, Number> seriePesquisaInovacao = new XYChart.Series<>();
+        seriePesquisaInovacao.setName("DPI");
+
+
+        for (String setor : scores.keySet()) {
+            Integer score = scores.get(setor);
+            int valorFinal = Math.max(0, score);
+
+            switch (setor) {
+                case "Desenvolvimento":
+                    serieDesenvolvimento.getData().add(new XYChart.Data<>("DD", valorFinal));
+                    break;
+                case "Marketing":
+                    serieMarketing.getData().add(new XYChart.Data<>("DM", valorFinal));
+                    break;
+                case "Suporte":
+                    serieSuporte.getData().add(new XYChart.Data<>("DS", valorFinal));
+                    break;
+                case "Financeiro":
+                    serieFinanceiro.getData().add(new XYChart.Data<>("DF", valorFinal));
+                    break;
+                case "Pesquisa e Inovação":
+                    seriePesquisaInovacao.getData().add(new XYChart.Data<>("DPI", valorFinal));
+                    break;
+            }
         }
-
-        for (String setor : totalPorSetor.keySet()) {
-            int[] totais = totalPorSetor.get(setor);
-            serieConcluido.getData().add(new XYChart.Data<>(setor, totais[0]));
-            serieAndamento.getData().add(new XYChart.Data<>(setor, totais[1]));
-            serieNaoIniciado.getData().add(new XYChart.Data<>(setor, totais[2]));
-            serieAtrasado.getData().add(new XYChart.Data<>(setor, totais[3]));
-        }
-
-        barChart.getData().addAll(serieConcluido,serieAndamento,serieNaoIniciado,serieAtrasado);
+        barChart.getData().addAll(serieDesenvolvimento,serieMarketing,serieSuporte,serieFinanceiro,seriePesquisaInovacao);
         barChartContainer.getChildren().add(barChart);
 
 
         // PieChart
-        VBox pieChartContainer = new VBox();
-        pieChartContainer.getStyleClass().add("chartContainer");
+        // VBox Container do Gráfico de pizza
+        StackPane pieChartContainer = new StackPane();
+        pieChartContainer.getStyleClass().add("chart_container");
 
-        int totalAndamento = totalPorSetor.values().stream()
-                .mapToInt(totais -> totais[1])
-                .sum();
+        // Maps para calcular o total de tarefas em andamento e em atraso.
+        Map<Status, Integer> totalGeral = calcularPDITotalGeral(colaboradores);
+       int totalAndamento = totalGeral.get(Status.EM_ANDAMENTO);
+       int totalAtrasado = totalGeral.get(Status.ATRASADO);
 
-        int totalAtrasado = totalPorSetor.values().stream()
-                .mapToInt(totais -> totais[3])
-                .sum();
 
+        // Adicionando os dados para o grafico de pizza.
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                 new PieChart.Data("Metas em andamento", totalAndamento),
                 new PieChart.Data("Metas atrasadas", totalAtrasado)
         );
 
+        // Criação do grafico de pizza com seus dados
         PieChart pieChart = new PieChart(pieChartData);
+        pieChart.getStyleClass().add("chart");
+        pieChart.getStyleClass().add("piechart");
+        // Adicionado o grafico de pizza ao seu container
         pieChartContainer.getChildren().add(pieChart);
-        pieChart.setMaxSize(600,350);
 
-        // Gráficos HBox
+        // HBox dos gráficos contendo ambos os containers de graficos.
         HBox graficos = new HBox();
-        graficos.setSpacing(30);
-        graficos.setPadding(new Insets(15));
-        graficos.setAlignment(Pos.CENTER);
+        graficos.getStyleClass().add("graficos");
         graficos.getChildren().addAll(barChartContainer,pieChartContainer);
 
         // VBox Seção de Cards
         cards = new VBox();
-        cards.setSpacing(15);
-        cards.setPadding(new Insets(15));
+        cards.getStyleClass().add("cardsContainer");
 
         // Barra de pesquisa
-        cardsBoxTop = new VBox(15);
-        Text cardsTitulo = new Text("Buscar relátorios");
-        cardsTitulo.setId("cardsTitle");
+        // CardsBoxTop contem toda a barra de pesquisa.
+        Text cardsTitle = new Text("Buscar relátorios");
+        cardsTitle.getStyleClass().add("cardsContainerTitle");
 
-        HBox cardsBarraDePesquisa = new HBox(15);
-        cardsBarraDePesquisa.setId("barraDePesquisa");
-        TextField barraDePesquisa = new TextField("Pesquisar");
-        barraDePesquisa.setId("textfield_barraDePesquisa");
-        barraDePesquisa.setPrefSize(800,275);
+        // HBox da barra de pesquisa com o TextField e o botão
+        HBox cardsFilter = new HBox();
+        cardsFilter.getStyleClass().add("cardsFilter");
 
-        Button filtrar_btn = new Button("Filtrar");
-        filtrar_btn.getStyleClass().add("filtrar_btn");
-        filtrar_btn.setOnAction(event -> filtrarColaboradores(barraDePesquisa.getText().toLowerCase()));
+        TextField filtro = new TextField();
+        filtro.setPromptText("Pesquisar");
+        filtro.getStyleClass().add("filtro");
 
-        cardsBarraDePesquisa.getChildren().addAll(barraDePesquisa,filtrar_btn);
-        cardsBoxTop.getChildren().addAll(cardsTitulo,cardsBarraDePesquisa);
+        Button filtro_btn = new Button("Filtrar");
+        filtro_btn.getStyleClass().add("filtro_btn");
+        filtro_btn.setOnAction(event -> filtrarColaboradores(filtro.getText().toLowerCase()));
+
+        // Adicionando o textfield e o botão a HBox Cards de pesquisa e depois adicionando ao BoxTop
+        cardsFilter.getChildren().addAll(filtro,filtro_btn);
+
+        cards.getChildren().addAll(cardsTitle, cardsFilter);
 
         // Cards Relatorios por nome
+        // VBox container dos names Cards
         nameCardsContainer = new VBox();
-        nameCardsContainer.getStyleClass().add("nameCardsContainer");
+        nameCardsContainer.getStyleClass().add("namecardsContainer");
         criarNameCards(colaboradores);
 
-
-        VBox maisNameCardsContainer = new VBox(15);
-        maisNameCardsContainer.setAlignment(Pos.CENTER);
-
+        // O botão de ver mais namecards
         Button maisNameCards_btn = new Button("Ver mais relatórios de colaboradores");
-        maisNameCards_btn.setId("maisNameCards_btn");
-        maisNameCards_btn.getStyleClass().add("btn");
-        maisNameCards_btn.setAlignment(Pos.CENTER);
+        maisNameCards_btn.getStyleClass().add("cards_btn");
+
         maisNameCards_btn.setOnAction(event -> {
             Stage relatoriosggcolaboradoresStage = new Stage();
             new RelatoriosGGColaboradores(logado).start(relatoriosggcolaboradoresStage);
@@ -211,18 +217,21 @@ public class RelatoriosGG extends Application {
             Stage stageAtual = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stageAtual.close();
         });
-        maisNameCardsContainer.getChildren().add(maisNameCards_btn);
+
+        cards.getChildren().addAll(nameCardsContainer, maisNameCards_btn);
+
 
         // Cards Relatorios por setor
+        // VBox Container contendo o setorCards
         setorCardsContainer = new VBox();
-        setorCardsContainer.getStyleClass().add("setorCardsContainer");
+        setorCardsContainer.getStyleClass().add("setorcardsContainer");
+
         criarSetorCards(setores);
 
-        VBox maisSetorCardsContainer = new VBox(15);
-        maisSetorCardsContainer.setAlignment(Pos.CENTER);
-
+        // VBox contendo o botão de ver mais cards Container
         Button maisSetorCards_btn = new Button("Ver mais relatórios de divisões do setor");
-        maisSetorCards_btn.getStyleClass().add("btn");
+        maisSetorCards_btn.getStyleClass().add("cards_btn");
+
         maisSetorCards_btn.setOnAction(event -> {
             Stage relatoriosggsetoresStage = new Stage();
             new RelatoriosGGSetores(logado).start(relatoriosggsetoresStage);
@@ -230,7 +239,9 @@ public class RelatoriosGG extends Application {
             Stage stageAtual = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stageAtual.close();
         });
-        maisSetorCardsContainer.getChildren().addAll(maisSetorCards_btn);
+
+        // AddAll do Cards
+        cards.getChildren().addAll(setorCardsContainer, maisSetorCards_btn);
 
 
         // Blobs
@@ -248,17 +259,13 @@ public class RelatoriosGG extends Application {
 		blob2.setEffect(blur);
 		blob3.setEffect(blur);
 
-        // AddAll do Cards
-        cards.getChildren().addAll(cardsBoxTop,nameCardsContainer,maisNameCardsContainer, setorCardsContainer, maisSetorCardsContainer);
-
-
         // AddAll do Center
-        center.getChildren().addAll(boxTitulo,graficos,cards);
+        center.getChildren().addAll(tituloContainer,graficos,cards);
 
 
         // HBox root
         HBox root = new HBox();
-        root.setStyle("-fx-background-color: #1E1E1E");
+        root.getStyleClass().add("root");
         root.getChildren().addAll(barra, center, blob1, blob2, blob3);
 
         barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
@@ -351,10 +358,15 @@ public class RelatoriosGG extends Application {
                     .count();
             totalAtrasado += totalAtrasadoPorColaborador;
 
+            // HBox NameCard
             HBox nameCard = new HBox();
-            VBox nameCardInfos = new VBox();
 
-            Text nameCardTitulo = new Text(relatorio.getNome());
+            // VBox NameCard com as informações escritas.
+            VBox nameCardInfos = new VBox();
+            nameCardInfos.getStyleClass().add("nameCardInfosContainer");
+
+            Text nameCardTitle = new Text(relatorio.getNome());
+            nameCardTitle.getStyleClass().add("nameCardTitle");
             Text nameCardSetor = new Text(relatorio.getSetor());
             Text nameCardCargo = new Text(relatorio.getCargo());
 
@@ -363,8 +375,10 @@ public class RelatoriosGG extends Application {
                     new PieChart.Data("Metas concluídas", totalConcluido),
                     new PieChart.Data("Metas atrasadas", totalAtrasado)
             ));
+            
+            nameCardPieChart.getStyleClass().add("namecardpiechart");
 
-            nameCardInfos.getChildren().addAll(nameCardTitulo, nameCardSetor, nameCardCargo);
+            nameCardInfos.getChildren().addAll(nameCardTitle, nameCardSetor, nameCardCargo);
             nameCard.getChildren().addAll(nameCardInfos, nameCardPieChart);
 
             nameCardsContainer.getChildren().add(nameCard);
@@ -400,7 +414,10 @@ public class RelatoriosGG extends Application {
                         .count();
             }
 
+            // HBox SetorCard
             HBox setorCard = new HBox();
+
+            // VBox SetorCardInfos com as informações dos cards de setores
             VBox setorCardInfos = new VBox();
 
             Text setorTitulo = new Text(setor);
@@ -419,7 +436,94 @@ public class RelatoriosGG extends Application {
         }
     }
 
+    public Map<String, Map<Status, Integer>> calcularPDITotalPorSetor(List<Colaborador> colaboradores) {
+        List<String> setores = List.of(
+                "Desenvolvimento",
+                "Marketing",
+                "Suporte",
+                "Financeiro",
+                "Pesquisa e Inovação"
+        );
 
+        Map<String, Map<Status, Integer>> totalPorSetor = new HashMap<>();
 
+        for (String setor : setores) {
+            Map<Status, Integer> mapaStatus = new HashMap<>();
+            for (Status st : Status.values()) {
+                mapaStatus.put(st, 0);
+            }
+            totalPorSetor.put(setor, mapaStatus);
+        }
+
+        for (Colaborador col : colaboradores) {
+
+            Map<Status, Integer> mapaStatus = totalPorSetor.get(col.getSetor());
+
+            List<Pdi> pdis = pdiDAO.findByColaborador(col.getId());
+
+            for (Pdi pdi : pdis) {
+                Status status = pdi.getStatus();
+
+                Integer valorAtual = mapaStatus.get(status);
+
+                mapaStatus.put(status, valorAtual + 1);
+            }
+        }
+
+        return totalPorSetor;
+    }
+
+    public Map<Status, Integer> calcularPDITotalGeral(List<Colaborador> colaboradores) {
+
+        Map<Status, Integer> totalGeral = new HashMap<>();
+
+        for (Status st : Status.values()) {
+            totalGeral.put(st, 0);
+        }
+
+        for (Colaborador col : colaboradores) {
+
+            List<Pdi> pdis = pdiDAO.findByColaborador(col.getId());
+
+            for (Pdi pdi : pdis) {
+                Status status = pdi.getStatus();
+                totalGeral.put(status, totalGeral.get(status) + 1);
+            }
+        }
+
+        return totalGeral;
+    }
+
+    public Map<String, Integer> calcularScorePorSetor(Map<String, Map<Status, Integer>> totalPorSetor){
+        Map<String, Integer> scores = new HashMap<>();
+
+        int pesoConcluido = 2;
+        int pesoEmAndamento = 1;
+        int pesoNaoIniciado = 0;
+        int pesoAtrasado = -2;
+
+        for(Map.Entry<String, Map<Status, Integer>> entry : totalPorSetor.entrySet()){
+            String setor = entry.getKey();
+            Map<Status, Integer> mapa = entry.getValue();
+            if (mapa == null){
+                scores.put(setor, 0);
+                continue;
+            }
+
+            int concluidos = mapa.getOrDefault(Status.CONCLUIDO, 0);
+            int andamento  = mapa.getOrDefault(Status.EM_ANDAMENTO, 0);
+            int naoInicio  = mapa.getOrDefault(Status.NAO_INICIADO, 0);
+            int atrasado   = mapa.getOrDefault(Status.ATRASADO, 0);
+
+            int score = (concluidos * pesoConcluido)
+                    + (andamento * pesoEmAndamento)
+                    + (naoInicio * pesoNaoIniciado)
+                    + (atrasado * pesoAtrasado);
+
+            scores.put(setor, score);
+
+        }
+return scores;
+    }
 
 }

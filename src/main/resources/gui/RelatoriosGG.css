@@ -1,86 +1,151 @@
 /* Topo da pagina */
-#titulo {
-  -fx-fill: white;
-  -fx-font-size: 48px;
-  -fx-font-family: "Kodchasan";
-  -fx-letter-spacing: 2px;
+.root {
+    -fx-background-color: #1E1E1E;
 }
-/* Graficos */
-.chartContainer {
-  -fx-background-color: #323232cc;
-  -fx-background-radius: 30;
-  -fx-padding: 20;
+#center {
+    -fx-background-color: #1E1E1E;
+    -fx-spacing: 15;
+    -fx-padding: 45 15 45 60;
+    -fx-alignment: center;
 }
-.chart {
-  -fx-background-color: transparent;
-  -fx-text-fill: white;
-  -fx-fill: white;
+#titulo{
+	-fx-fill: white;
+	-fx-font-size: 40px;
+	-fx-font-family: 'Kodchasan';
 }
-.chart .chart-plot-background {
-  -fx-background-color: transparent;
-}
-.label {
-  -fx-text-fill: #ffffff;
-  -fx-font-family: "JuliusSansOne";
-}
-.chart-bar .x-axis .axis-label {
-    -fx-fill: white;
-}
+/* Gráficos */
+/* Grafico de Barras */
 
-.chart-bar .x-axis .tick-label {
-    -fx-fill: white;
-    -fx-font-size: 14px;
+.chart_container{
+    -fx-background-color: #323232CC;
+    -fx-background-radius: 30;
+    -fx-min-width: 420px;
+    -fx-min-height: 240px;
+	-fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.0, 0, 4);
+    -fx-border-color: transparent;
 }
-
-.chart-bar.default-color0 {
-    -fx-bar-fill: #4CAF50;
+.chart{
+-fx-background-color: transparent;
 }
-.chart-bar.default-color0 {
-    -fx-bar-fill: #49ACA0;
+.chart-plot-background {
+    -fx-background-color: transparent;
 }
-.chart-bar.default-color1 {
-    -fx-bar-fill: #86D2C9;
+.barchart_xAxis{
+-fx-tick-label-fill: white;
+-fx-tick-label-font: normal normal 14 "Kodchasan";
+-fx-tick-mark-visible: false;
+-fx-tick-label-visible: true;
 }
-.chart-bar.default-color2 {
-    -fx-bar-fill: #24776D;
+.barchart_xAxis .axis-label{
+-fx-text-fill: white;
+-fx-font: normal normal 14 "Kodchasan";
 }
-.chart-bar.default-color3 {
-    -fx-bar-fill: #2C8E83;
+.barchart_yAxis{
+-fx-minor-tick-visible: false;
+-fx-tick-mark-visible: false;
+-fx-tick-labels-visible: false;
 }
-/* Barra de pesquisa/Filtro */
-#cardsTitle {
-  -fx-fill: #ffffff;
-  -fx-font-size: 20;
-  -fx-font-family: "Kodchasan";
+.barchart_yAxis .axis-label{
+-fx-text-fill: white;
+-fx-font: normal normal 14 "Kodchasan";
 }
-#textfield_barraDePesquisa {
-  -fx-background-color: #323232cc;
-  -fx-background-radius: 15;
-  -fx-text-fill: #ffffff;
+.barchart{
+-fx-legend-visible: false;
+-fx-horizontal-grid-lines-visible: false;
+-fx-vertical-grid-lines-visible: false;
+-fx-bar-gap: 0;
+-fx-category-gap: 10;
 }
-.filtrar_btn {
-  -fx-background-color: transparent;
-  -fx-text-fill: white;
+.barchart .chart-legend {
+    -fx-background-color: transparent;
 }
-.btn {
-  -fx-background-color: #323232;
-  -fx-text-fill: white;
-  -fx-font-size: 18px;
-  -fx-background-radius: 30px;
-  -fx-cursor: hand;
-  -fx-padding: 10px 25px;
+.barchart .chart-legend .label {
+-fx-text-fill: white;
 }
-/* Cards de colaborador por nome */
-.nameCardsContainer {
-  -fx-background-color: #323232cc;
-  -fx-background-radius: 30;
-  -fx-padding: 20;
+.barchart .chart-bar.series0.data0.default-color0 {
+    -fx-background-color: #86D2C9;
 }
-/* Cards de colaborador por setor */
-.setorCardsContainer {
-  -fx-background-color: #323232cc;
-  -fx-background-radius: 30;
-  -fx-padding: 20;
+.barchart .chart-bar.series1.data1.default-color1 {
+    -fx-background-color: #49ACA0;
+}
+.barchart .chart-bar.series2.data2.default-color2 {
+    -fx-background-color: #24776D;
+}
+.barchart .chart-bar.series3.data3.default-color3 {
+    -fx-background-color: #1F5F5A;
+}
+.barchart .chart-bar.series4.data4.default-color4 {
+    -fx-background-color: #174842;
+}
+.bar-label{
+-fx-text-fill: white;
+}
+.piechart{
+-fx-pie-label-visible: false;
+-fx-legend-side: right;
+}
+.piechart .chart-pie.data0.default-color0{
+-fx-background-color:#86D2C9;
+}
+.piechart .chart-pie.data1.default-color1{
+-fx-background-color:#174842;
+}
+.piechart .chart-legend{
+-fx-background-color: transparent;
+}
+.piechart .chart-legend .label{
+-fx-text-fill: white;
+}
+.graficos{
+-fx-spacing: 30;
+-fx-padding: 45;
+}
+/* Cards */
+.cardsContainer{
+-fx-spacing: 15;
+-fx-padding: 30;
+-fx-alignment: center;
+}
+.cardsContainerTitle{
+-fx-fill:white;
+-fx-font: normal normal 24 "Kodchasan";
+}
+.filtro{
+-fx-text-fill:white;
+-fx-font: normal normal 14 "Kodchasan";
+-fx-background-color:#323232CC;
+-fx-pref-width: 540;
+}
+.filtro_btn{
+-fx-text-fill:white;
+-fx-font: normal normal 14 "Kodchasan";
+-fx-background-color: transparent;
+-fx-background-radius: 15;
+}
+.cardsFilter{
+-fx-padding: 0 0 15 0;
+}
+.cards_btn{
+-fx-alignment: center;
+-fx-text-fill:white;
+-fx-font: normal normal 14 "Kodchasan";
+-fx-background-color: #323232CC;
+-fx-background-radius: 20;
+}
+.namecardsContainer{
+-fx-background-color: #323232CC;
+-fx-background-radius: 30;
+-fx-spacing: 15;
+-fx-padding: 15;
+}
+.nameCardInfosContainer{
+-fx-spacing: 15;
+-fx-padding: 0 0 15 0;
+}
+.nameCardTitle{
+-fx-fill:white;
+-fx-font: normal normal 24 "Kodchasan";
 }
 /* Blobs */
 #blob1,

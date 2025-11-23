@@ -100,7 +100,7 @@ public class CadastroColaborador extends Application {
 			"Marketing",
 			"Suporte",
 			"Financeiro", 
-			"Pesquisa e Inovação"
+			"Pesquisa e Inovação"
 		);
 		setor.setPromptText("Setor");
 		setor.getStyleClass().add("input");
