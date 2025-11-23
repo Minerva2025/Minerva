@@ -66,6 +66,7 @@ public class RelatoriosGG extends Application {
         // VBox titulo
         VBox tituloContainer = new VBox();
         tituloContainer.setPadding(new javafx.geometry.Insets(20, 0, 20, 0));
+        tituloContainer.setId("tituloContainer");
 
         Text titulo = new Text("Relatórios de PDIs");
         titulo.setId("titulo");
@@ -75,21 +76,25 @@ public class RelatoriosGG extends Application {
         // BarChart
         StackPane barChartContainer = new StackPane();
         barChartContainer.getStyleClass().add("chart_container");
+        barChartContainer.setId("barChartContainer");
 
         // Eixo X
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.getStyleClass().add("barchart_xAxis");
+        xAxis.setId("barchart_xAxis");
         xAxis.setLabel("Setor");
 
         // EixoY
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Evolução");
         yAxis.getStyleClass().add("barchart_yAxis");
+        yAxis.setId("barchart_yAxis");
 
         // Gráfico de Barras
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
         barChart.getStyleClass().add("barchart");
         barChart.getStyleClass().add("chart");
+        barChart.setId("barChart");
         barChart.setAnimated(false);
 
         // Sistema de Score
@@ -133,6 +138,7 @@ public class RelatoriosGG extends Application {
         // PieChart
         StackPane pieChartContainer = new StackPane();
         pieChartContainer.getStyleClass().add("chart_container");
+        pieChartContainer.setId("pieChartContainer");
 
         Map<Status, Integer> totalGeral = calcularPDITotalGeral(colaboradores);
         int totalAndamento = totalGeral.get(Status.EM_ANDAMENTO);
@@ -146,11 +152,13 @@ public class RelatoriosGG extends Application {
         PieChart pieChart = new PieChart(pieChartData);
         pieChart.getStyleClass().add("chart");
         pieChart.getStyleClass().add("piechart");
+        pieChart.setId("pieChart");
         pieChartContainer.getChildren().add(pieChart);
 
         // HBox dos gráficos - Responsivo
         HBox graficos = new HBox();
         graficos.getStyleClass().add("graficos");
+        graficos.setId("graficos");
         graficos.getChildren().addAll(barChartContainer, pieChartContainer);
 
         // Tornar gráficos responsivos
@@ -160,20 +168,25 @@ public class RelatoriosGG extends Application {
         // VBox Seção de Cards
         cards = new VBox();
         cards.getStyleClass().add("cardsContainer");
+        cards.setId("cardsContainer");
 
         // Barra de pesquisa
         Text cardsTitle = new Text("Buscar relátorios");
         cardsTitle.getStyleClass().add("cardsContainerTitle");
+        cardsTitle.setId("cardsTitle");
 
         HBox cardsFilter = new HBox();
         cardsFilter.getStyleClass().add("cardsFilter");
+        cardsFilter.setId("cardsFilter");
 
         TextField filtro = new TextField();
         filtro.setPromptText("Pesquisar");
         filtro.getStyleClass().add("filtro");
+        filtro.setId("filtro");
 
         Button filtro_btn = new Button("Filtrar");
         filtro_btn.getStyleClass().add("filtro_btn");
+        filtro_btn.setId("filtro_btn");
         filtro_btn.setOnAction(event -> filtrarColaboradores(filtro.getText().toLowerCase()));
 
         cardsFilter.getChildren().addAll(filtro, filtro_btn);
@@ -182,10 +195,12 @@ public class RelatoriosGG extends Application {
         // Cards Relatorios por nome
         nameCardsContainer = new VBox();
         nameCardsContainer.getStyleClass().add("namecardsContainer");
+        nameCardsContainer.setId("nameCardsContainer");
         criarNameCards(colaboradores);
 
         Button maisNameCards_btn = new Button("Ver mais relatórios de colaboradores");
         maisNameCards_btn.getStyleClass().add("cards_btn");
+        maisNameCards_btn.setId("maisNameCards_btn");
         maisNameCards_btn.setOnAction(event -> {
             Stage relatoriosggcolaboradoresStage = new Stage();
             new RelatoriosGGColaboradores(logado).start(relatoriosggcolaboradoresStage);
@@ -196,10 +211,12 @@ public class RelatoriosGG extends Application {
         // Cards Relatorios por setor
         setorCardsContainer = new VBox();
         setorCardsContainer.getStyleClass().add("setorcardsContainer");
+        setorCardsContainer.setId("setorCardsContainer");
         criarSetorCards(setores);
 
         Button maisSetorCards_btn = new Button("Ver mais relatórios de divisões do setor");
         maisSetorCards_btn.getStyleClass().add("cards_btn");
+        maisSetorCards_btn.setId("maisSetorCards_btn");
         maisSetorCards_btn.setOnAction(event -> {
             Stage relatoriosggsetoresStage = new Stage();
             new RelatoriosGGSetores(logado).start(relatoriosggsetoresStage);
@@ -212,13 +229,15 @@ public class RelatoriosGG extends Application {
 
         // VBox contentContainer - conteúdo principal
         VBox contentContainer = new VBox();
+        contentContainer.setId("contentContainer");
         contentContainer.getChildren().addAll(tituloContainer, graficos, cards);
         contentContainer.setSpacing(30);
         contentContainer.setPadding(new javafx.geometry.Insets(20));
 
         // StackPane para envolver o conteúdo e os blobs
         StackPane contentWithBlobs = new StackPane();
-        
+        contentWithBlobs.setId("contentWithBlobs");
+
         // Blobs
         Ellipse blob1 = new Ellipse();
         blob1.setId("blob1");
@@ -226,28 +245,36 @@ public class RelatoriosGG extends Application {
         Ellipse blob2 = new Ellipse();
         blob2.setId("blob2");
         blob2.getStyleClass().add("blob");
+        Ellipse blob3 = new Ellipse();
+        blob3.setId("blob3");
+        blob3.getStyleClass().add("blob");
 
         GaussianBlur blur = new GaussianBlur(40);
         blob1.setEffect(blur);
         blob2.setEffect(blur);
+        blob3.setEffect(blur);
 
         // Adiciona os elementos na ordem correta: blobs primeiro, depois conteúdo
-        contentWithBlobs.getChildren().addAll(blob1, blob2, contentContainer);
+        contentWithBlobs.getChildren().addAll(blob1, blob2, blob3, contentContainer);
 
         // Configura os blobs para ficarem atrás do conteúdo
         blob1.toBack();
         blob2.toBack();
+        blob3.toBack();
 
         // Posicionamento absoluto dos blobs dentro do StackPane
         StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
         StackPane.setAlignment(blob2, Pos.TOP_RIGHT);
-        
+        StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+
         // Margens para posicionar melhor os blobs
         StackPane.setMargin(blob1, new javafx.geometry.Insets(100, -50, 0, 0));
         StackPane.setMargin(blob2, new javafx.geometry.Insets(-50, 250, 0, 0));
+        StackPane.setMargin(blob3, new javafx.geometry.Insets(0, 0, -50, -50));
 
         // ScrollPane principal
         mainScrollPane = new ScrollPane(contentWithBlobs);
+        mainScrollPane.setId("mainScrollPane");
         mainScrollPane.setFitToWidth(true);
         mainScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         mainScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -259,8 +286,9 @@ public class RelatoriosGG extends Application {
         // HBox root
         HBox root = new HBox();
         root.getStyleClass().add("root");
+        root.setId("root");
         root.getChildren().addAll(barra, center);
-       
+
         barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
         center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
 
@@ -275,6 +303,8 @@ public class RelatoriosGG extends Application {
         blob1.setRadiusY(90);
         blob2.setRadiusX(70);
         blob2.setRadiusY(70);
+        blob3.setRadiusX(60);
+        blob3.setRadiusY(60);
 
         // Configuração responsiva dos gráficos
         scene.widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -285,10 +315,55 @@ public class RelatoriosGG extends Application {
             }
         });
 
+        // Aplicar classes responsivas baseadas no tamanho da tela
+        applyResponsiveClasses(scene, root);
+
         relatoriosggStage.setScene(scene);
         relatoriosggStage.setFullScreen(true);
         relatoriosggStage.setFullScreenExitHint("");
         relatoriosggStage.show();
+    }
+
+    // Método para aplicar classes responsivas
+    private void applyResponsiveClasses(Scene scene, HBox root) {
+        scene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            double width = newWidth.doubleValue();
+
+            // Remove todas as classes de tamanho de tela
+            root.getStyleClass().removeAll(
+                    "small-screen", "medium-screen", "large-screen", "extra-large-screen",
+                    "mobile-landscape"
+            );
+
+            // Aplica classes baseadas na largura da tela
+            if (width < 768) {
+                root.getStyleClass().add("small-screen");
+            } else if (width < 1024) {
+                root.getStyleClass().add("medium-screen");
+            } else if (width < 1440) {
+                root.getStyleClass().add("large-screen");
+            } else {
+                root.getStyleClass().add("extra-large-screen");
+            }
+
+            // Verifica se é landscape em dispositivos móveis
+            double height = scene.getHeight();
+            if (width > height && width < 1024) {
+                root.getStyleClass().add("mobile-landscape");
+            }
+        });
+
+        // Também verifica a altura para ajustes específicos
+        scene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            double width = scene.getWidth();
+            double height = newHeight.doubleValue();
+
+            root.getStyleClass().removeAll("mobile-landscape");
+
+            if (width > height && width < 1024) {
+                root.getStyleClass().add("mobile-landscape");
+            }
+        });
     }
 
     // Métodos
@@ -344,27 +419,34 @@ public class RelatoriosGG extends Application {
             // HBox NameCard
             HBox nameCard = new HBox();
             nameCard.getStyleClass().add("namecard");
+            nameCard.setId("nameCard_" + relatorio.getId());
 
             // VBox NameCard com as informações escritas.
             VBox nameCardInfos = new VBox();
             nameCardInfos.getStyleClass().add("nameCardInfosContainer");
+            nameCardInfos.setId("nameCardInfos_" + relatorio.getId());
 
             VBox nameCardTitleContainer = new VBox();
             nameCardTitleContainer.getStyleClass().add("nameCardTitleContainer");
+            nameCardTitleContainer.setId("nameCardTitleContainer_" + relatorio.getId());
 
             Text nameCardTitle = new Text(relatorio.getNome());
             nameCardTitle.getStyleClass().add("CardsTitle");
+            nameCardTitle.setId("nameCardTitle_" + relatorio.getId());
 
             nameCardTitleContainer.getChildren().add(nameCardTitle);
 
             VBox nameInfos = new VBox();
             nameInfos.getStyleClass().add("nameinfos");
+            nameInfos.setId("nameInfos_" + relatorio.getId());
 
             Text nameCardSetor = new Text(relatorio.getSetor());
             nameCardSetor.getStyleClass().add("nameCardSetor");
+            nameCardSetor.setId("nameCardSetor_" + relatorio.getId());
 
             Text nameCardCargo = new Text(relatorio.getCargo());
             nameCardCargo.getStyleClass().add("nameCardCargo");
+            nameCardCargo.setId("nameCardCargo_" + relatorio.getId());
 
             nameInfos.getChildren().addAll(nameCardSetor, nameCardCargo);
 
@@ -377,8 +459,7 @@ public class RelatoriosGG extends Application {
             ));
 
             nameCardPieChart.getStyleClass().add("cardspiechart");
-
-
+            nameCardPieChart.setId("nameCardPieChart_" + relatorio.getId());
 
             nameCard.getChildren().addAll(nameCardInfos, nameCardPieChart);
 
@@ -418,15 +499,19 @@ public class RelatoriosGG extends Application {
 
             // HBox SetorCard
             HBox setorCard = new HBox();
+            setorCard.setId("setorCard_" + setor.replace(" ", ""));
 
             // VBox SetorCardInfos com as informações dos cards de setores
             VBox setorCardInfos = new VBox();
+            setorCardInfos.setId("setorCardInfos_" + setor.replace(" ", ""));
 
             Text setorTitulo = new Text(setor);
             setorTitulo.getStyleClass().add("CardsTitle");
+            setorTitulo.setId("setorTitulo_" + setor.replace(" ", ""));
 
             Text totalColaboradores = new Text("Colaboradores: " + colaboradoresDoSetor.size());
             totalColaboradores.getStyleClass().add("totalColaboradores");
+            totalColaboradores.setId("totalColaboradores_" + setor.replace(" ", ""));
 
             PieChart chart = new PieChart(FXCollections.observableArrayList(
                     new PieChart.Data("Metas em andamento", totalAndamento),
@@ -435,6 +520,7 @@ public class RelatoriosGG extends Application {
             ));
 
             chart.getStyleClass().add("cardspiechart");
+            chart.setId("setorPieChart_" + setor.replace(" ", ""));
 
             setorCardInfos.getChildren().addAll(setorTitulo, totalColaboradores);
 
