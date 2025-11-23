@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.HBox;
@@ -64,11 +65,15 @@ public class RelatoriosGGColaboradores extends Application{
         // Pesquisa e navegação
         VBox navegacao = new VBox();
         Text cardsTitulo = new Text("Buscar relátorios");
+        cardsTitulo.getStyleClass().add("cardsContainerTitle");
 
         HBox cardsBarraDePesquisa = new HBox();
-        TextField barraDePesquisa = new TextField("Pesquisar");
+        TextField barraDePesquisa = new TextField();
+        barraDePesquisa.setPromptText("Pesquisar");
+        barraDePesquisa.getStyleClass().add("filtro");
 
         Button filtrar_btn = new Button("Filtrar");
+        filtrar_btn.getStyleClass().add("filtro_btn");
         filtrar_btn.setOnAction(event -> filtrarColaboradores(barraDePesquisa.getText().toLowerCase()));
 
         cardsBarraDePesquisa.getChildren().addAll(barraDePesquisa,filtrar_btn);
@@ -76,36 +81,68 @@ public class RelatoriosGGColaboradores extends Application{
 
         // Cards
         nameCardsContainer = new VBox();
+        nameCardsContainer.setSpacing(30);
         cards = new VBox();
         criarNameCards(colaboradores);
         cards.getChildren().add(nameCardsContainer);
 
+        // VBox contentContainer - conteúdo principal
+        VBox contentContainer = new VBox();
+        contentContainer.getChildren().addAll(boxTitulo, navegacao, cards);
+        contentContainer.setSpacing(30);
+        contentContainer.setPadding(new Insets(20));
+
+        // StackPane para envolver o conteúdo e os blobs
+        StackPane contentWithBlobs = new StackPane();
+        
         // Blobs
         Ellipse blob1 = new Ellipse();
         blob1.setId("blob1");
-
+        blob1.getStyleClass().add("blob");
         Ellipse blob2 = new Ellipse();
         blob2.setId("blob2");
-
-        Ellipse blob3 = new Ellipse();
-        blob3.setId("blob3");
+        blob2.getStyleClass().add("blob");
 
         GaussianBlur blur = new GaussianBlur(40);
         blob1.setEffect(blur);
         blob2.setEffect(blur);
-        blob3.setEffect(blur);
+
+        // Adiciona os elementos na ordem correta: blobs primeiro, depois conteúdo
+        contentWithBlobs.getChildren().addAll(blob1, blob2, contentContainer);
+
+        // Configura os blobs para ficarem atrás do conteúdo
+        blob1.toBack();
+        blob2.toBack();
+
+        // Posicionamento absoluto dos blobs dentro do StackPane
+        StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+        StackPane.setAlignment(blob2, Pos.TOP_RIGHT);
+        
+        // Margens para posicionar melhor os blobs
+        StackPane.setMargin(blob1, new Insets(-50, 500, 0, 0));
+        StackPane.setMargin(blob2, new Insets(-50, 250, 0, 0));
+
+        // ScrollPane para os cards
+        ScrollPane scrollPane = new ScrollPane(contentWithBlobs);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+
+        // Definir altura máxima do ScrollPane para evitar problemas de layout
+        scrollPane.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(scrollPane, javafx.scene.layout.Priority.ALWAYS);
 
         // AddAll do Center
-        center.getChildren().addAll(boxTitulo,navegacao, cards);
+        center.getChildren().add(scrollPane);
 
         // HBox root
         HBox root = new HBox();
         root.setStyle("-fx-background-color: #1E1E1E");
-        root.getChildren().addAll(barra, center, blob1, blob2, blob3);
+        root.getChildren().addAll(barra, center);
 
         barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
         center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
-
 
         // Scene
         Scene scene = new Scene(root, 1000, 600);
@@ -113,29 +150,11 @@ public class RelatoriosGGColaboradores extends Application{
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/RelatoriosGG.css").toExternalForm());
 
-        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
-        blob1.radiusYProperty().bind(blob1.radiusXProperty());
-
-        blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
-        blob2.radiusYProperty().bind(blob2.radiusXProperty());
-
-        blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.04));
-        blob3.radiusYProperty().bind(blob3.radiusXProperty());
-
-        StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.96));
-        blob1.translateYProperty().bind(scene.heightProperty().multiply(0.3));
-        blob1.setManaged(false);
-
-        StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
-        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
-        blob2.translateYProperty().bind(scene.heightProperty().multiply(1.02));
-        blob2.setManaged(false);
-
-        StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
-        blob3.translateXProperty().bind(scene.widthProperty().multiply(0.8));
-        blob3.translateYProperty().bind(scene.heightProperty().multiply(0.1));
-        blob3.setManaged(false);
+        // Configurações de tamanho dos blobs
+        blob1.setRadiusX(90);
+        blob1.setRadiusY(90);
+        blob2.setRadiusX(70);
+        blob2.setRadiusY(70);
 
         relatoriosggcolaboradoresStage.setScene(scene);
         relatoriosggcolaboradoresStage.setFullScreen(true);
@@ -149,32 +168,57 @@ public class RelatoriosGGColaboradores extends Application{
         for (Colaborador relatorio : lista) {
             List<Pdi> listaDePdis = pdiDAO.findByColaborador(relatorio.getId());
 
-            int totalConcluido = (int) listaDePdis.stream()
+            // CORREÇÃO: Calcular totais INDIVIDUAIS para cada colaborador
+            int totalConcluidoPorColaborador = (int) listaDePdis.stream()
                     .filter(pdi -> pdi.getStatus() == Status.CONCLUIDO)
                     .count();
 
-            int totalAndamento = (int) listaDePdis.stream()
+            int totalAndamentoPorColaborador = (int) listaDePdis.stream()
                     .filter(pdi -> pdi.getStatus() == Status.EM_ANDAMENTO)
                     .count();
 
-            int totalAtrasado = (int) listaDePdis.stream()
+            int totalAtrasadoPorColaborador = (int) listaDePdis.stream()
                     .filter(pdi -> pdi.getStatus() == Status.ATRASADO)
                     .count();
 
+            // HBox NameCard
             HBox nameCard = new HBox();
+            nameCard.getStyleClass().add("namecardsContainer");
+
+            // VBox NameCard com as informações escritas.
             VBox nameCardInfos = new VBox();
+            nameCardInfos.getStyleClass().add("nameCardInfosContainer");
 
-            Text nameCardTitulo = new Text(relatorio.getNome());
+            VBox nameCardTitleContainer = new VBox();
+            nameCardTitleContainer.getStyleClass().add("nameCardTitleContainer");
+
+            Text nameCardTitle = new Text(relatorio.getNome());
+            nameCardTitle.getStyleClass().add("CardsTitle");
+
+            nameCardTitleContainer.getChildren().add(nameCardTitle);
+
+            VBox nameInfos = new VBox();
+            nameInfos.getStyleClass().add("nameinfos");
+
             Text nameCardSetor = new Text(relatorio.getSetor());
-            Text nameCardCargo = new Text(relatorio.getCargo());
+            nameCardSetor.getStyleClass().add("nameCardSetor");
 
+            Text nameCardCargo = new Text(relatorio.getCargo());
+            nameCardCargo.getStyleClass().add("nameCardCargo");
+
+            nameInfos.getChildren().addAll(nameCardSetor, nameCardCargo);
+
+            nameCardInfos.getChildren().addAll(nameCardTitleContainer, nameInfos);
+
+            // CORREÇÃO: Usar os totais INDIVIDUAIS do colaborador atual
             PieChart nameCardPieChart = new PieChart(FXCollections.observableArrayList(
-                    new PieChart.Data("Metas em andamento", totalAndamento),
-                    new PieChart.Data("Metas concluídas", totalConcluido),
-                    new PieChart.Data("Metas atrasadas", totalAtrasado)
+                    new PieChart.Data("Metas em andamento", totalAndamentoPorColaborador),
+                    new PieChart.Data("Metas concluídas", totalConcluidoPorColaborador),
+                    new PieChart.Data("Metas atrasadas", totalAtrasadoPorColaborador)
             ));
 
-            nameCardInfos.getChildren().addAll(nameCardTitulo, nameCardSetor, nameCardCargo);
+            nameCardPieChart.getStyleClass().add("cardspiechart");
+
             nameCard.getChildren().addAll(nameCardInfos, nameCardPieChart);
 
             nameCardsContainer.getChildren().add(nameCard);
