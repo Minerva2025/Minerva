@@ -34,7 +34,6 @@ import model.Status;
 import model.Usuario;
 import javafx.scene.layout.Priority;
 
-
 public class HomeGestorArea extends Application {
 
     private Usuario logado;
@@ -56,7 +55,6 @@ public class HomeGestorArea extends Application {
 
         List<Pdi> pdisDoSetor = pdiDAO.findBySetor(logado.getSetor());
         List<Colaborador> colaboradoresSetor = colaboradorDAO.findBySetor(logado.getSetor());
-
 
         int pdiAtivoCount = 0;
         int pdiInativoCount = 0;
@@ -103,7 +101,7 @@ public class HomeGestorArea extends Application {
         HBox chartsContainer = new HBox(30);
         chartsContainer.setId("chartsContainer");
 
-        VBox.setMargin(chartsContainer, new Insets(20, 45, 0, 0));
+        VBox.setMargin(chartsContainer, new Insets(20, 45, 0, 45)); // Alterado: padding-left para 45px
 
         chartsContainer.setPrefWidth(Double.MAX_VALUE);
         HBox.setHgrow(chartsContainer, Priority.ALWAYS);
@@ -154,6 +152,9 @@ public class HomeGestorArea extends Application {
         barChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         barChart.setLegendVisible(false);
 
+        // Adicionar classe para controle responsivo
+        barChart.getStyleClass().add("bar-chart-responsive");
+
         boxChart1.getChildren().add(barChart);
 
         StackPane boxChart2 = new StackPane();
@@ -183,7 +184,6 @@ public class HomeGestorArea extends Application {
                         p.getPrazo().isAfter(LocalDate.now()) &&
                         p.getPrazo().isBefore(LocalDate.now().plusDays(7)))
                 .count();
-
 
         long funcionariosComPdiAtrasado = pdisDoSetor.stream()
                 .filter(p -> p.getStatus() == Status.ATRASADO)
@@ -237,7 +237,7 @@ public class HomeGestorArea extends Application {
         BarraLateralGA barra = new BarraLateralGA(logado);
 
         HBox root = new HBox();
-        root.setStyle("-fx-background-color: #1E1E1E");
+        root.setId("root-home");
         root.getChildren().addAll(barra, center);
 
         center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
@@ -248,36 +248,74 @@ public class HomeGestorArea extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/HomeGestorArea.css").toExternalForm());
 
-        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
+        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.065));
         blob1.radiusYProperty().bind(blob1.radiusXProperty());
 
-        blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.04));
+        blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.045));
         blob2.radiusYProperty().bind(blob2.radiusXProperty());
 
         blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
         blob3.radiusYProperty().bind(blob3.radiusXProperty());
 
         StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.70));
+        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.60));
         blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.95));
 
         StackPane.setAlignment(blob2, Pos.TOP_RIGHT);
-        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.53));
-        blob2.translateYProperty().bind(scene.heightProperty().multiply(-1.22));
+        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.46));
+        blob2.translateYProperty().bind(scene.heightProperty().multiply(-1.05));
 
         StackPane.setAlignment(blob3, Pos.BOTTOM_RIGHT);
         blob3.translateXProperty().bind(scene.widthProperty().multiply(0.4));
-        blob3.translateYProperty().bind(scene.heightProperty().multiply(-0.38));
+        blob3.translateYProperty().bind(scene.heightProperty().multiply(-0.3));
+
+        // Listener para redimensionamento responsivo
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
+        
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
 
         homeggStage.setScene(scene);
         homeggStage.setFullScreen(true);
         homeggStage.setFullScreenExitHint("");
         homeggStage.show();
+        
+        // Aplicar estilos iniciais
+        updateResponsiveStyles(scene);
+    }
+    
+    private void updateResponsiveStyles(Scene scene) {
+        double width = scene.getWidth();
+        double height = scene.getHeight();
+        
+        // Remover classes de tamanho anteriores
+        scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape", "tablet-portrait");
+        
+        // Adicionar classe baseada no tamanho da tela
+        if (width < 768) { // Mobile
+            scene.getRoot().getStyleClass().add("small-screen");
+            if (width > height) {
+                scene.getRoot().getStyleClass().add("mobile-landscape");
+            }
+        } else if (width < 1024) { // Tablet
+            scene.getRoot().getStyleClass().add("medium-screen");
+            if (height > width) {
+                scene.getRoot().getStyleClass().add("tablet-portrait");
+            }
+        } else if (width < 1440) { // Desktop
+            scene.getRoot().getStyleClass().add("large-screen");
+        } else { // Telas grandes
+            scene.getRoot().getStyleClass().add("extra-large-screen");
+        }
     }
     
     private Label criarAlerta(String texto) {
         Label label = new Label(texto);
         label.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+        label.setWrapText(true);
         return label;
     }
     

@@ -32,7 +32,6 @@ import model.Pdi;
 import model.Status;
 import model.Usuario;
 
-
 public class RelatoriosRH extends Application {
 
     private TableView<Pdi> tabela;
@@ -57,7 +56,7 @@ public class RelatoriosRH extends Application {
 
         VBox coluna1 = new VBox();
         coluna1.setId("coluna1");
-        coluna1.setAlignment(Pos.CENTER_LEFT);
+        coluna1.setAlignment(Pos.TOP_LEFT);
         coluna1.setSpacing(15);
         coluna1.setPadding(new Insets(15));
         
@@ -75,10 +74,10 @@ public class RelatoriosRH extends Application {
         blob3.setId("blob3");
         
         GaussianBlur blur = new GaussianBlur(40);
-		blob1.setEffect(blur);
-		blob2.setEffect(blur);
-		blob3.setEffect(blur);
-		
+        blob1.setEffect(blur);
+        blob2.setEffect(blur);
+        blob3.setEffect(blur);
+        
         CategoryAxis eixoX = new CategoryAxis();
         eixoX.setTickLabelsVisible(false);
         eixoX.setTickMarkVisible(false);
@@ -92,9 +91,11 @@ public class RelatoriosRH extends Application {
         grafico = new BarChart<>(eixoX, eixoY); 
         grafico.setAnimated(false);
         grafico.getStyleClass().add("chart");
+        grafico.getStyleClass().add("bar-chart-responsive");
         grafico.setCategoryGap(10);
         grafico.setBarGap(20);
-        grafico.setPrefSize(250, 180);
+        grafico.setLegendVisible(false);
+        grafico.setStyle("-fx-background-color: transparent;");
         
         XYChart.Series<String, Number> serieConcluido = new XYChart.Series<>();
         serieConcluido.setName("Concluído");
@@ -140,23 +141,21 @@ public class RelatoriosRH extends Application {
         painelGrafico.setPadding(new Insets(0));
         tituloGrafico = new Label("PDIs por Status e Setor : ");
         tituloGrafico.getStyleClass().add("titulo-grafico"); 
+        tituloGrafico.setAlignment(Pos.CENTER_LEFT); 
 
         HBox tituloFiltroG = new HBox(10);
-        tituloFiltroG.setAlignment(Pos.CENTER);
+        tituloFiltroG.setAlignment(Pos.CENTER_LEFT); 
         tituloFiltroG.setPadding(new Insets(0, 0, 10, 0));
         tituloFiltroG.getChildren().addAll(tituloGrafico, filtroArea);
 
         VBox caixaGraficoCompleta = new VBox(5, tituloFiltroG, painelGrafico);
-        caixaGraficoCompleta.setAlignment(Pos.TOP_CENTER);
+        caixaGraficoCompleta.setAlignment(Pos.TOP_LEFT);
         caixaGraficoCompleta.setPadding(new Insets(20));
         caixaGraficoCompleta.getStyleClass().add("caixa-relatorio"); 
-        caixaGraficoCompleta.setPrefWidth(600);
-        caixaGraficoCompleta.setMinWidth(600);
-        caixaGraficoCompleta.setMaxWidth(600);
-
 
         tituloAlertas = new Label();
         tituloAlertas.getStyleClass().add("titulo-alerta");
+        tituloAlertas.setAlignment(Pos.CENTER_LEFT); 
         
         alerta1 = new Label();
         alerta2 = new Label();
@@ -191,20 +190,18 @@ public class RelatoriosRH extends Application {
         atualizarAlertasFiltro("Total");
 
         HBox tituloEFiltro = new HBox(10, tituloAlertas, filtroAlertas);
-        tituloEFiltro.setAlignment(Pos.CENTER);
+        tituloEFiltro.setAlignment(Pos.CENTER_LEFT); 
         tituloEFiltro.setPadding(new Insets(0, 0, 10, 0));
 
         VBox painelAlertas = new VBox(10, tituloEFiltro, conteudoAlertas);
         painelAlertas.setPadding(new Insets(20));
         painelAlertas.getStyleClass().add("caixa-relatorio"); 
         painelAlertas.setAlignment(Pos.TOP_LEFT);
-        painelAlertas.setPrefSize(500,100);
-        caixaGraficoCompleta.setMinHeight(250);
-        caixaGraficoCompleta.setMaxHeight(250);
 
         HBox topContainer = new HBox(20, caixaGraficoCompleta, painelAlertas);
         topContainer.setAlignment(Pos.CENTER);
         topContainer.setPadding(new Insets(10));
+        topContainer.getStyleClass().add("top-container");
 
         coluna1.getChildren().add(titulo);
         coluna1.getChildren().add(topContainer);
@@ -216,17 +213,15 @@ public class RelatoriosRH extends Application {
 
         coluna1.getChildren().addAll(tituloMeio, blob1, blob2, blob3);
 
-      
         VBox relatorioColaborador = new VBox(15);
         relatorioColaborador.setPadding(new Insets(20));
-        relatorioColaborador.setPrefWidth(900); 
-        relatorioColaborador.setMinWidth(700);  
-        relatorioColaborador.setAlignment(Pos.CENTER);
-        relatorioColaborador.prefWidthProperty().bind(coluna1.widthProperty().multiply(0.85));
+        relatorioColaborador.setAlignment(Pos.TOP_CENTER); 
         relatorioColaborador.getStyleClass().add("caixa-relatorio"); 
+        relatorioColaborador.getStyleClass().add("relatorio-colaborador");
 
         Label tituloRelatorio = new Label("Relatório detalhado ");
         tituloRelatorio.getStyleClass().add("titulo-relatorio-colab"); 
+        tituloRelatorio.setAlignment(Pos.CENTER); 
         relatorioColaborador.getChildren().add(tituloRelatorio);
 
         ComboBox<Colaborador> filtroColaborador = new ComboBox<>();
@@ -268,19 +263,17 @@ public class RelatoriosRH extends Application {
         });
         
         HBox relatorioContainer = new HBox(relatorioColaborador);
-        relatorioContainer.setAlignment(Pos.CENTER);
+        relatorioContainer.setAlignment(Pos.CENTER); 
         VBox.setMargin(relatorioContainer, new Insets(0, 0, 30, 0));
 
-        relatorioContainer.prefWidthProperty().bind(coluna1.widthProperty());
-        coluna1.getChildren().add(relatorioContainer);
-        
+        coluna1.getChildren().add(relatorioContainer);        
 
         ScrollPane scrollPane = new ScrollPane(coluna1);
         scrollPane.setFitToWidth(true); 
         scrollPane.getStyleClass().add("scroll-pane-rh"); 
 
         HBox root = new HBox(barra, scrollPane);
-        root.getStyleClass().add("root-rh"); 
+        root.setId("root-relatorios-rh");
         
         barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
         scrollPane.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
@@ -294,34 +287,44 @@ public class RelatoriosRH extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/RelatoriosRH.css").toExternalForm());
         
         blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.06));
-		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
+        blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
-		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
-		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+        blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
+        blob2.radiusYProperty().bind(blob2.radiusXProperty());
 
-		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.025));
-		blob3.radiusYProperty().bind(blob3.radiusXProperty());
-		
-		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.35));
-		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.01));
-		blob1.setManaged(false);
+        blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.025));
+        blob3.radiusYProperty().bind(blob3.radiusXProperty());
+        
+        StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.35));
+        blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.01));
+        blob1.setManaged(false);
 
-		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
-		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.83));
-		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.53));
-		blob2.setManaged(false);
+        StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.83));
+        blob2.translateYProperty().bind(scene.heightProperty().multiply(0.53));
+        blob2.setManaged(false);
 
-		StackPane.setAlignment(blob3, Pos.TOP_RIGHT);
-		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.48));
-		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.062));
-		blob3.setManaged(false);
-		
+        StackPane.setAlignment(blob3, Pos.TOP_RIGHT);
+        blob3.translateXProperty().bind(scene.widthProperty().multiply(0.48));
+        blob3.translateYProperty().bind(scene.heightProperty().multiply(0.062));
+        blob3.setManaged(false);
+        
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
+        
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
+        
         metasggStage.setScene(scene);
         metasggStage.setFullScreen(true);
         metasggStage.setFullScreenExitHint("");
         metasggStage.setTitle("Gerenciamento de Metas (PDIs)");
         metasggStage.show();
+        
+        updateResponsiveStyles(scene);
 
         Timeline atualizador = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             carregarTabela();
@@ -333,23 +336,45 @@ public class RelatoriosRH extends Application {
         atualizarGraficoPorArea(filtroArea.getValue(), serieConcluido, serieAndamento, serieNaoIniciado, serieAtrasado);
     }
 
-    private void atualizarRelatorioColaborador(VBox relatorioColaborador, Colaborador selecionado) {
+    private void updateResponsiveStyles(Scene scene) {
+        double width = scene.getWidth();
+        double height = scene.getHeight();
+        
+        scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape", "tablet-portrait");
+        
+        if (width < 768) {
+            scene.getRoot().getStyleClass().add("small-screen");
+            if (width > height) {
+                scene.getRoot().getStyleClass().add("mobile-landscape");
+            }
+        } else if (width < 1024) {
+            scene.getRoot().getStyleClass().add("medium-screen");
+            if (height > width) {
+                scene.getRoot().getStyleClass().add("tablet-portrait");
+            }
+        } else if (width < 1440) {
+            scene.getRoot().getStyleClass().add("large-screen");
+        } else {
+            scene.getRoot().getStyleClass().add("extra-large-screen");
+        }
+    }
 
+    private void atualizarRelatorioColaborador(VBox relatorioColaborador, Colaborador selecionado) {
         javafx.scene.Node titulo = relatorioColaborador.getChildren().get(0);
         javafx.scene.Node filtro = relatorioColaborador.getChildren().get(1);
 
         relatorioColaborador.getChildren().clear();
         relatorioColaborador.getChildren().addAll(titulo, filtro);
 
-       
         HBox linhaSuperior = new HBox(40); 
-        linhaSuperior.setAlignment(Pos.TOP_LEFT);
+        linhaSuperior.setAlignment(Pos.CENTER);
         linhaSuperior.setPadding(new Insets(0, 0, 0, 20));
-        linhaSuperior.spacingProperty().bind(relatorioColaborador.widthProperty().multiply(0.05));
+        linhaSuperior.getStyleClass().add("linha-superior");
         
         VBox dadosEsquerda = new VBox(20);
         dadosEsquerda.setAlignment(Pos.TOP_LEFT);
         dadosEsquerda.setPadding(new Insets(0, 0, 0, 20)); 
+        dadosEsquerda.getStyleClass().add("dados-esquerda");
 
         String[][] infos = {
                 {"Nome:", selecionado.getNome()},
@@ -378,10 +403,10 @@ public class RelatoriosRH extends Application {
         int concluidos = (int) pdisDoColaborador.stream().filter(p -> p.getStatus() == Status.CONCLUIDO).count();
         double progresso = totalPdis > 0 ? (double) concluidos / totalPdis : 0.0;
 
-
         VBox ladoDireito = new VBox(15);
         ladoDireito.setAlignment(Pos.TOP_CENTER);
         ladoDireito.setPadding(new Insets(0, 0, 0, 80)); 
+        ladoDireito.getStyleClass().add("lado-direito");
 
         long qtdNaoIniciado = pdisDoColaborador.stream().filter(p -> p.getStatus() == Status.NAO_INICIADO).count();
         long qtdEmAndamento = pdisDoColaborador.stream().filter(p -> p.getStatus() == Status.EM_ANDAMENTO).count();
@@ -400,7 +425,7 @@ public class RelatoriosRH extends Application {
         donutChart.setLegendVisible(false);
         donutChart.setStartAngle(90);
         donutChart.setClockwise(true);
-        donutChart.setPrefSize(200, 200);
+        donutChart.getStyleClass().add("pie-chart-responsive");
 
         for (PieChart.Data data : donutChart.getData()) {
             String nome = data.getName();
@@ -420,6 +445,7 @@ public class RelatoriosRH extends Application {
         GridPane legendacolaborador = new GridPane();
         legendacolaborador.setHgap(20);
         legendacolaborador.setVgap(8);
+        legendacolaborador.getStyleClass().add("legenda-colaborador");
 
         String[][] itensLegenda = {
                 {"Concluído", "#c2f0ef"},
@@ -474,12 +500,13 @@ public class RelatoriosRH extends Application {
         relatorioColaborador.getChildren().add(new Separator());
         Label tituloPdis = new Label("PDIs");
         tituloPdis.getStyleClass().add("titulo-pdis-colab"); 
+        tituloPdis.setAlignment(Pos.CENTER);
         relatorioColaborador.getChildren().add(tituloPdis);
 
-        
         TableView<Pdi> tabelaPdis = new TableView<>();
         tabelaPdis.setMinHeight(200);
         tabelaPdis.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tabelaPdis.getStyleClass().add("tabela-pdis");
 
         TableColumn<Pdi, String> colPrazo = new TableColumn<>("Prazo");
         colPrazo.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(
@@ -519,9 +546,12 @@ public class RelatoriosRH extends Application {
         tabelaPdis.getColumns().addAll(colPrazo, colObjetivo, colStatus);
         tabelaPdis.setItems(FXCollections.observableArrayList(pdisDoColaborador));
 
-        relatorioColaborador.getChildren().add(tabelaPdis);
-    }
+        HBox tabelaContainer = new HBox(tabelaPdis);
+        tabelaContainer.setAlignment(Pos.CENTER); 
+        tabelaContainer.setPadding(new Insets(10, 0, 0, 0));
 
+        relatorioColaborador.getChildren().add(tabelaContainer);
+    }
 
     private HBox criarCaixaLegenda(String cor, String texto) {
         Label corBox = new Label();
@@ -615,14 +645,16 @@ public class RelatoriosRH extends Application {
                                          XYChart.Series<String, Number> serieAndamento,
                                          XYChart.Series<String, Number> serieNaoIniciado,
                                          XYChart.Series<String, Number> serieAtrasado) {
-    	if ("Todos".equals(areaFiltro)) {
+        grafico.setLegendVisible(false);
+        grafico.setStyle("-fx-background-color: transparent;");
+        
+        if ("Todos".equals(areaFiltro)) {
             grafico.setCategoryGap(10);  
             grafico.setBarGap(-13);       
         } else {
             grafico.setCategoryGap(10);  
             grafico.setBarGap(16);       
         }
-
 
         serieConcluido.getData().clear();
         serieAndamento.getData().clear();

@@ -90,15 +90,6 @@ public class EquipesGA extends Application{
 		container.setId("container");
 		container.getChildren().addAll(colaboradores, pdiAtivo, pdiInativo, pdiConcluido);
 		
-		
-//		Text buscarColaboradores = new Text("Buscar colaboradores");
-//		buscarColaboradores.setId("buscarColaboradores");
-
-		// Envolve o texto em um HBox alinhado à esquerda
-//		HBox buscarBox = new HBox(buscarColaboradores);
-//		buscarBox.setAlignment(Pos.CENTER_LEFT);
-//		buscarBox.setPadding(new Insets(0, 0, 0, 80));
-
 		TextField searchField = new TextField();
 		searchField.setPromptText("Pesquisar");
 		searchField.setPrefWidth(280);
@@ -107,22 +98,16 @@ public class EquipesGA extends Application{
 		Button searchButton = new Button("\uD83D\uDD0D");
 		searchButton.getStyleClass().add("icon-button");
 
-//		Button filterButton = new Button("Filtrar");
-//		filterButton.getStyleClass().add("filter-button");
-
 		HBox searchBar = new HBox(10, searchField, searchButton);
-		searchBar.setPadding(new Insets(10, 0, 10, 80)); // recuo igual
+		searchBar.setPadding(new Insets(10, 0, 10, 0)); // Alterado: removido padding-left 80px
 		searchBar.setPrefWidth(600);
 		searchBar.getStyleClass().add("search-bar");
 		searchBar.setAlignment(Pos.CENTER_LEFT);
 		HBox.setHgrow(searchField, Priority.ALWAYS);
 
 		searchBar.setSpacing(0);
-        
-		searchBar.setAlignment(Pos.CENTER_RIGHT);
+        searchBar.setAlignment(Pos.CENTER_LEFT); // Alterado: de CENTER_RIGHT para CENTER_LEFT
 
-        //fim da barra de pesquisa
-        
 		VBox colaboradoresContainer = new VBox(90);
 		colaboradoresContainer.setId("colaboradoresContainer");
 		colaboradoresContainer.getChildren().add(searchBar);
@@ -130,7 +115,7 @@ public class EquipesGA extends Application{
         GridPane gridColaboradores = new GridPane();
         gridColaboradores.setHgap(40);
         gridColaboradores.setVgap(40);
-        gridColaboradores.setAlignment(Pos.CENTER);
+        gridColaboradores.setAlignment(Pos.TOP_LEFT); // Alterado: de CENTER para TOP_LEFT
         gridColaboradores.setPadding(new Insets(20, 80, 60, 80));
         gridColaboradores.setMaxWidth(1400);
 	
@@ -167,7 +152,7 @@ public class EquipesGA extends Application{
 	
 	    VBox center = new VBox(60);
 	    center.setId("center");
-	    center.setAlignment(Pos.TOP_CENTER);
+	    center.setAlignment(Pos.TOP_LEFT); // Alterado: de TOP_CENTER para TOP_LEFT
 	    center.setPadding(new Insets(60, 80, 80, 80));
 	    center.getChildren().addAll(tituloBox, container, colaboradoresContainer, blob1, blob2, blob3);
 
@@ -180,7 +165,7 @@ public class EquipesGA extends Application{
 	    BarraLateralGA barra = new BarraLateralGA(logado);
 	
 		HBox root = new HBox();
-		root.setStyle("-fx-background-color: #1E1E1E");
+		root.setId("root-equipes-ga");
 		root.getChildren().addAll(barra, scrollCenter);
 		
 		scrollCenter.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
@@ -191,6 +176,7 @@ public class EquipesGA extends Application{
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 		scene.getStylesheets().add(getClass().getResource("/gui/EquipesGA.css").toExternalForm());
 
+		// Bindings responsivos para os blobs
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.06));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
@@ -214,19 +200,56 @@ public class EquipesGA extends Application{
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.48));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.062));
 		blob3.setManaged(false);
+		
+		// Listener para redimensionamento responsivo
+		scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
+		
+		scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
 	
 		equipesgaStage.setScene(scene);
 		equipesgaStage.setFullScreen(true);
 		equipesgaStage.setFullScreenExitHint("");
 		equipesgaStage.show();
+		
+		// Aplicar estilos iniciais
+		updateResponsiveStyles(scene);
 	
 		equipesgaStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
 		    if (isNowFocused) {
 		    	equipesgaStage.setFullScreen(true);
 		    }
 		});
-	
 	}
+	
+	private void updateResponsiveStyles(Scene scene) {
+		double width = scene.getWidth();
+		double height = scene.getHeight();
+		
+		// Remover classes de tamanho anteriores
+		scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape", "tablet-portrait");
+		
+		// Adicionar classe baseada no tamanho da tela
+		if (width < 768) { // Mobile
+			scene.getRoot().getStyleClass().add("small-screen");
+			if (width > height) {
+				scene.getRoot().getStyleClass().add("mobile-landscape");
+			}
+		} else if (width < 1024) { // Tablet
+			scene.getRoot().getStyleClass().add("medium-screen");
+			if (height > width) {
+				scene.getRoot().getStyleClass().add("tablet-portrait");
+			}
+		} else if (width < 1440) { // Desktop
+			scene.getRoot().getStyleClass().add("large-screen");
+		} else { // Telas grandes
+			scene.getRoot().getStyleClass().add("extra-large-screen");
+		}
+	}
+	
 	private double calcularProgressoMedio(PdiDAO pdiDAO, int colaboradorId) {
         List<Pdi> pdis = pdiDAO.findByColaborador(colaboradorId);
         if (pdis.isEmpty()) return 0.0;
@@ -269,8 +292,6 @@ public class EquipesGA extends Application{
         Text progressotexto = new Text("Progresso:");
         progressotexto.getStyleClass().add("colaborador-progresso");
         
-        
-
         card.getChildren().addAll(nome, setor, cargo, progressotexto, progressoBox);
         return card;
     }

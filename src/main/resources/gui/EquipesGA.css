@@ -1,62 +1,56 @@
-#scrollCenter{
-	-fx-background-color: #1E1E1E;
-	-fx-padding: 110 0 0 45
+/* Estilos base - Mobile First */
+#root-equipes-ga {
+    -fx-background-color: #1E1E1E;
 }
 
-#titulo{
-	-fx-fill: white;
-	-fx-font-size: 48px;
-	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 2px;
-	-fx-alignment: left;
-	
+#center {
+    -fx-background-color: transparent;
+    -fx-spacing: 30;
+    -fx-padding: 30 20 30 45; /* Alterado: padding-left para 45px */
+    -fx-alignment: top-left; /* Alterado: de top-center para top-left */
 }
 
-#container{
-	-fx-padding: 20 0 0 0
-}
-
-#colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido{
-	-fx-fill: white;
-	-fx-font-size: 18px;
-	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 2px;
-}
-
-#left{
-	-fx-background-color: #323232;
-	-fx-padding: 170 0 0 40;
-	-fx-background-radius: 0 20 20 0;
-	-fx-background-insets: 0
-}
-
-#inicio, #equipe, #relatorios, #metas, #avaliacoes{
-	-fx-text-fill: white;
-	-fx-font-size: 20px;
-	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 2px;
-	-fx-background-color: transparent;
-	-fx-border-color: transparent
-}
-
-
-#buscarColaboradores {
+#titulo {
     -fx-fill: white;
-    -fx-font-size: 18px;
+    -fx-font-size: 24px;
     -fx-font-family: 'Kodchasan';
-    -fx-letter-spacing: 2px;
+    -fx-letter-spacing: 1px;
+    -fx-text-alignment: left; /* Alterado: de center para left */
+    -fx-wrapping-width: 280px;
 }
 
+#container {
+    -fx-padding: 15 0 0 0;
+    -fx-alignment: center-left; /* Alterado: de center para center-left */
+    -fx-spacing: 20;
+}
+
+#colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido {
+    -fx-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-family: 'Kodchasan';
+    -fx-letter-spacing: 1px;
+    -fx-text-alignment: left; /* Alterado: de center para left */
+    -fx-wrapping-width: 120px;
+}
+
+#colaboradoresContainer {
+    -fx-alignment: top-left; /* Alterado: de center para top-left */
+    -fx-spacing: 30;
+    -fx-padding: 20 0 0 0;
+}
+
+/* Barra de pesquisa */
 .search-bar {
     -fx-background-color: rgba(255, 255, 255, 0.08);
-    -fx-background-radius: 25;
+    -fx-background-radius: 20;
     -fx-border-color: rgba(255, 255, 255, 0.15);
-    -fx-border-radius: 25;
+    -fx-border-radius: 20;
     -fx-border-width: 1;
-    -fx-min-width: 400;
-    -fx-max-width: 600;
-    -fx-padding: 1 14 1 14;
-	-fx-font-family: 'Kodchasan';
+    -fx-min-width: 280px;
+    -fx-max-width: 400px;
+    -fx-padding: 8 12 8 12;
+    -fx-font-family: 'Kodchasan';
 }
 
 .search-field {
@@ -64,101 +58,535 @@
     -fx-text-fill: white;
     -fx-prompt-text-fill: rgba(255, 255, 255, 0.5);
     -fx-border-color: transparent;
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
     -fx-padding: 1 0 1 10;
 }
-
 
 .icon-button {
     -fx-background-color: transparent;
     -fx-text-fill: rgba(255, 255, 255, 0.7);
-    -fx-font-size: 18px;
-    -fx-cursor: hand;
-    -fx-border-color: transparent;
-    -fx-translate-x: -10;
-}
-
-.filter-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: rgba(255, 255, 255, 0.7);
     -fx-font-size: 16px;
     -fx-cursor: hand;
     -fx-border-color: transparent;
-    -fx-padding: 6 10;
+    -fx-translate-x: -8;
 }
 
-.filter-button:hover {
-    -fx-text-fill: white;
-}
-
-#blob1, #blob2, #blob3{
-	-fx-fill: #323232;
-}
-
+/* Cards de colaboradores */
 .colaborador-card {
     -fx-background-color: #323232;
-    -fx-background-radius: 15;
-    -fx-padding: 20;
-    -fx-pref-width: 480; 
-    -fx-effect: dropshadow(gaussian, #00000055, 10, 0.3, 0, 3);
+    -fx-background-radius: 12;
+    -fx-padding: 12;
+    -fx-pref-width: 280px;
+    -fx-effect: dropshadow(gaussian, #00000055, 8, 0.3, 0, 2);
     -fx-border-color: rgba(255, 255, 255, 0.05);
-    -fx-border-radius: 15;
-    -fx-transition: all 0.3s ease;
-	-fx-font-family: 'Kodchasan';
-}
-
-.colaborador-card:hover {
-    -fx-scale-x: 1.03;
-    -fx-scale-y: 1.03;
-    -fx-cursor: hand;
+    -fx-border-radius: 12;
+    -fx-font-family: 'Kodchasan';
 }
 
 .colaborador-nome {
-    -fx-font-size: 20px;
+    -fx-font-size: 16px;
     -fx-fill: white;
     -fx-font-weight: bold;
+    -fx-wrapping-width: 250px;
 }
 
 .colaborador-cargo,
 .colaborador-setor,
 .colaborador-status {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-fill: white;
+    -fx-wrapping-width: 250px;
 }
 
 .colaborador-progresso {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-fill: white;
 }
 
-
-#center {
-    -fx-background-color: transparent;
-    -fx-spacing: 60;
-}
-
-#colaboradoresContainer {
-    -fx-alignment: center;
-}
-
+/* Barra de progresso */
 #barra-progresso {
     -fx-accent: #49ACA0; 
     -fx-background-color: transparent;
     -fx-control-inner-background: rgba(255, 255, 255, 0.1); 
-    -fx-pref-height: 30px;
-    -fx-background-radius: 25px;
-    -fx-border-radius: 25px;
+    -fx-pref-height: 20px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-pref-width: 200px;
 }
 
 #barra-progresso > .track {
     -fx-background-color: transparent;
-    -fx-background-radius: 25px;
-	-fx-border-color: #000000;
-	-fx-border-width: 1px;
-	-fx-border-radius: 25px;
+    -fx-background-radius: 15px;
+    -fx-border-color: #000000;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
 }
 
 #barra-progresso > .bar {
     -fx-background-color: #49ACA0;
+    -fx-background-radius: 12px;
+}
+
+#blob1, #blob2, #blob3 {
+    -fx-fill: #323232;
+}
+
+/* Container responsivo - muda layout em telas pequenas */
+.small-screen #container {
+    -fx-orientation: vertical;
+    -fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #container > * {
+    -fx-padding: 6px 0;
+}
+
+.small-screen .grid-pane {
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Mobile Landscape */
+.mobile-landscape #container {
+    -fx-orientation: horizontal;
+    -fx-spacing: 10;
+    -fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.mobile-landscape #container > * {
+    -fx-wrapping-width: 100px;
+    -fx-font-size: 10px;
+}
+
+/* Tablet (768px+) */
+.medium-screen #center {
+    -fx-padding: 40 30 40 45; /* Alterado: padding-left para 45px */
+    -fx-spacing: 40;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.medium-screen #titulo {
+    -fx-font-size: 32px;
+    -fx-wrapping-width: 400px;
+    -fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.medium-screen #container {
+    -fx-padding: 20 0 0 0;
+    -fx-spacing: 30;
+    -fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.medium-screen #colaboradores,
+.medium-screen #pdiAtivo, 
+.medium-screen #pdiInativo, 
+.medium-screen #pdiConcluido {
+    -fx-font-size: 14px;
+    -fx-wrapping-width: 150px;
+    -fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.medium-screen #colaboradoresContainer {
+    -fx-spacing: 40;
+    -fx-padding: 25 0 0 0;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.medium-screen .search-bar {
+    -fx-min-width: 350px;
+    -fx-max-width: 500px;
+    -fx-background-radius: 22;
+    -fx-border-radius: 22;
+}
+
+.medium-screen .search-field {
+    -fx-font-size: 15px;
+}
+
+.medium-screen .icon-button {
+    -fx-font-size: 17px;
+}
+
+.medium-screen .colaborador-card {
+    -fx-padding: 15;
+    -fx-pref-width: 320px;
+    -fx-background-radius: 14;
+}
+
+.medium-screen .colaborador-nome {
+    -fx-font-size: 18px;
+    -fx-wrapping-width: 280px;
+}
+
+.medium-screen .colaborador-cargo,
+.medium-screen .colaborador-setor,
+.medium-screen .colaborador-status {
+    -fx-font-size: 13px;
+    -fx-wrapping-width: 280px;
+}
+
+.medium-screen .colaborador-progresso {
+    -fx-font-size: 13px;
+}
+
+.medium-screen #barra-progresso {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 240px;
+    -fx-background-radius: 18px;
+}
+
+.medium-screen #barra-progresso > .bar {
+    -fx-background-radius: 15px;
+}
+
+.medium-screen .grid-pane {
+    -fx-hgap: 30;
+    -fx-vgap: 30;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Tablet Portrait - Grid 1 coluna */
+.tablet-portrait .grid-pane {
+    -fx-hgap: 25;
+    -fx-vgap: 25;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Desktop (1024px+) */
+.large-screen #center {
+    -fx-padding: 60 40 60 45; /* Alterado: padding-left para 45px */
+    -fx-spacing: 50;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.large-screen #titulo {
+    -fx-font-size: 36px;
+    -fx-wrapping-width: 500px;
+    -fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.large-screen #container {
+    -fx-padding: 25 0 0 0;
+    -fx-spacing: 60;
+    -fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.large-screen #colaboradores,
+.large-screen #pdiAtivo, 
+.large-screen #pdiInativo, 
+.large-screen #pdiConcluido {
+    -fx-font-size: 16px;
+    -fx-wrapping-width: 180px;
+    -fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.large-screen #colaboradoresContainer {
+    -fx-spacing: 50;
+    -fx-padding: 30 0 0 0;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.large-screen .search-bar {
+    -fx-min-width: 400px;
+    -fx-max-width: 600px;
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+}
+
+.large-screen .search-field {
+    -fx-font-size: 16px;
+}
+
+.large-screen .icon-button {
+    -fx-font-size: 18px;
+}
+
+.large-screen .colaborador-card {
+    -fx-padding: 18;
+    -fx-pref-width: 350px;
+    -fx-background-radius: 15;
+}
+
+.large-screen .colaborador-nome {
+    -fx-font-size: 20px;
+    -fx-wrapping-width: 300px;
+}
+
+.large-screen .colaborador-cargo,
+.large-screen .colaborador-setor,
+.large-screen .colaborador-status {
+    -fx-font-size: 14px;
+    -fx-wrapping-width: 300px;
+}
+
+.large-screen .colaborador-progresso {
+    -fx-font-size: 14px;
+}
+
+.large-screen #barra-progresso {
+    -fx-pref-height: 30px;
+    -fx-pref-width: 280px;
     -fx-background-radius: 20px;
+}
+
+.large-screen #barra-progresso > .bar {
+    -fx-background-radius: 18px;
+}
+
+.large-screen .grid-pane {
+    -fx-hgap: 40;
+    -fx-vgap: 40;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Telas grandes (1440px+) */
+.extra-large-screen #center {
+    -fx-padding: 60 80 80 80; /* Já está com padding-left 80px */
+    -fx-spacing: 60;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen #titulo {
+    -fx-font-size: 48px;
+    -fx-letter-spacing: 2px;
+    -fx-wrapping-width: 600px;
+    -fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen #container {
+    -fx-padding: 20 0 0 0;
+    -fx-spacing: 150;
+    -fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen #colaboradores,
+.extra-large-screen #pdiAtivo, 
+.extra-large-screen #pdiInativo, 
+.extra-large-screen #pdiConcluido {
+    -fx-font-size: 18px;
+    -fx-letter-spacing: 2px;
+    -fx-wrapping-width: 220px;
+    -fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen #colaboradoresContainer {
+    -fx-spacing: 60;
+    -fx-padding: 40 0 0 0;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen .search-bar {
+    -fx-min-width: 500px;
+    -fx-max-width: 700px;
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+}
+
+.extra-large-screen .colaborador-card {
+    -fx-padding: 20;
+    -fx-pref-width: 480px;
+    -fx-background-radius: 15;
+}
+
+.extra-large-screen .colaborador-nome {
+    -fx-font-size: 22px;
+    -fx-wrapping-width: 420px;
+}
+
+.extra-large-screen .colaborador-cargo,
+.extra-large-screen .colaborador-setor,
+.extra-large-screen .colaborador-status {
+    -fx-font-size: 15px;
+    -fx-wrapping-width: 420px;
+}
+
+.extra-large-screen .colaborador-progresso {
+    -fx-font-size: 15px;
+}
+
+.extra-large-screen #barra-progresso {
+    -fx-pref-height: 35px;
+    -fx-pref-width: 380px;
+}
+
+.extra-large-screen .grid-pane {
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Ajustes para telas muito pequenas (menos de 480px) */
+.small-screen #center {
+    -fx-padding: 20 15 20 30; /* Alterado: padding-left para 30px */
+    -fx-spacing: 20;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #titulo {
+    -fx-font-size: 20px;
+    -fx-wrapping-width: 250px;
+    -fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #container {
+    -fx-padding: 10 0 0 0;
+    -fx-spacing: 10;
+    -fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #colaboradores,
+.small-screen #pdiAtivo, 
+.small-screen #pdiInativo, 
+.small-screen #pdiConcluido {
+    -fx-font-size: 10px;
+    -fx-wrapping-width: 100px;
+    -fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #colaboradoresContainer {
+    -fx-spacing: 20;
+    -fx-padding: 15 0 0 0;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen .search-bar {
+    -fx-min-width: 250px;
+    -fx-max-width: 300px;
+    -fx-padding: 6 10 6 10;
+}
+
+.small-screen .search-field {
+    -fx-font-size: 12px;
+}
+
+.small-screen .icon-button {
+    -fx-font-size: 14px;
+    -fx-translate-x: -6;
+}
+
+.small-screen .colaborador-card {
+    -fx-padding: 10;
+    -fx-pref-width: 260px;
+    -fx-background-radius: 10;
+}
+
+.small-screen .colaborador-nome {
+    -fx-font-size: 14px;
+    -fx-wrapping-width: 230px;
+}
+
+.small-screen .colaborador-cargo,
+.small-screen .colaborador-setor,
+.small-screen .colaborador-status {
+    -fx-font-size: 11px;
+    -fx-wrapping-width: 230px;
+}
+
+.small-screen .colaborador-progresso {
+    -fx-font-size: 11px;
+}
+
+.small-screen #barra-progresso {
+    -fx-pref-height: 18px;
+    -fx-pref-width: 180px;
+    -fx-background-radius: 12px;
+}
+
+.small-screen #barra-progresso > .bar {
+    -fx-background-radius: 10px;
+}
+
+.small-screen .grid-pane {
+    -fx-hgap: 15;
+    -fx-vgap: 15;
+    -fx-padding: 15 20 30 20;
+    -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Grid responsivo - 1 coluna em mobile, 2 colunas em telas maiores */
+.small-screen .grid-pane {
+    -fx-hgap: 15;
+    -fx-vgap: 15;
+}
+
+.medium-screen .grid-pane {
+    -fx-hgap: 30;
+    -fx-vgap: 30;
+}
+
+/* Ajustes de altura para telas baixas */
+@media (max-height: 600px) {
+    .small-screen #center {
+        -fx-padding: 15 15 15 30; /* Alterado: padding-left para 30px */
+        -fx-spacing: 15;
+        -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+    }
+    
+    .small-screen #container {
+        -fx-padding: 8 0 0 0;
+        -fx-spacing: 8;
+        -fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+    }
+    
+    .small-screen #titulo {
+        -fx-font-size: 18px;
+        -fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+    }
+    
+    .small-screen .colaborador-card {
+        -fx-padding: 8;
+    }
+    
+    .small-screen .grid-pane {
+        -fx-vgap: 12;
+        -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+    }
+    
+    .small-screen #colaboradoresContainer {
+        -fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+    }
+}
+
+/* Efeitos hover para cards */
+.colaborador-card:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-cursor: hand;
+}
+
+/* Melhorias de acessibilidade */
+#colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 0.5, 1, 1);
+}
+
+#titulo {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0.7, 2, 2);
+}
+
+/* Ajustes para quando a barra lateral é recolhida */
+#root-equipes-ga:has(.barra-lateral-recolhida) #center {
+    -fx-padding: 30 20 20 30; /* Alterado: padding-left para 30px */
+    -fx-alignment: top-left; /* Alterado: de top-center para top-left */
+}
+
+/* ScrollPane personalizado */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #2A2A2A;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #404040;
+    -fx-background-radius: 4;
 }

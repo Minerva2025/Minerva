@@ -90,7 +90,7 @@ public class HomeRH extends Application{
 		BarraLateralRH barra =  new BarraLateralRH(logado);
 		
 		HBox root = new HBox();
-		root.setStyle("-fx-background-color: #1E1E1E");
+		root.setId("root-home");
 		root.getChildren().addAll(barra, center);
 		
 		center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
@@ -101,8 +101,6 @@ public class HomeRH extends Application{
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 		scene.getStylesheets().add(getClass().getResource("/gui/HomeRH.css").toExternalForm());
 
-
-		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
@@ -114,7 +112,7 @@ public class HomeRH extends Application{
 
 		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
 		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
-		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.4));
 
 		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
 		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
@@ -124,13 +122,41 @@ public class HomeRH extends Application{
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
 
-
+		scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
+		
+		scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
+		
 		homerhStage.setScene(scene);
 		homerhStage.setFullScreen(true);
 		homerhStage.setFullScreenExitHint("");
 		homerhStage.show();
+		
+		updateResponsiveStyles(scene);
 
-
+	}
+	
+	private void updateResponsiveStyles(Scene scene) {
+		double width = scene.getWidth();
+		double height = scene.getHeight();
+		
+		scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
+		
+		if (width < 768) { // Mobile
+			scene.getRoot().getStyleClass().add("small-screen");
+			if (width > height) {
+				scene.getRoot().getStyleClass().add("mobile-landscape");
+			}
+		} else if (width < 1024) {
+			scene.getRoot().getStyleClass().add("medium-screen");
+		} else if (width < 1440) {
+			scene.getRoot().getStyleClass().add("large-screen");
+		} else {
+			scene.getRoot().getStyleClass().add("extra-large-screen");
+		}
 	}
 		
 	public static void main (String[]args) {

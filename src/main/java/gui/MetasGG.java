@@ -247,21 +247,33 @@ public class MetasGG extends Application {
                
         tabela.getColumns().addAll( colResponsavel,colDivisao, colObjetivo, colPrazo, colStatus);
         
+        // Adicionar classes responsivas
+        titulo.getStyleClass().add("responsive-title");
+        tabela.getStyleClass().add("responsive-table");
+        coluna1.getStyleClass().add("responsive-coluna");
+        caixaGraficoCompleta.getStyleClass().add("responsive-grafico");
+        painelAlertas.getStyleClass().add("responsive-alertas");
+        topContainer.getStyleClass().add("responsive-top-container");
+        
         coluna1.getChildren().addAll(titulo, topContainer, tabela, blob1, blob2, blob3);
 
         Button btnVerMetas = new Button("Ver Todas as Metas");
         btnVerMetas.getStyleClass().add("btnVerMetas"); 
+        btnVerMetas.getStyleClass().add("responsive-button");
         
         Button btnExportar = new Button("Exportar PDF");
         btnExportar.getStyleClass().add("botao-exportar");
+        btnExportar.getStyleClass().add("responsive-button");
 
         Button btnExportarExcel = new Button("Exportar Excel");
         btnExportarExcel.getStyleClass().add("botao-exportar");
+        btnExportarExcel.getStyleClass().add("responsive-button");
     	
 
         HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar, btnExportarExcel);
         containerBotoes.setAlignment(Pos.CENTER);
         containerBotoes.setPadding(new Insets(10, 0, 20, 0));
+        containerBotoes.getStyleClass().add("responsive-botoes-container");
 
         btnVerMetas.setOnAction(e -> {
             MetasGGTotais totalPage = new MetasGGTotais();
@@ -281,7 +293,6 @@ public class MetasGG extends Application {
         btnExportar.setOnAction(e -> {
     		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
     		fileChooser.setTitle("Salvar relatório PDF");
-    		
     		
     		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
     		fileChooser.setInitialFileName(fileName);
@@ -349,10 +360,28 @@ public class MetasGG extends Application {
         coluna1.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
         barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 
-        Scene scene = new Scene(root, 1000, 600);
+        // Criar ScrollPane e adicionar o root
+        ScrollPane scrollPane = new ScrollPane(root);
+        scrollPane.setFitToWidth(true); // Para ajustar a largura ao viewport
+        scrollPane.setFitToHeight(true); // Para ajustar a altura ao viewport
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setStyle("-fx-background: #1E1E1E; -fx-border-color: #1E1E1E;");
+
+        Scene scene = new Scene(scrollPane, 1000, 600); // Usar scrollPane em vez de root
+
         scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
+        
+        // Listener para redimensionamento responsivo
+        scene.widthProperty().addListener((obss, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
+        
+        scene.heightProperty().addListener((obss, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
         
         blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
@@ -369,8 +398,8 @@ public class MetasGG extends Application {
 		blob1.setManaged(false);
 
 		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
-		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.2));
-		blob2.translateYProperty().bind(scene.heightProperty().multiply(1.02));
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.18));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(1.15));
 		blob2.setManaged(false);
 
 		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
@@ -384,6 +413,9 @@ public class MetasGG extends Application {
         metasggStage.setTitle("Gerenciamento de Metas (PDIs)");
         metasggStage.show();
 
+        // Aplicar estilos iniciais
+        updateResponsiveStyles(scene);
+
         Timeline atualizador = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             carregarTabela();
             atualizarAlertas();
@@ -393,6 +425,29 @@ public class MetasGG extends Application {
         atualizador.play();
 
         atualizarGrafico();
+    }
+
+    // Método responsivo - MESMO PADRÃO
+    private void updateResponsiveStyles(Scene scene) {
+        double width = scene.getWidth();
+        double height = scene.getHeight();
+        
+        // Remover classes de tamanho anteriores
+        scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
+        
+        // Adicionar classe baseada no tamanho da tela - MESMO PADRÃO
+        if (width < 768) { // Mobile
+            scene.getRoot().getStyleClass().add("small-screen");
+            if (width > height) {
+                scene.getRoot().getStyleClass().add("mobile-landscape");
+            }
+        } else if (width < 1024) { // Tablet
+            scene.getRoot().getStyleClass().add("medium-screen");
+        } else if (width < 1440) { // Desktop
+            scene.getRoot().getStyleClass().add("large-screen");
+        } else { // Telas grandes
+            scene.getRoot().getStyleClass().add("extra-large-screen");
+        }
     }
 
     private HBox criarCaixaLegenda(String cor, String texto) {

@@ -15,9 +15,9 @@ public class BarraLateralRH extends VBox {
         this.logado = usuarioLogado;
         this.setId("left");
 
-        // Botões
         Button inicio = new Button("Início");
         inicio.setId("inicio");
+        inicio.getStyleClass().add("responsive-button");
         inicio.setOnAction(e -> {
             Stage homerhStage = new Stage();
             new HomeRH(logado).start(homerhStage);
@@ -26,7 +26,6 @@ public class BarraLateralRH extends VBox {
             stageAtual.close();
         });
         
-
         Button equipe = new Button("Equipe");
         equipe.setOnAction(e -> {
             Stage equipesrhStage = new Stage();
@@ -36,9 +35,11 @@ public class BarraLateralRH extends VBox {
             stageAtual.close();
         });
         equipe.setId("equipe");
+        equipe.getStyleClass().add("responsive-button");
 
         Button relatorios = new Button("Relatórios");
         relatorios.setId("relatorios");
+        relatorios.getStyleClass().add("responsive-button");
         relatorios.setOnAction(e -> {
             Stage relatoriosrhStage = new Stage();
             new RelatoriosRH(logado).start(relatoriosrhStage);
@@ -46,7 +47,6 @@ public class BarraLateralRH extends VBox {
             Stage stageAtual = (Stage) ((Node) e.getSource()).getScene().getWindow();
             stageAtual.close();
         });
-
 
         Button metas = new Button("Metas");
         metas.setOnAction(e -> {
@@ -57,9 +57,11 @@ public class BarraLateralRH extends VBox {
             stageAtual.close();
         });
         metas.setId("metas");
+        metas.getStyleClass().add("responsive-button");
 
         ToggleButton avaliacoes = new ToggleButton("Avaliações");
         avaliacoes.setId("avaliacoes");
+        avaliacoes.getStyleClass().add("responsive-button");
         avaliacoes.setOnAction(e -> {
             Stage avaliacaorhStage = new Stage();
             new AvaliacaoRH(logado).start(avaliacaorhStage);
@@ -68,8 +70,8 @@ public class BarraLateralRH extends VBox {
             stageAtual.close();
         });
 
-        // organiza os botões na vertical com espaçamento
         this.setSpacing(30);
+        this.getStyleClass().add("responsive-barralateral");
         this.getChildren().addAll(inicio, equipe, relatorios, metas, avaliacoes);
     }
 }

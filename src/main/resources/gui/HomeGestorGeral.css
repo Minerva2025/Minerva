@@ -1,261 +1,521 @@
-/*@font-face{
-	font-family: 'JuliusSansOne';
-	src: url(fonts/JuliusSansOne-Regular.ttf);
-}*/
+/* Estilos base - Mobile First */
+#root-home{
+	-fx-background-color: #1E1E1E;
+}
 
 #center{
 	-fx-background-color: #1E1E1E;
-	-fx-padding: 110 0 0 45
+	-fx-padding: 60 20 20 45; /* Alterado: padding-left para 45px */
+	-fx-alignment: top-left; /* Alterado: de top-center para top-left */
 }
 
 #titulo{
 	-fx-fill: white;
-	-fx-font-size: 48px;
+	-fx-font-size: 28px;
 	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 2px;
-	
+	-fx-letter-spacing: 1px;
+	-fx-text-alignment: left; /* Alterado: de center para left */
+	-fx-wrapping-width: 300px;
 }
 
 #container{
-	-fx-padding: 80 0 0 0
+	-fx-padding: 30 0 0 0;
+	-fx-alignment: center-left; /* Alterado: de center para center-left */
+	-fx-spacing: 15;
 }
 
 #colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido{
 	-fx-fill: white;
-	-fx-font-size: 18px;
+	-fx-font-size: 12px;
 	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 2px;
+	-fx-letter-spacing: 1px;
+	-fx-text-alignment: left; /* Alterado: de center para left */
+	-fx-wrapping-width: 120px;
 }
 
-#left{
-	-fx-background-color: #323232;
-	-fx-padding: 170 0 0 40;
-	-fx-background-radius: 0 20 20 0;
-	-fx-background-insets: 0
+#chartsContainer{
+    -fx-padding: 20 0 15 0;
+    -fx-alignment: center-left; /* Alterado: de center para center-left */
 }
 
-#inicio, #equipe, #relatorios, #metas{
-	-fx-text-fill: white;
-	-fx-font-size: 20px;
-	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 2px;
-	-fx-background-color: transparent;
-	-fx-border-color: transparent
+.card{
+    -fx-background-color: #2A2A2A;
+    -fx-background-radius: 12;
+    -fx-min-width: 280px;
+    -fx-min-height: 200px;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0.0, 0, 3);
+    -fx-border-color: transparent;
+}
+
+#boxChart1, #boxChart2{
+    -fx-alignment: center;
+}
+
+#alertBox{
+    -fx-padding: 20 0 0 0;
+    -fx-spacing: 4;
+    -fx-alignment: center-left; /* Alterado: de center para center-left */
+}
+
+#alertTitle{
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 18px;
+    -fx-font-family: 'Kodchasan';
+    -fx-letter-spacing: 1px;
+}
+
+#alertMessage{
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-opacity: 0.9;
+    -fx-font-family: 'Kodchasan';
+    -fx-text-alignment: left; /* Alterado: de center para left */
+    -fx-wrapping-width: 280px;
 }
 
 #blob1, #blob2, #blob3{
 	-fx-fill: #323232;
 }
 
-#chartsContainer{
-    -fx-padding: 30 0 20 0;
-    -fx-alignment: center-left;
+/* Container responsivo - muda layout em telas pequenas */
+.small-screen #container {
+	-fx-orientation: vertical;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
 }
 
-
-.card{
-    -fx-background-color: #2A2A2A;
-    -fx-background-radius: 18;
-    -fx-min-width: 420px;
-    -fx-min-height: 240px;
-
-	    -fx-padding: 18;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.0, 0, 4);
-    -fx-border-color: transparent;
+.small-screen #container > * {
+	-fx-padding: 6px 0;
 }
 
-
-#boxChart1, #boxChart2{
-    -fx-alignment: center;
+.small-screen #chartsContainer {
+	-fx-orientation: vertical;
+	-fx-spacing: 15;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
 }
 
-
-
-#alertBox{
-    -fx-padding: 28 0 0 10;
-    -fx-spacing: 6;
+/* Mobile Landscape */
+.mobile-landscape #container {
+	-fx-orientation: horizontal;
+	-fx-spacing: 10;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
 }
 
-#alertTitle{
-    -fx-fill: #FFFFFF;
-    -fx-font-size: 28px;
-    -fx-font-family: 'Kodchasan';
-    -fx-letter-spacing: 1.5px;
+.mobile-landscape #container > * {
+	-fx-wrapping-width: 100px;
+	-fx-font-size: 10px;
 }
 
-#alertMessage{
-    -fx-fill: #FFFFFF;
-    -fx-font-size: 22px;
-    -fx-opacity: 0.9;
-    -fx-font-family: 'Kodchasan';
+.mobile-landscape #chartsContainer {
+	-fx-orientation: horizontal;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
 }
 
-
-#alertBox {
-    -fx-background-color: transparent;
-    -fx-border-radius: 8;
+/* Tablet (768px+) */
+.medium-screen #center {
+	-fx-padding: 80 30 30 45; /* Alterado: padding-left para 45px */
+	-fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
 }
 
+.medium-screen #titulo {
+	-fx-font-size: 36px;
+	-fx-wrapping-width: 400px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
 
-@media screen and (max-width: 1280px) {
-    .card {
-        -fx-min-width: 340px;
-        -fx-min-height: 500px;
-    }
-}	
+.medium-screen #container {
+	-fx-padding: 50 0 0 0;
+	-fx-spacing: 30;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.medium-screen #colaboradores,
+.medium-screen #pdiAtivo, 
+.medium-screen #pdiInativo, 
+.medium-screen #pdiConcluido {
+	-fx-font-size: 14px;
+	-fx-wrapping-width: 150px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.medium-screen #chartsContainer {
+	-fx-padding: 25 0 20 0;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.medium-screen .card {
+	-fx-min-width: 320px;
+	-fx-min-height: 220px;
+	-fx-padding: 15;
+}
+
+.medium-screen #alertTitle {
+	-fx-font-size: 22px;
+}
+
+.medium-screen #alertMessage {
+	-fx-font-size: 16px;
+	-fx-wrapping-width: 400px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.medium-screen #alertBox {
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Tablet Portrait - Gráficos em coluna */
+.tablet-portrait #chartsContainer {
+	-fx-orientation: vertical;
+	-fx-spacing: 20;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Desktop (1024px+) */
+.large-screen #center {
+	-fx-padding: 110 40 40 45; /* Alterado: padding-left para 45px */
+	-fx-alignment: top-left;
+}
+
+.large-screen #titulo {
+	-fx-font-size: 42px;
+	-fx-wrapping-width: 500px;
+	-fx-text-alignment: left;
+}
+
+.large-screen #container {
+	-fx-padding: 70 0 0 0;
+	-fx-spacing: 60;
+	-fx-alignment: center-left;
+}
+
+.large-screen #colaboradores,
+.large-screen #pdiAtivo, 
+.large-screen #pdiInativo, 
+.large-screen #pdiConcluido {
+	-fx-font-size: 16px;
+	-fx-wrapping-width: 180px;
+	-fx-text-alignment: left;
+}
+
+.large-screen #chartsContainer {
+	-fx-padding: 30 0 20 0;
+	-fx-alignment: center-left;
+}
+
+.large-screen .card {
+	-fx-min-width: 380px;
+	-fx-min-height: 240px;
+	-fx-padding: 16;
+}
+
+.large-screen #alertTitle {
+	-fx-font-size: 24px;
+}
+
+.large-screen #alertMessage {
+	-fx-font-size: 18px;
+	-fx-wrapping-width: 500px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.large-screen #alertBox {
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Telas grandes (1440px+) */
+.extra-large-screen #center {
+	-fx-padding: 110 0 0 45;
+	-fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen #titulo {
+	-fx-font-size: 48px;
+	-fx-letter-spacing: 2px;
+	-fx-wrapping-width: 600px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen #container {
+	-fx-padding: 80 0 0 0;
+	-fx-spacing: 150;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen #colaboradores,
+.extra-large-screen #pdiAtivo, 
+.extra-large-screen #pdiInativo, 
+.extra-large-screen #pdiConcluido {
+	-fx-font-size: 18px;
+	-fx-letter-spacing: 2px;
+	-fx-wrapping-width: 220px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen .card {
+	-fx-min-width: 420px;
+	-fx-min-height: 240px;
+	-fx-padding: 18;
+	-fx-background-radius: 18;
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.0, 0, 4);
+}
+
+.extra-large-screen #alertTitle {
+	-fx-font-size: 28px;
+}
+
+.extra-large-screen #alertMessage {
+	-fx-font-size: 22px;
+	-fx-wrapping-width: 600px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen #alertBox {
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.extra-large-screen #chartsContainer {
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Ajustes para telas muito pequenas (menos de 480px) */
+.small-screen #center {
+	-fx-padding: 40 15 15 30; /* Alterado: padding-left para 30px */
+	-fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #titulo {
+	-fx-font-size: 22px;
+	-fx-wrapping-width: 250px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #container {
+	-fx-padding: 20 0 0 0;
+	-fx-spacing: 10;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #colaboradores,
+.small-screen #pdiAtivo, 
+.small-screen #pdiInativo, 
+.small-screen #pdiConcluido {
+	-fx-font-size: 10px;
+	-fx-wrapping-width: 100px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen .card {
+	-fx-min-width: 260px;
+	-fx-min-height: 180px;
+	-fx-padding: 10;
+}
+
+.small-screen #alertBox {
+	-fx-padding: 15 0 0 0;
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #alertTitle {
+	-fx-font-size: 16px;
+}
+
+.small-screen #alertMessage {
+	-fx-font-size: 12px;
+	-fx-wrapping-width: 250px;
+	-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+}
+
+.small-screen #chartsContainer {
+	-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+}
+
+/* Estilos responsivos para gráficos */
+.pie-chart {
+	-fx-pref-width: 250px;
+	-fx-pref-height: 200px;
+}
+
+.bar-chart {
+	-fx-pref-width: 250px;
+	-fx-pref-height: 200px;
+}
+
+.medium-screen .pie-chart,
+.medium-screen .bar-chart {
+	-fx-pref-width: 300px;
+	-fx-pref-height: 220px;
+}
+
+.large-screen .pie-chart,
+.large-screen .bar-chart {
+	-fx-pref-width: 350px;
+	-fx-pref-height: 240px;
+}
+
+.extra-large-screen .pie-chart,
+.extra-large-screen .bar-chart {
+	-fx-pref-width: 380px;
+	-fx-pref-height: 260px;
+}
+
+/* Legenda responsiva */
+.chart-legend {
+	-fx-font-size: 10px;
+}
+
+.medium-screen .chart-legend {
+	-fx-font-size: 11px;
+}
+
+.large-screen .chart-legend {
+	-fx-font-size: 12px;
+}
+
+.extra-large-screen .chart-legend {
+	-fx-font-size: 13px;
+}
+
+/* Eixos responsivos */
+.axis {
+	-fx-font-size: 10px;
+}
+
+.medium-screen .axis {
+	-fx-font-size: 11px;
+}
+
+.large-screen .axis {
+	-fx-font-size: 12px;
+}
+
+.extra-large-screen .axis {
+	-fx-font-size: 13px;
+}
+
+.axis-label {
+	-fx-font-size: 11px;
+}
+
+.medium-screen .axis-label {
+	-fx-font-size: 12px;
+}
+
+.large-screen .axis-label {
+	-fx-font-size: 13px;
+}
+
+.extra-large-screen .axis-label {
+	-fx-font-size: 14px;
+}
+
+/* Ajustes de altura para telas baixas */
+@media (max-height: 600px) {
+	.small-screen #center {
+		-fx-padding: 30 15 15 30; /* Alterado: padding-left para 30px */
+		-fx-alignment: top-left; /* Adicionado: alinhamento à esquerda */
+	}
+	
+	.small-screen #container {
+		-fx-padding: 15 0 0 0;
+		-fx-spacing: 8;
+		-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+	}
+	
+	.small-screen #titulo {
+		-fx-font-size: 20px;
+		-fx-text-alignment: left; /* Adicionado: alinhamento à esquerda */
+	}
+	
+	.small-screen .card {
+		-fx-min-height: 160px;
+	}
+	
+	.small-screen #alertBox {
+		-fx-alignment: center-left; /* Adicionado: alinhamento à esquerda */
+	}
+}
+
+/* Melhorias de acessibilidade */
+#colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido {
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 0.5, 1, 1);
+}
+
+#titulo {
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0.7, 2, 2);
+}
 
 /* --- ESTILOS ESPECÍFICOS DOS GRÁFICOS --- */
 
-/* --- Gráfico de Pizza --- */
-
+/* Gráfico de Pizza */
 .chart-pie {
     -fx-border-color: transparent;
 }
 
-/*cores*/
-    .data0 { -fx-pie-color: #A8E6CF; }
-	.data1 { -fx-pie-color: #70C1B3; }
-	.data2 { -fx-pie-color: #2E8B78; }
-	.data3 { -fx-pie-color: #155E57; }
+/* Cores do gráfico de pizza */
+.data0 { -fx-pie-color: #A8E6CF; }
+.data1 { -fx-pie-color: #70C1B3; }
+.data2 { -fx-pie-color: #2E8B78; }
+.data3 { -fx-pie-color: #155E57; }
 
-/* Estilo da legenda do gráfico de pizza */
+/* Estilo da legenda */
 .chart-legend {
     -fx-background-color: transparent; 
     -fx-text-fill: white; 
     -fx-font-family: 'Kodchasan';
-    -fx-font-size: 13px; 
-    -fx-padding: 0 0 0 20px; 
+    -fx-padding: 0 0 0 10px; 
 }
 
-/* Estilo de cada item individual da legenda */
 .chart-legend .chart-legend-item {
     -fx-text-fill: #E0E0E0; 
-    -fx-padding: 2px 0;
+    -fx-padding: 1px 0;
 }
 
-/* Estilo do símbolo (quadradinho) de cada item da legenda */
 .chart-legend .chart-legend-item-symbol {
     -fx-shape: "M0 0 H10 V10 H0 Z"; 
-    -fx-scale-x: 0.9; 
-    -fx-scale-y: 0.9;
- 
+    -fx-scale-x: 0.8; 
+    -fx-scale-y: 0.8;
 }
 
-/* --- Gráfico de Barras --- */
-
-/* Fundo do gráfico */
+/* Gráfico de Barras */
 .chart {
     -fx-background-color: transparent;
 }
 
-/* Fundo da área de plot */
 .chart-plot-background {
     -fx-background-color: transparent;
 }
 
-
-
-/* Remove o fundo da área de plot (onde as barras aparecem) */
-.chart-bar .chart-plot-background {
-    -fx-background-color: transparent;
-}
-
-/* Estilo dos eixos */
 .axis {
     -fx-font-family: 'Kodchasan';
-    -fx-font-size: 12px;
     -fx-tick-label-fill: #E0E0E0;
     -fx-stroke: #5A5A5A;
     -fx-tick-mark-stroke: transparent;
     -fx-opacity: 0.7;
 }
 
-/* Rótulos dos eixos */
 .axis-label {
     -fx-text-fill: #FFFFFF;
-    -fx-font-size: 14px;
-	-fx-font-weight: 300;
+    -fx-font-weight: 300;
 }
 
-
-
-/* Tirar linhas de grade */
 .chart-vertical-grid-lines,
 .chart-horizontal-grid-lines {
     -fx-stroke: transparent;
 }
 
+/* Gap entre barras responsivo */
+.small-screen #boxChart2 {
+    -fx-category-gap: 30px; 
+}
 
-#boxChart2 {
-    
-    -fx-bar-gap: 1; 
+.medium-screen #boxChart2 {
+    -fx-category-gap: 40px; 
+}
+
+.large-screen #boxChart2 {
+    -fx-category-gap: 50px; 
+}
+
+.extra-large-screen #boxChart2 {
     -fx-category-gap: 60px; 
 }
-
-/* Reduzir o gap do eixo X para forçar o ajuste */
-.bar-chart .axis-category {
-    -fx-padding: 0 30 0 30; 
-}
-
-/* --- Card de Tendência --- */
-#trendCard {
-    -fx-padding: 16px 20px 20px 20px;
-    -fx-background-color: #2B2B2B;
-    -fx-background-radius: 20px;
-    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.4) , 30 , 0 , 0 , 5 );
-    -fx-pref-width: 300px; 
-    -fx-alignment: center;
-    
-}
-
-/* Título no card */
-#trendTitle {
-    -fx-font-size: 20px;
-    -fx-font-family: 'Kodchasan';
-    -fx-fill: #FFFFFF;
-    -fx-font-weight: bold;
-}
-
-/* Labels */
-#trendLabel {
-    -fx-font-size: 14px;
-    -fx-fill: #D6D6D6;
-}
-
-/* Valores verdes e vermelhos */
-#trendValueGreen {
-    -fx-font-size: 20px;
-    -fx-fill: #6EF2C8;
-    -fx-font-weight: bold;
-}
-#trendValueRed {
-    -fx-font-size: 20px;
-    -fx-fill: #FF6B6B;
-    -fx-font-weight: bold;
-}
-
-#trendCard {
-    -fx-pref-width: 770;
-    -fx-max-width: 800;
-}
-
-
-/*Scrol-Pane*/
-
-.scroll-pane {
-    -fx-background-color: transparent;
-}
-
-.scroll-bar:vertical {
-    -fx-pref-width: 10px;
-}
-
-.scroll-bar .thumb {
-    -fx-background-color: #444;
-    -fx-background-radius: 6;
-}
-
-.scroll-bar .track {
-    -fx-background-color: #2A2A2A;
-}
-

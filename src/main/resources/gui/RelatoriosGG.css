@@ -1,155 +1,579 @@
-/* Topo da pagina */
-.root {
+/* Estilos base - Mobile First */
+#root-relatorios-gg {
     -fx-background-color: #1E1E1E;
 }
+
 #center {
     -fx-background-color: #1E1E1E;
-    -fx-spacing: 15;
-    -fx-padding: 45 15 45 60;
+    -fx-spacing: 20;
+    -fx-padding: 40 20 20 20;
+    -fx-alignment: top-center;
+}
+
+#titulo {
+    -fx-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-family: 'Kodchasan';
+    -fx-text-alignment: center;
+    -fx-wrapping-width: 280px;
+}
+
+/* Gráficos */
+.graficos {
+    -fx-spacing: 20;
+    -fx-padding: 15;
     -fx-alignment: center;
 }
-#titulo{
-	-fx-fill: white;
-	-fx-font-size: 40px;
-	-fx-font-family: 'Kodchasan';
-}
-/* Gráficos */
-/* Grafico de Barras */
 
-.chart_container{
+.chart_container {
     -fx-background-color: #323232CC;
-    -fx-background-radius: 30;
-    -fx-min-width: 420px;
-    -fx-min-height: 240px;
-	-fx-padding: 18;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.0, 0, 4);
+    -fx-background-radius: 20;
+    -fx-min-width: 280px;
+    -fx-min-height: 200px;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0.0, 0, 3);
     -fx-border-color: transparent;
 }
-.chart{
--fx-background-color: transparent;
+
+.chart {
+    -fx-background-color: transparent;
 }
+
 .chart-plot-background {
     -fx-background-color: transparent;
 }
-.barchart_xAxis{
--fx-tick-label-fill: white;
--fx-tick-label-font: normal normal 14 "Kodchasan";
--fx-tick-mark-visible: false;
--fx-tick-label-visible: true;
+
+/* Gráfico de Barras responsivo */
+.bar-chart-responsive {
+    -fx-pref-width: 250px;
+    -fx-pref-height: 180px;
 }
-.barchart_xAxis .axis-label{
--fx-text-fill: white;
--fx-font: normal normal 14 "Kodchasan";
+
+.barchart_xAxis {
+    -fx-tick-label-fill: white;
+    -fx-tick-label-font: normal normal 12 "Kodchasan";
+    -fx-tick-mark-visible: false;
+    -fx-tick-label-visible: true;
 }
-.barchart_yAxis{
--fx-minor-tick-visible: false;
--fx-tick-mark-visible: false;
--fx-tick-labels-visible: false;
+
+.barchart_xAxis .axis-label {
+    -fx-text-fill: white;
+    -fx-font: normal normal 12 "Kodchasan";
 }
-.barchart_yAxis .axis-label{
--fx-text-fill: white;
--fx-font: normal normal 14 "Kodchasan";
+
+.barchart_yAxis {
+    -fx-minor-tick-visible: false;
+    -fx-tick-mark-visible: false;
+    -fx-tick-labels-visible: false;
 }
-.barchart{
--fx-legend-visible: false;
--fx-horizontal-grid-lines-visible: false;
--fx-vertical-grid-lines-visible: false;
--fx-bar-gap: 0;
--fx-category-gap: 10;
+
+.barchart_yAxis .axis-label {
+    -fx-text-fill: white;
+    -fx-font: normal normal 12 "Kodchasan";
 }
+
+.barchart {
+    -fx-legend-visible: false;
+    -fx-horizontal-grid-lines-visible: false;
+    -fx-vertical-grid-lines-visible: false;
+    -fx-bar-gap: 0;
+    -fx-category-gap: 5;
+}
+
 .barchart .chart-legend {
     -fx-background-color: transparent;
 }
+
 .barchart .chart-legend .label {
--fx-text-fill: white;
+    -fx-text-fill: white;
+    -fx-font: normal normal 14 "Kodchasan";
 }
-.barchart .chart-bar.series0.data0.default-color0 {
+
+/* Gráfico de Pizza responsivo */
+.pie-chart-responsive {
+    -fx-pref-width: 250px;
+    -fx-pref-height: 180px;
+}
+
+.piechart {
+    -fx-pie-label-visible: false;
+    -fx-legend-side: right;
+}
+
+.piechart .chart-legend {
+    -fx-background-color: transparent;
+}
+
+.piechart .chart-legend .label {
+    -fx-text-fill: white;
+    -fx-font: normal normal 12 "Kodchasan";
+}
+
+/* Cards */
+.cardsContainer {
+    -fx-spacing: 15;
+    -fx-padding: 15;
+    -fx-alignment: center;
+}
+
+.cardsContainerTitle {
+    -fx-fill: white;
+    -fx-font: normal normal 18 "Kodchasan";
+}
+
+.cardsFilter {
+    -fx-padding: 0 0 5 0;
+    -fx-spacing: 8;
+    -fx-alignment: center;
+}
+
+.filtro {
+    -fx-text-fill: white;
+    -fx-font: normal normal 12 "Kodchasan";
+    -fx-background-color: #323232CC;
+    -fx-pref-width: 280px;
+    -fx-pref-height: 35px;
+}
+
+.filtro_btn {
+    -fx-text-fill: white;
+    -fx-font: normal normal 12 "Kodchasan";
+    -fx-background-color: transparent;
+    -fx-background-radius: 12;
+    -fx-padding: 8 16;
+}
+
+.cards_btn {
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-font: normal normal 12 "Kodchasan";
+    -fx-background-color: #323232CC;
+    -fx-background-radius: 15;
+    -fx-padding: 8 16;
+}
+
+/* Cards de Nome */
+.namecardsContainer {
+    -fx-background-color: #323232CC;
+    -fx-background-radius: 20;
+    -fx-spacing: 12;
+    -fx-padding: 12;
+}
+
+.name-card {
+    -fx-spacing: 15;
+    -fx-alignment: center-left;
+}
+
+.nameCardInfosContainer {
+    -fx-spacing: 8;
+}
+
+.nameCardTitle {
+    -fx-fill: white;
+    -fx-font: normal normal 16 "Kodchasan";
+    -fx-wrapping-width: 200px;
+}
+
+.nameCardSetor, .nameCardCargo {
+    -fx-fill: white;
+    -fx-font: normal normal 12 "Kodchasan";
+    -fx-wrapping-width: 200px;
+}
+
+.namecardpiechart {
+    -fx-pie-label-visible: false;
+    -fx-legend-side: right;
+}
+
+/* Cards de Setor */
+.setorcardsContainer {
+    -fx-background-color: #323232CC;
+    -fx-background-radius: 20;
+    -fx-spacing: 12;
+    -fx-padding: 12;
+}
+
+.setor-card {
+    -fx-spacing: 15;
+    -fx-alignment: center-left;
+}
+
+.setor-card-infos {
+    -fx-spacing: 8;
+}
+
+.setor-titulo {
+    -fx-fill: white;
+    -fx-font: normal normal 16 "Kodchasan";
+    -fx-wrapping-width: 200px;
+}
+
+.totalColaboradores {
+    -fx-fill: white;
+    -fx-font: normal normal 12 "Kodchasan";
+}
+
+/* Cores dos gráficos */
+.barchart .chart-bar.default-color0 {
+    -fx-bar-fill: #86D2C9;
+}
+.barchart .chart-bar.default-color1 {
+    -fx-bar-fill: #49ACA0;
+}
+.barchart .chart-bar.default-color2 {
+    -fx-bar-fill: #24776D;
+}
+.barchart .chart-bar.default-color3 {
+    -fx-bar-fill: #1F5F5A;
+}
+.barchart .chart-bar.default-color4 {
+    -fx-bar-fill: #174842;
+}
+
+.piechart .chart-pie.data0.default-color0 {
     -fx-background-color: #86D2C9;
 }
-.barchart .chart-bar.series1.data1.default-color1 {
-    -fx-background-color: #49ACA0;
-}
-.barchart .chart-bar.series2.data2.default-color2 {
-    -fx-background-color: #24776D;
-}
-.barchart .chart-bar.series3.data3.default-color3 {
-    -fx-background-color: #1F5F5A;
-}
-.barchart .chart-bar.series4.data4.default-color4 {
+.piechart .chart-pie.data1.default-color1 {
     -fx-background-color: #174842;
 }
-.bar-label{
--fx-text-fill: white;
+
+.namecardpiechart .chart-pie.data0.default-color0 {
+    -fx-background-color: #86D2C9;
 }
-.piechart{
--fx-pie-label-visible: false;
--fx-legend-side: right;
+.namecardpiechart .chart-pie.data1.default-color1 {
+    -fx-background-color: #49ACA0;
 }
-.piechart .chart-pie.data0.default-color0{
--fx-background-color:#86D2C9;
+.namecardpiechart .chart-pie.data2.default-color2 {
+    -fx-background-color: #2C8E83;
 }
-.piechart .chart-pie.data1.default-color1{
--fx-background-color:#174842;
-}
-.piechart .chart-legend{
--fx-background-color: transparent;
-}
-.piechart .chart-legend .label{
--fx-text-fill: white;
-}
-.graficos{
--fx-spacing: 30;
--fx-padding: 45;
-}
-/* Cards */
-.cardsContainer{
--fx-spacing: 15;
--fx-padding: 30;
--fx-alignment: center;
-}
-.cardsContainerTitle{
--fx-fill:white;
--fx-font: normal normal 24 "Kodchasan";
-}
-.filtro{
--fx-text-fill:white;
--fx-font: normal normal 14 "Kodchasan";
--fx-background-color:#323232CC;
--fx-pref-width: 540;
-}
-.filtro_btn{
--fx-text-fill:white;
--fx-font: normal normal 14 "Kodchasan";
--fx-background-color: transparent;
--fx-background-radius: 15;
-}
-.cardsFilter{
--fx-padding: 0 0 15 0;
-}
-.cards_btn{
--fx-alignment: center;
--fx-text-fill:white;
--fx-font: normal normal 14 "Kodchasan";
--fx-background-color: #323232CC;
--fx-background-radius: 20;
-}
-.namecardsContainer{
--fx-background-color: #323232CC;
--fx-background-radius: 30;
--fx-spacing: 15;
--fx-padding: 15;
-}
-.nameCardInfosContainer{
--fx-spacing: 15;
--fx-padding: 0 0 15 0;
-}
-.nameCardTitle{
--fx-fill:white;
--fx-font: normal normal 24 "Kodchasan";
-}
+
 /* Blobs */
-#blob1,
-#blob2,
-#blob3 {
-  -fx-fill: #323232;
+#blob1, #blob2, #blob3 {
+    -fx-fill: #323232;
+}
+
+/* Container responsivo - muda layout em telas pequenas */
+.small-screen .graficos {
+    -fx-orientation: vertical;
+}
+
+.small-screen .name-card,
+.small-screen .setor-card {
+    -fx-orientation: vertical;
+    -fx-spacing: 15;
+    -fx-alignment: center;
+}
+
+.small-screen .cardsFilter {
+    -fx-orientation: vertical;
+    -fx-spacing: 8;
+}
+
+/* Mobile Landscape */
+.mobile-landscape .graficos {
+    -fx-orientation: horizontal;
+}
+
+/* Tablet (768px+) */
+.medium-screen #center {
+    -fx-padding: 60 30 30 30;
+    -fx-spacing: 25;
+}
+
+.medium-screen #titulo {
+    -fx-font-size: 32px;
+    -fx-wrapping-width: 400px;
+}
+
+.medium-screen .graficos {
+    -fx-spacing: 25;
+}
+
+.medium-screen .chart_container {
+    -fx-min-width: 320px;
+    -fx-min-height: 220px;
+    -fx-padding: 15;
+    -fx-background-radius: 25;
+}
+
+.medium-screen .bar-chart-responsive {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 200px;
+}
+
+.medium-screen .pie-chart-responsive {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 200px;
+}
+
+.medium-screen .barchart_xAxis {
+    -fx-tick-label-font: normal normal 13 "Kodchasan";
+}
+
+.medium-screen .barchart_xAxis .axis-label {
+    -fx-font: normal normal 13 "Kodchasan";
+}
+
+.medium-screen .piechart .chart-legend .label {
+    -fx-font: normal normal 13 "Kodchasan";
+}
+
+.medium-screen .cardsContainerTitle {
+    -fx-font: normal normal 20 "Kodchasan";
+}
+
+.medium-screen .filtro {
+    -fx-pref-width: 350px;
+    -fx-font: normal normal 13 "Kodchasan";
+}
+
+.medium-screen .filtro_btn,
+.medium-screen .cards_btn {
+    -fx-font: normal normal 13 "Kodchasan";
+    -fx-padding: 9 18;
+}
+
+.medium-screen .namecardsContainer,
+.medium-screen .setorcardsContainer {
+    -fx-background-radius: 25;
+    -fx-spacing: 15;
+    -fx-padding: 15;
+}
+
+.medium-screen .nameCardTitle {
+    -fx-font: normal normal 17 "Kodchasan";
+    -fx-wrapping-width: 250px;
+}
+
+.medium-screen .nameCardSetor,
+.medium-screen .nameCardCargo,
+.medium-screen .setor-titulo,
+.medium-screen .totalColaboradores {
+    -fx-font: normal normal 13 "Kodchasan";
+    -fx-wrapping-width: 250px;
+}
+
+/* Tablet Portrait - Gráficos em coluna */
+.tablet-portrait .graficos {
+    -fx-orientation: vertical;
+}
+
+/* Desktop (1024px+) */
+.large-screen #center {
+    -fx-padding: 80 40 40 40;
+    -fx-spacing: 30;
+}
+
+.large-screen #titulo {
+    -fx-font-size: 36px;
+    -fx-wrapping-width: 500px;
+}
+
+.large-screen .graficos {
+    -fx-spacing: 30;
+}
+
+.large-screen .chart_container {
+    -fx-min-width: 380px;
+    -fx-min-height: 240px;
+    -fx-padding: 16;
+    -fx-background-radius: 28;
+}
+
+.large-screen .bar-chart-responsive {
+    -fx-pref-width: 350px;
+    -fx-pref-height: 220px;
+}
+
+.large-screen .pie-chart-responsive {
+    -fx-pref-width: 350px;
+    -fx-pref-height: 220px;
+}
+
+.large-screen .barchart_xAxis {
+    -fx-tick-label-font: normal normal 14 "Kodchasan";
+}
+
+.large-screen .barchart_xAxis .axis-label {
+    -fx-font: normal normal 14 "Kodchasan";
+}
+
+.large-screen .piechart .chart-legend .label {
+    -fx-font: normal normal 14 "Kodchasan";
+}
+
+.large-screen .cardsContainerTitle {
+    -fx-font: normal normal 22 "Kodchasan";
+}
+
+.large-screen .filtro {
+    -fx-pref-width: 400px;
+    -fx-font: normal normal 14 "Kodchasan";
+}
+
+.large-screen .filtro_btn,
+.large-screen .cards_btn {
+    -fx-font: normal normal 14 "Kodchasan";
+    -fx-padding: 10 20;
+}
+
+.large-screen .namecardsContainer,
+.large-screen .setorcardsContainer {
+    -fx-background-radius: 28;
+    -fx-spacing: 18;
+    -fx-padding: 18;
+}
+
+.large-screen .nameCardTitle {
+    -fx-font: normal normal 18 "Kodchasan";
+    -fx-wrapping-width: 300px;
+}
+
+.large-screen .nameCardSetor,
+.large-screen .nameCardCargo,
+.large-screen .setor-titulo,
+.large-screen .totalColaboradores {
+    -fx-font: normal normal 14 "Kodchasan";
+    -fx-wrapping-width: 300px;
+}
+
+/* Telas grandes (1440px+) */
+.extra-large-screen #center {
+    -fx-padding: 110 60 60 60;
+    -fx-spacing: 35;
+}
+
+.extra-large-screen #titulo {
+    -fx-font-size: 40px;
+    -fx-wrapping-width: 600px;
+}
+
+.extra-large-screen .graficos {
+    -fx-spacing: 35;
+}
+
+.extra-large-screen .chart_container {
+    -fx-min-width: 420px;
+    -fx-min-height: 240px;
+    -fx-padding: 18;
+    -fx-background-radius: 30;
+}
+
+.extra-large-screen .bar-chart-responsive {
+    -fx-pref-width: 380px;
+    -fx-pref-height: 220px;
+}
+
+.extra-large-screen .pie-chart-responsive {
+    -fx-pref-width: 380px;
+    -fx-pref-height: 220px;
+}
+
+.extra-large-screen .barchart {
+    -fx-category-gap: 10;
+}
+
+.extra-large-screen .filtro {
+    -fx-pref-width: 540px;
+}
+
+/* Ajustes para telas muito pequenas (menos de 480px) */
+.small-screen #center {
+    -fx-padding: 30 15 15 15;
+    -fx-spacing: 15;
+}
+
+.small-screen #titulo {
+    -fx-font-size: 20px;
+    -fx-wrapping-width: 250px;
+}
+
+.small-screen .chart_container {
+    -fx-min-width: 260px;
+    -fx-min-height: 180px;
+    -fx-padding: 10;
+}
+
+.small-screen .bar-chart-responsive {
+    -fx-pref-width: 220px;
+    -fx-pref-height: 160px;
+}
+
+.small-screen .pie-chart-responsive {
+    -fx-pref-width: 220px;
+    -fx-pref-height: 160px;
+}
+
+.small-screen .barchart_xAxis {
+    -fx-tick-label-font: normal normal 11 "Kodchasan";
+}
+
+.small-screen .barchart_xAxis .axis-label {
+    -fx-font: normal normal 11 "Kodchasan";
+}
+
+.small-screen .piechart .chart-legend .label {
+    -fx-font: normal normal 11 "Kodchasan";
+}
+
+.small-screen .cardsContainerTitle {
+    -fx-font: normal normal 16 "Kodchasan";
+}
+
+.small-screen .filtro {
+    -fx-pref-width: 220px;
+    -fx-font: normal normal 11 "Kodchasan";
+}
+
+.small-screen .filtro_btn,
+.small-screen .cards_btn {
+    -fx-font: normal normal 11 "Kodchasan";
+    -fx-padding: 6 12;
+}
+
+.small-screen .nameCardTitle {
+    -fx-font: normal normal 14 "Kodchasan";
+    -fx-wrapping-width: 180px;
+}
+
+.small-screen .nameCardSetor,
+.small-screen .nameCardCargo,
+.small-screen .setor-titulo,
+.small-screen .totalColaboradores {
+    -fx-font: normal normal 11 "Kodchasan";
+    -fx-wrapping-width: 180px;
+}
+
+/* Ajustes de altura para telas baixas */
+@media (max-height: 600px) {
+    .small-screen #center {
+        -fx-padding: 20 15 15 15;
+        -fx-spacing: 12;
+    }
+    
+    .small-screen .chart_container {
+        -fx-min-height: 160px;
+    }
+    
+    .small-screen #titulo {
+        -fx-font-size: 18px;
+    }
+}
+
+/* Melhorias de acessibilidade */
+#titulo {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0.7, 2, 2);
+}
+
+/* Efeitos hover para botões */
+.filtro_btn:hover,
+.cards_btn:hover {
+    -fx-background-color: #404040;
+}
+
+/* Ajustes para quando a barra lateral é recolhida */
+#root-relatorios-gg:has(.barra-lateral-recolhida) #center {
+    -fx-padding: 40 20 20 20;
+    -fx-alignment: top-center;
 }

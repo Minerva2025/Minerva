@@ -110,7 +110,7 @@ public class EquipesGG extends Application{
 
         chartsContainer.setPrefWidth(Double.MAX_VALUE);
         
-        VBox.setMargin(chartsContainer, new Insets(20, 45, 0, 0));
+        VBox.setMargin(chartsContainer, new Insets(20, 45, 0, 45)); // Alterado: padding-left para 45px
 
   
         boxChart1 = new StackPane();
@@ -147,7 +147,7 @@ public class EquipesGG extends Application{
 				
 		VBox setoresContainer = new VBox(60);
 		setoresContainer.setId("setoresContainer");
-		setoresContainer.setAlignment(Pos.TOP_CENTER);
+		setoresContainer.setAlignment(Pos.TOP_LEFT); // Alterado: de TOP_CENTER para TOP_LEFT
 
 		for (Map.Entry<String, List<Colaborador>> entry : colaboradoresPorSetor.entrySet()) {
 		    String nomeSetor = entry.getKey();
@@ -166,19 +166,19 @@ public class EquipesGG extends Application{
 
 		    HBox searchBar = new HBox(10, searchField, searchButton);
 		    searchBar.setAlignment(Pos.CENTER_LEFT);
-		    searchBar.setPadding(new Insets(5, 0, 10, 80));
+		    searchBar.setPadding(new Insets(5, 0, 10, 0)); // Alterado: removido padding-left 80px
 		    searchBar.setPrefWidth(600);
 		    searchBar.getStyleClass().add("search-bar");
 		    HBox.setHgrow(searchField, Priority.ALWAYS);
 
 		    VBox tituloEbarra = new VBox(20, tituloSetor, searchBar);
 		    tituloEbarra.setAlignment(Pos.CENTER_LEFT);
-		    tituloEbarra.setPadding(new Insets(0, 0, 0, 0	));
+		    tituloEbarra.setPadding(new Insets(0, 0, 0, 0));
 
 		    GridPane gridSetor = new GridPane();
 		    gridSetor.setHgap(40);
 		    gridSetor.setVgap(40);
-		    gridSetor.setAlignment(Pos.CENTER);
+		    gridSetor.setAlignment(Pos.TOP_LEFT); // Alterado: de CENTER para TOP_LEFT
 		    gridSetor.setPadding(new Insets(20, 0, 60, 0));
 
 		    Runnable atualizarGrid = () -> {
@@ -210,15 +210,15 @@ public class EquipesGG extends Application{
 		    searchField.textProperty().addListener((obs, oldVal, newVal) -> atualizarGrid.run());
 
 		    VBox setorBox = new VBox(20, tituloEbarra, gridSetor);
-		    setorBox.setAlignment(Pos.TOP_CENTER);
+		    setorBox.setAlignment(Pos.TOP_LEFT); // Alterado: de TOP_CENTER para TOP_LEFT
 		    setoresContainer.getChildren().add(setorBox);
 		}
 	
 	    VBox center = new VBox(60);
 	    center.setId("center");
-	    center.setAlignment(Pos.TOP_CENTER);
-	    center.setPadding(new Insets(60, 80, 80, 80));
-	    center.getChildren().addAll(tituloBox, container, chartsContainer, setoresContainer, blob1, blob2, blob3);
+	    center.setAlignment(Pos.TOP_LEFT); // Alterado: de TOP_CENTER para TOP_LEFT
+	    center.setPadding(new Insets(60, 80, 80, 80)); // Já está com padding-left 80px
+	    center.getChildren().addAll(tituloBox, container, chartsContainer, setoresContainer, blob1, blob3);
 
 		ScrollPane scrollCenter = new ScrollPane(center);
 		scrollCenter.setFitToWidth(true);
@@ -229,7 +229,7 @@ public class EquipesGG extends Application{
 	    BarraLateralGG barra = new BarraLateralGG(logado);
 	
 		HBox root = new HBox();
-		root.setStyle("-fx-background-color: #1E1E1E");
+		root.setId("root-equipes-gg");
 		root.getChildren().addAll(barra, scrollCenter);
 		
 		scrollCenter.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
@@ -263,11 +263,23 @@ public class EquipesGG extends Application{
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.48));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.062));
 		blob3.setManaged(false);
+		
+		// Listener para redimensionamento responsivo
+		scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
+		
+		scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
 	
 		equipesggStage.setScene(scene);
 		equipesggStage.setFullScreen(true);
 		equipesggStage.setFullScreenExitHint("");
 		equipesggStage.show();
+		
+		// Aplicar estilos iniciais
+		updateResponsiveStyles(scene);
 	
 		equipesggStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
 		    if (isNowFocused) {
@@ -276,6 +288,32 @@ public class EquipesGG extends Application{
 		});
 	
 	}
+	
+	private void updateResponsiveStyles(Scene scene) {
+		double width = scene.getWidth();
+		double height = scene.getHeight();
+		
+		// Remover classes de tamanho anteriores
+		scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape", "tablet-portrait");
+		
+		// Adicionar classe baseada no tamanho da tela
+		if (width < 768) { // Mobile
+			scene.getRoot().getStyleClass().add("small-screen");
+			if (width > height) {
+				scene.getRoot().getStyleClass().add("mobile-landscape");
+			}
+		} else if (width < 1024) { // Tablet
+			scene.getRoot().getStyleClass().add("medium-screen");
+			if (height > width) {
+				scene.getRoot().getStyleClass().add("tablet-portrait");
+			}
+		} else if (width < 1440) { // Desktop
+			scene.getRoot().getStyleClass().add("large-screen");
+		} else { // Telas grandes
+			scene.getRoot().getStyleClass().add("extra-large-screen");
+		}
+	}
+	
 	private double calcularProgressoMedio(PdiDAO pdiDAO, int colaboradorId) {
         List<Pdi> pdis = pdiDAO.findByColaborador(colaboradorId);
         if (pdis.isEmpty()) return 0.0;
@@ -301,7 +339,6 @@ public class EquipesGG extends Application{
         Text nome = new Text(colaborador.getNome());
         nome.getStyleClass().add("colaborador-nome");
 
-
         Text setor = new Text(colaborador.getSetor());
         setor.getStyleClass().add("colaborador-setor");
 
@@ -323,8 +360,6 @@ public class EquipesGG extends Application{
         Text progressotexto = new Text("Progresso:");
         progressotexto.getStyleClass().add("colaborador-progresso");
         
-        
-
         card.getChildren().addAll(nome, setor, cargo, progressotexto, progressoBox);
         return card;
     }
@@ -357,15 +392,12 @@ public class EquipesGG extends Application{
         pieChart.setLabelsVisible(false);
         pieChart.setLegendSide(javafx.geometry.Side.RIGHT);
         
-        
-        // ✅ Fixar tamanho
-        pieChart.setPrefSize(300, 250);
-        pieChart.setMaxSize(600, 350);
-
+        // Adicionar classe para controle responsivo
+        pieChart.getStyleClass().add("pie-chart-responsive");
         
         boxChart1.getChildren().add(pieChart);
         
-     // Gráfico de Barras
+        // Gráfico de Barras
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         final BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
@@ -377,15 +409,11 @@ public class EquipesGG extends Application{
         yAxis.setTickLabelsVisible(false);
         yAxis.setTickMarkVisible(false);
         yAxis.setMinorTickVisible(false);
-
         
         barChart.setStyle("-fx-category-gap: 70px; -fx-bar-gap: 5px;");
         
-       
-
-          // ✅ Fixar tamanho
-          barChart.setPrefSize(300, 250);
-          barChart.setMaxSize(600, 350);
+        // Adicionar classe para controle responsivo
+        barChart.getStyleClass().add("bar-chart-responsive");
         
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("PDI's"); 
@@ -394,31 +422,23 @@ public class EquipesGG extends Application{
         XYChart.Data<String, Number> dataDm = new XYChart.Data<>("Dm", concluidos);
         dataDm.nodeProperty().addListener((obs, oldNode, newNode) -> {
             if (newNode != null) {
-               
-            	// APLICAÇÃO DE ESTILO EM LINHA
                 newNode.setStyle("-fx-bar-fill: #A8E6CF;");
-               
             }
         });
        
         XYChart.Data<String, Number> dataCm = new XYChart.Data<>("Cm", ativos);
         dataCm.nodeProperty().addListener((obs, oldNode, newNode) -> {
             if (newNode != null) {
-                
                 newNode.setStyle("-fx-bar-fill: #70C1B3;");
-               
             }
         });
 
         XYChart.Data<String, Number> dataSm = new XYChart.Data<>("Sm", aIniciar);
         dataSm.nodeProperty().addListener((obs, oldNode, newNode) -> {
             if (newNode != null) {
-               
                 newNode.setStyle("-fx-bar-fill: #2E8B78;");
-               
             }
         });
-        
         
         // Adiciona os dados
         series.getData().addAll(dataDm, dataCm, dataSm);

@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Priority;
@@ -49,12 +50,12 @@ public class MetasGGTotais {
 		blob2.setEffect(blur);
 		blob3.setEffect(blur);
 
-        VBox caixa = new VBox(20);
+        VBox caixa = new VBox(30);
         caixa.setAlignment(Pos.CENTER);
         caixa.setPadding(new Insets(20));
         caixa.setStyle("-fx-background-radius: 15;");
-
-        caixa.setPrefHeight(800); 
+     // Linha 44 - Reduza proporcionalmente
+        caixa.setPrefHeight(700); // Era 800, mude para 700
 
         TableView<Pdi> tabelaTodas = new TableView<>();
         tabelaTodas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -105,7 +106,7 @@ public class MetasGGTotais {
         tabelaTodas.setItems(todasMetas);
 
         VBox.setVgrow(tabelaTodas, Priority.ALWAYS);
-        tabelaTodas.setPrefHeight(650);
+        tabelaTodas.setPrefHeight(550); // Era 650, mude para 550
 
         Button btnvoltar = new Button("Voltar");
         btnvoltar.getStyleClass().add("btnvoltar");
@@ -114,9 +115,15 @@ public class MetasGGTotais {
             colunaPrincipal.getChildren().addAll(conteudoOriginal);
         });
 
-        VBox.setMargin(btnvoltar, new Insets(20, 0, 0, 0));
+        VBox.setMargin(btnvoltar, new Insets(40, 0, 0, 0));
         caixa.getChildren().addAll(tabelaTodas, btnvoltar);
         root.getChildren().addAll(titulo, caixa, blob1, blob2, blob3);
+        
+        // Adicionar classes responsivas
+        titulo.getStyleClass().add("responsive-title");
+        tabelaTodas.getStyleClass().add("responsive-table");
+        caixa.getStyleClass().add("responsive-caixa");
+        btnvoltar.getStyleClass().add("responsive-button");
         
         blob1.radiusXProperty().bind(Bindings.multiply(root.widthProperty(), 0.07));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
@@ -142,6 +149,42 @@ public class MetasGGTotais {
 		blob3.translateYProperty().bind(root.heightProperty().multiply(0.01));
 		blob3.setManaged(false);
 		
+        // Adicionar listener para responsividade
+        Scene scene = colunaPrincipal.getScene();
+        if (scene != null) {
+            updateResponsiveStylesMetasTotais(scene, root);
+            
+            scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+                updateResponsiveStylesMetasTotais(scene, root);
+            });
+            
+            scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+                updateResponsiveStylesMetasTotais(scene, root);
+            });
+        }
+		
         return root;
+    }
+    
+    private void updateResponsiveStylesMetasTotais(Scene scene, VBox root) {
+        double width = scene.getWidth();
+        double height = scene.getHeight();
+        
+        // Remover classes de tamanho anteriores
+        root.getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
+        
+        // Adicionar classe baseada no tamanho da tela - MESMO PADRÃO
+        if (width < 768) { // Mobile
+            root.getStyleClass().add("small-screen");
+            if (width > height) {
+                root.getStyleClass().add("mobile-landscape");
+            }
+        } else if (width < 1024) { // Tablet
+            root.getStyleClass().add("medium-screen");
+        } else if (width < 1440) { // Desktop
+            root.getStyleClass().add("large-screen");
+        } else { // Telas grandes
+            root.getStyleClass().add("extra-large-screen");
+        }
     }
 }

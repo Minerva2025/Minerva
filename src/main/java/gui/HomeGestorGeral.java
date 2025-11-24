@@ -34,8 +34,6 @@ import model.Usuario;
 import javafx.scene.layout.Priority;
 import javafx.scene.control.ScrollPane;
 
-
-
 public class HomeGestorGeral extends Application {
 
     private Usuario logado;
@@ -69,9 +67,8 @@ public class HomeGestorGeral extends Application {
                 case EM_ANDAMENTO, ATRASADO -> pdiAtivoCount++;
                 case NAO_INICIADO -> pdiInativoCount++;
                 case CONCLUIDO -> pdiConcluidoCount++;
-                default -> {} // Adicionado para evitar erro de compilação
+                default -> {} 
             }
-           
         }
 
         Text titulo = new Text("Bem-vindo " + primeiroNome + "!");
@@ -107,33 +104,25 @@ public class HomeGestorGeral extends Application {
         
         HBox chartsContainer = new HBox(30);
         chartsContainer.setId("chartsContainer");
-        
-   
         chartsContainer.setPrefWidth(Double.MAX_VALUE);
-        
-        VBox.setMargin(chartsContainer, new Insets(20, 45, 0, 0));
+        VBox.setMargin(chartsContainer, new Insets(20, 45, 0, 45)); // Alterado: padding-left para 45px
 
-  
         boxChart1 = new StackPane();
         boxChart1.setId("boxChart1");
         boxChart1.getStyleClass().add("card");
-     
         HBox.setHgrow(boxChart1, Priority.ALWAYS);
         boxChart1.setMaxWidth(Double.MAX_VALUE);
         boxChart1.setMinWidth(0);
 
-      
         boxChart2 = new StackPane();
         boxChart2.setId("boxChart2");
         boxChart2.getStyleClass().add("card");
-    
-        HBox.setHgrow(boxChart1, Priority.ALWAYS);
+        HBox.setHgrow(boxChart2, Priority.ALWAYS);
         boxChart2.setMaxWidth(Double.MAX_VALUE);
         boxChart2.setMinWidth(0); 
 
         chartsContainer.getChildren().addAll(boxChart1, boxChart2);
         
-
         double spacing = chartsContainer.getSpacing();
         boxChart1.prefWidthProperty().bind(
             chartsContainer.widthProperty().multiply(0.5).subtract(spacing / 2.0)
@@ -151,83 +140,17 @@ public class HomeGestorGeral extends Application {
         alertMessageText.setId("alertMessage");
 
         alertBox.getChildren().addAll(alertTitle, alertMessageText);
-       
         alertBox.managedProperty().bind(alertBox.visibleProperty());
         
-        
-     
-        // CARD DE TENDÊNCIA 
-//     
-//        Text trendTitle = new Text("Tendência de conclusão");
-//        trendTitle.setId("trendTitle"); 
-//
-//        Text concluidosLabel = new Text("PDIs concluídos");
-//        concluidosLabel.setId("trendLabel");
-//        Text concluidosValue = new Text("+ 5 %"); 
-//        concluidosValue.setId("trendValueGreen"); 
-//
-//        VBox concluidosBox = new VBox(5, concluidosLabel, concluidosValue);
-//        concluidosBox.setAlignment(Pos.CENTER);
-//        
-//        Text atrasadosLabel = new Text("PDIs atrasados");
-//        atrasadosLabel.setId("trendLabel");
-//        Text atrasadosValue = new Text("- 2 %"); 
-//        atrasadosValue.setId("trendValueRed"); 
-//
-//        VBox atrasadosBox = new VBox(5, atrasadosLabel, atrasadosValue);
-//        atrasadosBox.setAlignment(Pos.CENTER);
-//
-//        HBox trendDataHBox = new HBox(80, concluidosBox, atrasadosBox);
-//        trendDataHBox.setAlignment(Pos.CENTER);
-//
-//        VBox trendVBox = new VBox(20, trendTitle, trendDataHBox); 
-//        trendVBox.setAlignment(Pos.CENTER_LEFT);
-//        trendVBox.setPadding(new javafx.geometry.Insets(5, 5, 5, 5));
-//        
-//        
-//        trendCard = new StackPane();
-//        trendCard.setId("trendCard"); 
-//        trendCard.getStyleClass().add("card"); 
-//        trendCard.getChildren().add(trendVBox);
-     
-        
-        // ✅ Container responsável pela centralização
-//        HBox trendContainer = new HBox(trendCard);
-//        trendContainer.setAlignment(Pos.CENTER);
-//        trendContainer.setPadding(new Insets(20, 0, 0, 0));
-
-        
-        
-
         VBox center = new VBox();
         center.setId("center");
-       
         center.getChildren().addAll(titulo, container, chartsContainer, alertBox, blob1, blob2, blob3);
-//        center.getChildren().addAll(titulo, container, chartsContainer, alertBox, trendContainer);
+        
         BarraLateralGG barra = new BarraLateralGG(logado);
 
-       // Criando ScrollPane para o conteúdo central
-//        ScrollPane scroll = new ScrollPane();
-//        scroll.setContent(center);
-
-        // ⚙️ Configurações do ScrollPane
-        
-//        scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
-//        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS); // mostra a barra sempre
-
-//        HBox root = new HBox();
-//        root.setStyle("-fx-background-color: #1E1E1E");
-//        root.getChildren().addAll(barra, scroll);
-
         HBox root = new HBox();
-        root.setStyle("-fx-background-color: #1E1E1E");
+        root.setId("root-home");
         root.getChildren().addAll(barra, center);
-
-//        // Ajusta tamanhos responsivos
-//        scroll.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
-//        barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
-
-        
         
         center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
         barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
@@ -237,26 +160,36 @@ public class HomeGestorGeral extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/HomeGestorGeral.css").toExternalForm());
 
-        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
+        // Bindings responsivos para os blobs
+        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.065));
         blob1.radiusYProperty().bind(blob1.radiusXProperty());
 
-        blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
+        blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.045));
         blob2.radiusYProperty().bind(blob2.radiusXProperty());
 
         blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
         blob3.radiusYProperty().bind(blob3.radiusXProperty());
 
         StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.70));
+        blob1.translateXProperty().bind(scene.widthProperty().multiply(0.60));
         blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.85));
 
         StackPane.setAlignment(blob2, Pos.TOP_RIGHT);
-        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.56));
-        blob2.translateYProperty().bind(scene.heightProperty().multiply(-1.12));
+        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.46));
+        blob2.translateYProperty().bind(scene.heightProperty().multiply(-1.05));
 
         StackPane.setAlignment(blob3, Pos.BOTTOM_RIGHT);
         blob3.translateXProperty().bind(scene.widthProperty().multiply(0.4));
-        blob3.translateYProperty().bind(scene.heightProperty().multiply(-0.28));
+        blob3.translateYProperty().bind(scene.heightProperty().multiply(-0.2));
+
+        // Listener para redimensionamento responsivo
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
+        
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
 
         homeggStage.setScene(scene);
         homeggStage.setFullScreen(true);
@@ -268,16 +201,40 @@ public class HomeGestorGeral extends Application {
         
         updateAlertVisibility();
 
-       
         Timeline refresher = new Timeline(new KeyFrame(Duration.seconds(15), ev -> {
             Platform.runLater(this::updateAlertVisibility);
         }));
         refresher.setCycleCount(Timeline.INDEFINITE);
         refresher.play();
         
+        // Aplicar estilos iniciais
+        updateResponsiveStyles(scene);
     }
     
-    
+    private void updateResponsiveStyles(Scene scene) {
+        double width = scene.getWidth();
+        double height = scene.getHeight();
+        
+        // Remover classes de tamanho anteriores
+        scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape", "tablet-portrait");
+        
+        // Adicionar classe baseada no tamanho da tela
+        if (width < 768) { // Mobile
+            scene.getRoot().getStyleClass().add("small-screen");
+            if (width > height) {
+                scene.getRoot().getStyleClass().add("mobile-landscape");
+            }
+        } else if (width < 1024) { // Tablet
+            scene.getRoot().getStyleClass().add("medium-screen");
+            if (height > width) {
+                scene.getRoot().getStyleClass().add("tablet-portrait");
+            }
+        } else if (width < 1440) { // Desktop
+            scene.getRoot().getStyleClass().add("large-screen");
+        } else { // Telas grandes
+            scene.getRoot().getStyleClass().add("extra-large-screen");
+        }
+    }
    
     private void createCharts(List<Pdi> todosPdis) {
         boxChart1.getChildren().clear();
@@ -291,7 +248,7 @@ public class HomeGestorGeral extends Application {
                 case EM_ANDAMENTO -> ativos++;
                 case NAO_INICIADO -> aIniciar++;
                 case ATRASADO -> atrasados++;
-                default -> {} // Necessário para compilação
+                default -> {}
             }
         }
         
@@ -307,15 +264,12 @@ public class HomeGestorGeral extends Application {
         pieChart.setLabelsVisible(false);
         pieChart.setLegendSide(javafx.geometry.Side.RIGHT);
         
-        
-        // ✅ Fixar tamanho
-        pieChart.setPrefSize(300, 250);
-        pieChart.setMaxSize(600, 350);
-
+        // Tamanho responsivo será controlado via CSS
+        pieChart.getStyleClass().add("pie-chart");
         
         boxChart1.getChildren().add(pieChart);
         
-     // Gráfico de Barras
+        // Gráfico de Barras
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         final BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
@@ -323,57 +277,39 @@ public class HomeGestorGeral extends Application {
         xAxis.setLabel("Divisão");
         yAxis.setLabel("Evolução");
 
-        // Ocultar rótulos e ticks do eixo Y
         yAxis.setTickLabelsVisible(false);
         yAxis.setTickMarkVisible(false);
         yAxis.setMinorTickVisible(false);
-
         
         barChart.setStyle("-fx-category-gap: 70px; -fx-bar-gap: 5px;");
         
-       
-
-          // ✅ Fixar tamanho
-          barChart.setPrefSize(300, 250);
-          barChart.setMaxSize(600, 350);
+        barChart.getStyleClass().add("bar-chart");
         
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("PDI's"); 
 
-        // Dados 
         XYChart.Data<String, Number> dataDm = new XYChart.Data<>("Dm", concluidos);
         dataDm.nodeProperty().addListener((obs, oldNode, newNode) -> {
             if (newNode != null) {
-               
-            	// APLICAÇÃO DE ESTILO EM LINHA
                 newNode.setStyle("-fx-bar-fill: #A8E6CF;");
-               
             }
         });
        
         XYChart.Data<String, Number> dataCm = new XYChart.Data<>("Cm", ativos);
         dataCm.nodeProperty().addListener((obs, oldNode, newNode) -> {
             if (newNode != null) {
-                
                 newNode.setStyle("-fx-bar-fill: #70C1B3;");
-               
             }
         });
 
         XYChart.Data<String, Number> dataSm = new XYChart.Data<>("Sm", aIniciar);
         dataSm.nodeProperty().addListener((obs, oldNode, newNode) -> {
             if (newNode != null) {
-               
                 newNode.setStyle("-fx-bar-fill: #2E8B78;");
-               
             }
         });
         
-        
-        // Adiciona os dados
         series.getData().addAll(dataDm, dataCm, dataSm);
-
-        // Adiciona a série ao gráfico
         barChart.getData().add(series);
         barChart.setLegendVisible(false);
         boxChart2.getChildren().add(barChart);
@@ -403,5 +339,3 @@ public class HomeGestorGeral extends Application {
         launch(args);
     }
 }
-
-

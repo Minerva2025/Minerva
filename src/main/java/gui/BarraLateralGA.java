@@ -17,6 +17,7 @@ public class BarraLateralGA extends VBox {
 
         Button inicio = new Button("Início");
         inicio.setId("inicio");
+        inicio.getStyleClass().add("responsive-button");
         inicio.setOnAction(e -> {
             Stage homegaStage = new Stage();
             new HomeGestorArea(logado).start(homegaStage);
@@ -34,9 +35,11 @@ public class BarraLateralGA extends VBox {
             stageAtual.close();
         });
         equipe.setId("equipe");
+        equipe.getStyleClass().add("responsive-button");
 
         Button relatorios = new Button("Relatórios");
         relatorios.setId("relatorios");
+        relatorios.getStyleClass().add("responsive-button");
         relatorios.setOnAction(e -> {
             Stage relatoriosgaStage = new Stage();
             new RelatoriosGA(logado).start(relatoriosgaStage);
@@ -45,9 +48,9 @@ public class BarraLateralGA extends VBox {
             stageAtual.close();
         });
         
-        
         Button metas = new Button("Metas");
         metas.setId("metas");
+        metas.getStyleClass().add("responsive-button");
         metas.setOnAction(e -> {
             Stage metasgaStage = new Stage();
             new MetasGA(logado).start(metasgaStage);
@@ -56,8 +59,8 @@ public class BarraLateralGA extends VBox {
             stageAtual.close();
         });
         
-
         this.setSpacing(30);
+        this.getStyleClass().add("responsive-barralateral");
         this.getChildren().addAll(inicio, equipe, relatorios, metas);
     }
 }

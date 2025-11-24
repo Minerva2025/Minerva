@@ -1,11 +1,272 @@
-.botoes {
-	-fx-background-color: #323232;
-	-fx-text-fill: white;
-	-fx-background-radius: 30px;
-	-fx-font-size: 20px;
-	-fx-cursor: hand;
+#root-equipes {
+    -fx-background-color: #1E1E1E;
 }
 
-#containerbotoes{
-	-fx-alignment: Center;
+#center {
+    -fx-background-color: #1E1E1E;
+    -fx-padding: 40 20 20 20;
+    -fx-alignment: center;
+}
+
+#titulo {
+    -fx-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-family: 'Kodchasan';
+    -fx-letter-spacing: 1px;
+    -fx-text-alignment: center;
+    -fx-wrapping-width: 280px;
+}
+
+#container {
+    -fx-alignment: center;
+    -fx-spacing: 15;
+    -fx-padding: 20 0 0 0;
+}
+
+.botoes {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-font-family: 'Kodchasan';
+    -fx-padding: 12 20 12 20;
+    -fx-pref-width: 280px;
+    -fx-max-width: 280px;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+
+#blob1, #blob2, #blob3 {
+    -fx-fill: #323232;
+}
+
+.mobile-landscape #center {
+    -fx-padding: 20 15 15 15;
+    -fx-alignment: center;
+}
+
+.mobile-landscape #titulo {
+    -fx-font-size: 20px;
+    -fx-wrapping-width: 220px;
+    -fx-text-alignment: center;
+}
+
+.mobile-landscape .botoes {
+    -fx-pref-width: 200px;
+    -fx-max-width: 200px;
+    -fx-font-size: 12px;
+    -fx-padding: 10 15 10 15;
+    -fx-alignment: center;
+}
+
+.medium-screen #center {
+    -fx-padding: 60 30 30 30;
+    -fx-alignment: center;
+}
+
+.medium-screen #titulo {
+    -fx-font-size: 32px;
+    -fx-wrapping-width: 400px;
+    -fx-text-alignment: center;
+}
+
+.medium-screen #container {
+    -fx-spacing: 20;
+    -fx-padding: 30 0 0 0;
+    -fx-alignment: center;
+}
+
+.medium-screen .botoes {
+    -fx-font-size: 16px;
+    -fx-padding: 14 25 14 25;
+    -fx-pref-width: 400px;
+    -fx-max-width: 400px;
+    -fx-background-radius: 25px;
+    -fx-alignment: center;
+}
+
+.large-screen #center {
+    -fx-padding: 80 40 40 40;
+    -fx-alignment: center;
+}
+
+.large-screen #titulo {
+    -fx-font-size: 36px;
+    -fx-wrapping-width: 500px;
+    -fx-text-alignment: center;
+}
+
+.large-screen #container {
+    -fx-spacing: 25;
+    -fx-padding: 40 0 0 0;
+    -fx-alignment: center;
+}
+
+.large-screen .botoes {
+    -fx-font-size: 18px;
+    -fx-padding: 16 30 16 30;
+    -fx-pref-width: 500px;
+    -fx-max-width: 500px;
+    -fx-background-radius: 28px;
+    -fx-alignment: center;
+}
+
+.extra-large-screen #center {
+    -fx-padding: 100 50 50 50;
+    -fx-alignment: center;
+}
+
+.extra-large-screen #titulo {
+    -fx-font-size: 40px;
+    -fx-wrapping-width: 600px;
+    -fx-text-alignment: center;
+}
+
+.extra-large-screen #container {
+    -fx-spacing: 30;
+    -fx-padding: 50 0 0 0;
+    -fx-alignment: center;
+}
+
+.extra-large-screen .botoes {
+    -fx-font-size: 20px;
+    -fx-padding: 18 35 18 35;
+    -fx-pref-width: 600px;
+    -fx-max-width: 600px;
+    -fx-background-radius: 30px;
+    -fx-alignment: center;
+}
+
+.small-screen #center {
+    -fx-padding: 30 15 15 15;
+    -fx-alignment: center;
+}
+
+.small-screen #titulo {
+    -fx-font-size: 20px;
+    -fx-wrapping-width: 250px;
+    -fx-text-alignment: center;
+}
+
+.small-screen #container {
+    -fx-spacing: 12;
+    -fx-padding: 15 0 0 0;
+    -fx-alignment: center;
+}
+
+.small-screen .botoes {
+    -fx-font-size: 12px;
+    -fx-padding: 10 15 10 15;
+    -fx-pref-width: 250px;
+    -fx-max-width: 250px;
+    -fx-background-radius: 18px;
+    -fx-alignment: center;
+}
+
+@media (max-height: 600px) {
+    .small-screen #center {
+        -fx-padding: 20 15 15 15;
+        -fx-alignment: center;
+    }
+    
+    .small-screen #container {
+        -fx-spacing: 10;
+        -fx-padding: 10 0 0 0;
+        -fx-alignment: center;
+    }
+    
+    .small-screen #titulo {
+        -fx-font-size: 18px;
+        -fx-text-alignment: center;
+    }
+    
+    .small-screen .botoes {
+        -fx-padding: 8 12 8 12;
+        -fx-font-size: 11px;
+        -fx-alignment: center;
+    }
+}
+
+.botoes:hover {
+    -fx-background-color: #404040;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0.3, 0, 2);
+}
+
+.botoes:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+#titulo {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0.7, 2, 2);
+}
+
+#root-equipes:has(.barra-lateral-recolhida) #center {
+    -fx-padding: 40 20 20 20;
+    -fx-alignment: center;
+}
+
+.small-screen .vbox {
+    -fx-spacing: 15;
+    -fx-alignment: center;
+}
+
+.medium-screen .vbox {
+    -fx-spacing: 20;
+    -fx-alignment: center;
+}
+
+.large-screen .vbox {
+    -fx-spacing: 25;
+    -fx-alignment: center;
+}
+
+.extra-large-screen .vbox {
+    -fx-spacing: 30;
+    -fx-alignment: center;
+}
+
+.botoes .text {
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+
+@media (min-width: 2000px) {
+    .extra-large-screen .botoes {
+        -fx-pref-width: 700px;
+        -fx-max-width: 700px;
+        -fx-font-size: 22px;
+        -fx-padding: 20 40 20 40;
+        -fx-alignment: center;
+    }
+    
+    .extra-large-screen #titulo {
+        -fx-font-size: 44px;
+        -fx-wrapping-width: 800px;
+        -fx-text-alignment: center;
+    }
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+    .medium-screen #center {
+        -fx-padding: 40 25 25 25;
+        -fx-alignment: center;
+    }
+    
+    .medium-screen #titulo {
+        -fx-font-size: 28px;
+        -fx-wrapping-width: 350px;
+        -fx-text-alignment: center;
+    }
+    
+    .medium-screen .botoes {
+        -fx-pref-width: 350px;
+        -fx-max-width: 350px;
+        -fx-font-size: 15px;
+        -fx-alignment: center;
+    }
 }
