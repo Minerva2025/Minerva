@@ -91,8 +91,9 @@ public class MetasGA extends Application {
 		colaboradores.setId("colaboradores");
 	
 		HBox hboxColaboradores = new HBox(colaboradores);
-		hboxColaboradores.setAlignment(Pos.TOP_LEFT); // garante alinhamento com o topo
-		hboxColaboradores.setPadding(new Insets(0, 0, 0, 10)); // opcional, ajusta a posição fina
+		hboxColaboradores.setAlignment(Pos.TOP_LEFT);
+		hboxColaboradores.setPadding(new Insets(0, 0, 0, 10));
+		hboxColaboradores.getStyleClass().add("responsive-hbox");
 		
 
 		VBox andamentoBox = criarCaixaMeta("Metas em andamento", pdiAtivoCount);
@@ -101,9 +102,9 @@ public class MetasGA extends Application {
 
 		HBox metasBox = new HBox(50);
 		metasBox.setId("metas-box");
-		metasBox.setStyle("-fx-alignment: center; -fx-font-family: 'Kodchasan';"
-				+ "");
+		metasBox.setStyle("-fx-alignment: center; -fx-font-family: 'Kodchasan';");
 		metasBox.getChildren().addAll(andamentoBox, concluidasBox, atrasadasBox);
+		metasBox.getStyleClass().add("responsive-metas-box");
 
 		StackPane boxChart1 = new StackPane();
 		boxChart1.setId("boxChart1");
@@ -116,6 +117,7 @@ public class MetasGA extends Application {
 		chartsContainer.setId("chartsContainer");
 		chartsContainer.setPrefWidth(Double.MAX_VALUE);
 		chartsContainer.setStyle("-fx-alignment: center;");
+		chartsContainer.getStyleClass().add("responsive-charts-container");
 
 		HBox.setHgrow(boxChart1, Priority.ALWAYS);
 		boxChart1.setMaxWidth(500);
@@ -196,20 +198,29 @@ public class MetasGA extends Application {
                
         tabela.getColumns().addAll( colResponsavel,colDivisao, colObjetivo, colPrazo, colStatus);
         
+        // Adicionar classes responsivas seguindo o mesmo padrão
+        titulo.getStyleClass().add("responsive-title");
+        tabela.getStyleClass().add("responsive-table");
+        coluna1.getStyleClass().add("responsive-coluna");
+        
         coluna1.getChildren().addAll(titulo, hboxColaboradores, chartsContainer, tabela, blob1, blob2, blob3);
 
         Button btnVerMetas = new Button("Ver Metas");
         btnVerMetas.getStyleClass().add("btnVerMetas"); 
+        btnVerMetas.getStyleClass().add("responsive-button");
         
         Button btnExportar = new Button("Exportar PDF");
         btnExportar.getStyleClass().add("btnExportarMetas");
+        btnExportar.getStyleClass().add("responsive-button");
 
         Button btnExportarExcel = new Button("Exportar Excel");
         btnExportarExcel.getStyleClass().add("btnExportarMetas");
+        btnExportarExcel.getStyleClass().add("responsive-button");
 
         HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar, btnExportarExcel);
         containerBotoes.setAlignment(Pos.CENTER);
         containerBotoes.setPadding(new Insets(10, 0, 20, 0));
+        containerBotoes.getStyleClass().add("responsive-botoes-container");
 
         btnVerMetas.setOnAction(e -> {
             MetasGATotais totalPage = new MetasGATotais();
@@ -229,7 +240,6 @@ public class MetasGA extends Application {
         btnExportar.setOnAction(e -> {
     		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
     		fileChooser.setTitle("Salvar relatório PDF");
-    		
     		
     		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
     		fileChooser.setInitialFileName(fileName);
@@ -290,10 +300,8 @@ public class MetasGA extends Application {
                     .toList();
             FXCollections.observableArrayList(todasMetas);
 
-
             POIExcelExporter.exportarParaExcel(arquivoSelecionado, todasMetas);
-                });
-
+        });
 
         
         coluna1.getChildren().add(containerBotoes);
@@ -310,6 +318,14 @@ public class MetasGA extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/MetasGA.css").toExternalForm());
 
+        // Listener para redimensionamento responsivo - MESMO PADRÃO
+        scene.widthProperty().addListener((obss, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
+        
+        scene.heightProperty().addListener((obss, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
         
         blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
@@ -341,12 +357,37 @@ public class MetasGA extends Application {
         metasgaStage.setTitle("Gerenciamento de Metas (PDIs)");
         metasgaStage.show();
 
+        // Aplicar estilos iniciais - MESMO PADRÃO
+        updateResponsiveStyles(scene);
+
         Timeline atualizador = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             carregarTabela();
-            
         }));
         atualizador.setCycleCount(Timeline.INDEFINITE);
         atualizador.play();
+    }
+
+    // MÉTODO RESPONSIVO - MESMO PADRÃO
+    private void updateResponsiveStyles(Scene scene) {
+        double width = scene.getWidth();
+        double height = scene.getHeight();
+        
+        // Remover classes de tamanho anteriores
+        scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
+        
+        // Adicionar classe baseada no tamanho da tela - MESMO PADRÃO
+        if (width < 768) { // Mobile
+            scene.getRoot().getStyleClass().add("small-screen");
+            if (width > height) {
+                scene.getRoot().getStyleClass().add("mobile-landscape");
+            }
+        } else if (width < 1024) { // Tablet
+            scene.getRoot().getStyleClass().add("medium-screen");
+        } else if (width < 1440) { // Desktop
+            scene.getRoot().getStyleClass().add("large-screen");
+        } else { // Telas grandes
+            scene.getRoot().getStyleClass().add("extra-large-screen");
+        }
     }
 
     private void carregarTabela() {

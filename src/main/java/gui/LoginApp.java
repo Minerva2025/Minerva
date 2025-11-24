@@ -21,32 +21,32 @@ import model.Funcao;
 import model.Usuario;
 
 public class LoginApp extends Application{
-	
-	@Override
-	public void start(Stage primaryStage) {
-		
-		Ellipse blob1 = new Ellipse();
-		blob1.setId("blob1");
-		
-		Ellipse blob2 = new Ellipse();
-		blob2.setId("blob2");
-		
-		Ellipse blob3 = new Ellipse();
-		blob3.setId("blob3");
-		
-		GaussianBlur blur = new GaussianBlur(40);
-		blob1.setEffect(blur);
-		blob2.setEffect(blur);
-		blob3.setEffect(blur);
-		
-		Text titulo = new Text("Login");
-		titulo.setId("titulo-text");
-		
-		TextField cpfField = new TextField();
-		cpfField.setPromptText("CPF");
-		cpfField.getStyleClass().add("input");
-		
-		cpfField.textProperty().addListener((obs, oldText, newText) -> {
+    
+    @Override
+    public void start(Stage primaryStage) {
+        
+        Ellipse blob1 = new Ellipse();
+        blob1.setId("blob1");
+        
+        Ellipse blob2 = new Ellipse();
+        blob2.setId("blob2");
+        
+        Ellipse blob3 = new Ellipse();
+        blob3.setId("blob3");
+        
+        GaussianBlur blur = new GaussianBlur(40);
+        blob1.setEffect(blur);
+        blob2.setEffect(blur);
+        blob3.setEffect(blur);
+        
+        Text titulo = new Text("Login");
+        titulo.setId("titulo-text");
+        
+        TextField cpfField = new TextField();
+        cpfField.setPromptText("CPF");
+        cpfField.getStyleClass().add("input");
+        
+        cpfField.textProperty().addListener((obs, oldText, newText) -> {
             String numeric = newText.replaceAll("[^\\d]", "");
             if (numeric.length() > 11) numeric = numeric.substring(0, 11);
 
@@ -63,88 +63,113 @@ public class LoginApp extends Application{
                 cpfField.positionCaret(Math.min(pos, formatted.length()));
             }
         });
-		
-		PasswordField senhaField = new PasswordField();
-		senhaField.setPromptText("Senha");
-		senhaField.getStyleClass().add("input");
-		
-		Button loginButton = new Button("Entrar");
-		loginButton.setId("login-botao");
-		
-		VBox layout = new VBox(20, titulo, cpfField, senhaField, loginButton);
-		VBox.setMargin(loginButton, new Insets(40,0,0,0));
-		layout.setAlignment(Pos.CENTER);
-		layout.setPadding(new Insets(40));
-		layout.setId("login-layout");
-		
-		cpfField.setMaxWidth(705);
-		senhaField.setMaxWidth(705);
         
-		StackPane root = new StackPane();
-		root.getChildren().addAll(layout, blob1, blob2, blob3);
-		
-		Scene scene = new Scene(root);
+        PasswordField senhaField = new PasswordField();
+        senhaField.setPromptText("Senha");
+        senhaField.getStyleClass().add("input");
+        
+        Button loginButton = new Button("Entrar");
+        loginButton.setId("login-botao");
+        
+        VBox layout = new VBox(20, titulo, cpfField, senhaField, loginButton);
+        VBox.setMargin(loginButton, new Insets(40,0,0,0));
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(40));
+        layout.setId("login-layout");
+        
+        cpfField.getStyleClass().add("input-field");
+        senhaField.getStyleClass().add("input-field");
+        
+        StackPane root = new StackPane();
+        root.getChildren().addAll(layout, blob1, blob2, blob3);
+         
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
-		scene.getStylesheets().add(getClass().getResource("/gui/LoginApp.css").toExternalForm());
-		
-		loginButton.setDefaultButton(true);
-		
-		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.10));
-		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
+        scene.getStylesheets().add(getClass().getResource("/gui/LoginApp.css").toExternalForm());
+        
+        loginButton.setDefaultButton(true);
+        
+        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.10));
+        blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
-		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.10));
-		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+        blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.10));
+        blob2.radiusYProperty().bind(blob2.radiusXProperty());
 
-		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
-		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+        blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.03));
+        blob3.radiusYProperty().bind(blob3.radiusXProperty());
 
-		StackPane.setAlignment(blob1, Pos.TOP_LEFT);
-		blob1.translateXProperty().bind(scene.widthProperty().multiply(-0.05));
-		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
+        StackPane.setAlignment(blob1, Pos.TOP_LEFT);
+        blob1.translateXProperty().bind(scene.widthProperty().multiply(-0.05));
+        blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
 
-		StackPane.setAlignment(blob2, Pos.BOTTOM_RIGHT);
-		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.05));
-		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.09));
-		
-		StackPane.setAlignment(blob3, Pos.CENTER_LEFT);
-		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.2));
-		blob3.translateYProperty().bind(scene.heightProperty().multiply(-0.35));
-		
-		primaryStage.setScene(scene);
-		primaryStage.setFullScreen(true);
-		primaryStage.setFullScreenExitHint("");
-		primaryStage.show();
-		
-		UsuarioController usuarioController = new UsuarioController();
+        StackPane.setAlignment(blob2, Pos.BOTTOM_RIGHT);
+        blob2.translateXProperty().bind(scene.widthProperty().multiply(0.05));
+        blob2.translateYProperty().bind(scene.heightProperty().multiply(0.09));
+        
+        StackPane.setAlignment(blob3, Pos.CENTER_LEFT);
+        blob3.translateXProperty().bind(scene.widthProperty().multiply(0.2));
+        blob3.translateYProperty().bind(scene.heightProperty().multiply(-0.35));
+        
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
+        
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
+        
+        primaryStage.setScene(scene);
+        primaryStage.setFullScreen(true);
+        primaryStage.setFullScreenExitHint("");
+        primaryStage.show();
+        
+        updateResponsiveStyles(scene);
+        
+        UsuarioController usuarioController = new UsuarioController();
 
-		loginButton.setOnAction(e -> {
-			String cpf = cpfField.getText().replaceAll("[^\\d]", "");
+        loginButton.setOnAction(e -> {
+            String cpf = cpfField.getText().replaceAll("[^\\d]", "");
             String senha = senhaField.getText();
 
-		    Usuario usuarioLogado = usuarioController.login(cpf, senha);
+            Usuario usuarioLogado = usuarioController.login(cpf, senha);
 
-		    if (usuarioLogado != null) {
-		        Stage homeStage = new Stage();
-		        if (usuarioLogado.getFuncao() == Funcao.RH) {
-		        	new HomeRH(usuarioLogado).start(homeStage);		   
-		        } else if (usuarioLogado.getFuncao() == Funcao.GESTOR_AREA) {
-		            new HomeGestorArea(usuarioLogado).start(homeStage);
-		        } else if (usuarioLogado.getFuncao() == Funcao.GESTOR_GERAL) {
-		            new HomeGestorGeral(usuarioLogado).start(homeStage);
-		        }
-		        primaryStage.close();
-		    }
-		    	else {
-		        // Login falhou
-		        Alert alert = new Alert(Alert.AlertType.ERROR);
-		        alert.setTitle("Erro de Login");
-		        alert.setHeaderText(null);
-		        alert.setContentText("CPF ou senha inválidos!");
-		        alert.showAndWait();
-		    }
-		});
-		
-	}
+            if (usuarioLogado != null) {
+                Stage homeStage = new Stage();
+                if (usuarioLogado.getFuncao() == Funcao.RH) {
+                    new HomeRH(usuarioLogado).start(homeStage);           
+                } else if (usuarioLogado.getFuncao() == Funcao.GESTOR_AREA) {
+                    new HomeGestorArea(usuarioLogado).start(homeStage);
+                } else if (usuarioLogado.getFuncao() == Funcao.GESTOR_GERAL) {
+                    new HomeGestorGeral(usuarioLogado).start(homeStage);
+                }
+                primaryStage.close();
+            }
+                else {
+                // Login falhou
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro de Login");
+                alert.setHeaderText(null);
+                alert.setContentText("CPF ou senha inválidos!");
+                alert.showAndWait();
+            }
+        });
+        
+    }
+    
+    private void updateResponsiveStyles(Scene scene) {
+        double width = scene.getWidth();
+        double height = scene.getHeight();
+        
+        scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen");
+        
+        if (width < 768) {
+            scene.getRoot().getStyleClass().add("small-screen");
+        } else if (width < 1024) {
+            scene.getRoot().getStyleClass().add("medium-screen");
+        } else if (width < 1440) {
+            scene.getRoot().getStyleClass().add("large-screen");
+        } else {
+            scene.getRoot().getStyleClass().add("extra-large-screen");
+        }
+    }
 }
-	
-

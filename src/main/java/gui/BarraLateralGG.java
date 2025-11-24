@@ -15,10 +15,9 @@ public class BarraLateralGG extends VBox {
         this.logado = usuarioLogado;
         this.setId("left");
 
-        // Botões
-        // Botão de início
         Button inicio = new Button("Início");
         inicio.setId("inicio");
+        inicio.getStyleClass().add("responsive-button");
         inicio.setOnAction(e -> {
             Stage homeggStage = new Stage();
             new HomeGestorGeral(logado).start(homeggStage);
@@ -27,7 +26,6 @@ public class BarraLateralGG extends VBox {
             stageAtual.close();
         });
         
-        // Botão das Equipes
         Button equipe = new Button("Equipe");
         equipe.setOnAction(e -> {
             Stage equipesggStage = new Stage();
@@ -37,8 +35,8 @@ public class BarraLateralGG extends VBox {
             stageAtual.close();
         });
         equipe.setId("equipe");
+        equipe.getStyleClass().add("responsive-button");
 
-        // Botão dos Relatorios
         Button relatorios = new Button("Relatorios");
         relatorios.setOnAction(event -> {
             Stage relatoriosggStage = new Stage();
@@ -48,8 +46,8 @@ public class BarraLateralGG extends VBox {
             stageAtual.close();
         } );
         relatorios.setId("relatorios");
+        relatorios.getStyleClass().add("responsive-button");
 
-        // Botão das Metas
         Button metas = new Button("Metas");
         metas.setOnAction(e -> {
             Stage metasggStage = new Stage();
@@ -59,10 +57,10 @@ public class BarraLateralGG extends VBox {
             stageAtual.close();
         });
         metas.setId("metas");
+        metas.getStyleClass().add("responsive-button");
 
-
-        // organiza os botões na vertical com espaçamento
         this.setSpacing(30);
+        this.getStyleClass().add("responsive-barralateral");
         this.getChildren().addAll(inicio, equipe, relatorios, metas);
     }
 }

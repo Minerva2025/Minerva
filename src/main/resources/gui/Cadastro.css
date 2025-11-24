@@ -3,41 +3,51 @@
 	src: url(fonts/JuliusSansOne-Regular.ttf);
 }
 
+#root-cadastro-colaborador {
+    -fx-background-color: #1E1E1E;
+}
+
 #cadastro-layout{
 	-fx-background-color: #1E1E1E;
+    -fx-padding: 20 30 20 30;
 }
 
 #titulo-cadastro{
 	-fx-fill: white;
-	-fx-font-size: 36px;
+	-fx-font-size: 24px;
 	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 2px;
+	-fx-letter-spacing: 1px;
+    -fx-text-alignment: center;
+    -fx-wrapping-width: 280px;
 }
 
 .infos {
 	-fx-fill: white;
-	-fx-font-size: 26px;
+	-fx-font-size: 18px;
 	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 2px;
-	
+	-fx-letter-spacing: 1px;
+    -fx-wrapping-width: 250px;
 }
 
 .input {
-	-fx-background-color:transparent;
-	-fx-border-color:white;
-	-fx-border-width:0 0 1 0;
-	-fx-text-fill:white;
-	-fx-font-size:20px;
+	-fx-background-color: transparent;
+	-fx-border-color: white;
+	-fx-border-width: 0 0 1 0;
+	-fx-text-fill: white;
+	-fx-font-size: 16px;
 	-fx-prompt-text-fill: white;
-	
+    -fx-pref-height: 40px;
+    -fx-padding: 8 12 8 12;
 }
 
 .botao-cadastro {
 	-fx-background-color: #323232;
 	-fx-text-fill: white;
-	-fx-background-radius: 30px;
-	-fx-font-size: 20px;
+	-fx-background-radius: 20px;
+	-fx-font-size: 16px;
 	-fx-cursor: hand;
+    -fx-padding: 10 25 10 25;
+    -fx-pref-width: 120px;
 }
 
 .date-picker {
@@ -50,6 +60,7 @@
     -fx-border-color: transparent;
 	-fx-text-fill: white;
 	-fx-prompt-text-fill: white;
+    -fx-font-size: 16px;
 }
 
 .date-picker .arrow-button {
@@ -61,20 +72,270 @@
     -fx-border-color: white;
     -fx-border-width: 0 0 1 0;
     -fx-prompt-text-fill: white; 
+    -fx-pref-height: 40px;
 }
 
 .combo-box .list-cell {
     -fx-text-fill: white;           
-    -fx-font-size: 20px;
+    -fx-font-size: 16px;
     -fx-font-family: 'Kodchasan';
+    -fx-padding: 8 12 8 12;
 }
 
 .combo-box .list-view .list-cell {
     -fx-text-fill: white;        
     -fx-background-color: #1E1E1E; 
+    -fx-padding: 8 12 8 12;
+}
+
+.combo-box .list-view .list-cell:hover {
+    -fx-background-color: #323232;
 }
 
 #blob1, #blob2, #blob3{
 	-fx-fill: #323232;
 }
 
+.small-screen #cadastro-layout {
+    -fx-padding: 15 20 15 20;
+    -fx-hgap: 15;
+    -fx-vgap: 25;
+}
+
+.small-screen .grid-pane .column-constraints {
+    -fx-percent-width: 100%;
+}
+
+.mobile-landscape #cadastro-layout {
+    -fx-padding: 15 25 15 25;
+    -fx-hgap: 20;
+    -fx-vgap: 30;
+}
+
+.medium-screen #cadastro-layout {
+    -fx-padding: 25 40 25 40;
+    -fx-hgap: 25;
+    -fx-vgap: 35;
+}
+
+.medium-screen #titulo-cadastro {
+    -fx-font-size: 28px;
+    -fx-wrapping-width: 350px;
+}
+
+.medium-screen .infos {
+    -fx-font-size: 20px;
+    -fx-wrapping-width: 300px;
+}
+
+.medium-screen .input {
+    -fx-font-size: 17px;
+    -fx-pref-height: 42px;
+    -fx-padding: 9 14 9 14;
+}
+
+.medium-screen .botao-cadastro {
+    -fx-font-size: 17px;
+    -fx-padding: 11 28 11 28;
+    -fx-pref-width: 130px;
+    -fx-background-radius: 22px;
+}
+
+.medium-screen .combo-box .list-cell {
+    -fx-font-size: 17px;
+}
+
+.medium-screen .date-picker .text-field {
+    -fx-font-size: 17px;
+}
+
+.large-screen #cadastro-layout {
+    -fx-padding: 30 60 30 60;
+    -fx-hgap: 30;
+    -fx-vgap: 40;
+}
+
+.large-screen #titulo-cadastro {
+    -fx-font-size: 32px;
+    -fx-wrapping-width: 450px;
+}
+
+.large-screen .infos {
+    -fx-font-size: 22px;
+    -fx-wrapping-width: 350px;
+}
+
+.large-screen .input {
+    -fx-font-size: 18px;
+    -fx-pref-height: 44px;
+    -fx-padding: 10 16 10 16;
+}
+
+.large-screen .botao-cadastro {
+    -fx-font-size: 18px;
+    -fx-padding: 12 32 12 32;
+    -fx-pref-width: 140px;
+    -fx-background-radius: 25px;
+}
+
+.large-screen .combo-box .list-cell {
+    -fx-font-size: 18px;
+}
+
+.large-screen .date-picker .text-field {
+    -fx-font-size: 18px;
+}
+
+.extra-large-screen #cadastro-layout {
+    -fx-padding: 40 80 40 80;
+    -fx-hgap: 40;
+    -fx-vgap: 50;
+}
+
+.extra-large-screen #titulo-cadastro {
+    -fx-font-size: 36px;
+    -fx-wrapping-width: 500px;
+}
+
+.extra-large-screen .infos {
+    -fx-font-size: 24px;
+    -fx-wrapping-width: 400px;
+}
+
+.extra-large-screen .input {
+    -fx-font-size: 20px;
+    -fx-pref-height: 46px;
+    -fx-padding: 11 18 11 18;
+}
+
+.extra-large-screen .botao-cadastro {
+    -fx-font-size: 20px;
+    -fx-padding: 13 35 13 35;
+    -fx-pref-width: 150px;
+    -fx-background-radius: 28px;
+}
+
+.extra-large-screen .combo-box .list-cell {
+    -fx-font-size: 20px;
+}
+
+.extra-large-screen .date-picker .text-field {
+    -fx-font-size: 20px;
+}
+
+.small-screen #cadastro-layout {
+    -fx-padding: 12 15 12 15;
+    -fx-hgap: 12;
+    -fx-vgap: 20;
+}
+
+.small-screen #titulo-cadastro {
+    -fx-font-size: 20px;
+    -fx-wrapping-width: 250px;
+}
+
+.small-screen .infos {
+    -fx-font-size: 16px;
+    -fx-wrapping-width: 220px;
+}
+
+.small-screen .input {
+    -fx-font-size: 14px;
+    -fx-pref-height: 38px;
+    -fx-padding: 6 10 6 10;
+}
+
+.small-screen .botao-cadastro {
+    -fx-font-size: 14px;
+    -fx-padding: 8 20 8 20;
+    -fx-pref-width: 100px;
+    -fx-background-radius: 18px;
+}
+
+.small-screen .combo-box .list-cell {
+    -fx-font-size: 14px;
+    -fx-padding: 6 10 6 10;
+}
+
+.small-screen .date-picker .text-field {
+    -fx-font-size: 14px;
+}
+
+.small-screen .combo-box .list-view .list-cell {
+    -fx-padding: 6 10 6 10;
+}
+
+.small-screen .grid-pane .column-constraints {
+    -fx-percent-width: 100%;
+}
+
+.small-screen .grid-pane .grid-cell {
+    -fx-column-span: 2;
+}
+
+.small-screen .grid-pane > .hbox,
+.small-screen .grid-pane > .text {
+    -fx-column-span: 2;
+}
+
+@media (max-height: 600px) {
+    .small-screen #cadastro-layout {
+        -fx-padding: 10 15 10 15;
+        -fx-vgap: 15;
+    }
+    
+    .small-screen #titulo-cadastro {
+        -fx-font-size: 18px;
+    }
+    
+    .small-screen .input {
+        -fx-pref-height: 35px;
+        -fx-padding: 5 8 5 8;
+    }
+    
+    .small-screen .botao-cadastro {
+        -fx-padding: 6 15 6 15;
+    }
+}
+
+.botao-cadastro:hover {
+    -fx-background-color: #404040;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+#titulo-cadastro {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0.7, 2, 2);
+}
+
+.infos {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 0.5, 1, 1);
+}
+
+@media (min-width: 2000px) {
+    .extra-large-screen #cadastro-layout {
+        -fx-max-width: 1600px;
+        -fx-pref-width: 1600px;
+    }
+}
+
+.date-picker,
+.combo-box {
+    -fx-max-width: 1000px;
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+    .medium-screen #cadastro-layout {
+        -fx-padding: 20 30 20 30;
+        -fx-hgap: 20;
+        -fx-vgap: 30;
+    }
+    
+    .medium-screen #titulo-cadastro {
+        -fx-font-size: 26px;
+    }
+    
+    .medium-screen .infos {
+        -fx-font-size: 19px;
+    }
+}

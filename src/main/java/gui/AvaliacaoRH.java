@@ -80,10 +80,14 @@ public class AvaliacaoRH extends Application {
 
 		ObservableList<Colaborador> todosColaboradores = FXCollections.observableArrayList(colaboradorDAO.listAll());
 		colaborador.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+			Colaborador selecionado = colaborador.getSelectionModel().getSelectedItem();
+			if (selecionado != null) {
+				return;
+			}
+			
 			if (newValue == null || newValue.isEmpty()) {
-				// apenas limpa a seleção e não altera os itens
 				colaborador.getSelectionModel().clearSelection();
-				colaborador.hide(); // evita mostrar dropdown indesejado
+				colaborador.hide();
 			} else {
 				ObservableList<Colaborador> filtrados = todosColaboradores
 						.filtered(c -> c.getNome().toLowerCase().contains(newValue.toLowerCase()));
@@ -167,6 +171,11 @@ public class AvaliacaoRH extends Application {
 		pesquisa.setMaxWidth(Double.MAX_VALUE);
 		pesquisa.setPadding(new Insets(0,40,0,0));
 		
+		pesquisa.getStyleClass().add("responsive-grid");
+		colaborador.getStyleClass().add("responsive-combo");
+		metas.getStyleClass().add("responsive-combo");
+		subtit.getStyleClass().add("responsive-subtitle");
+		
 		pesquisa.add(subtit, 0, 1);
 		pesquisa.add(colaborador, 0, 2);
 		pesquisa.add(metas, 1, 2);
@@ -203,6 +212,7 @@ public class AvaliacaoRH extends Application {
 		infoscolab.setHgap(30);
 		infoscolab.setVgap(10);
 		infoscolab.setAlignment(Pos.TOP_LEFT);
+		infoscolab.getStyleClass().add("responsive-grid");
 		
 		infoscolab.add(colab, 0, 1, 2, 1);
 		infoscolab.add(cargo, 0, 2, 1, 1);
@@ -218,6 +228,7 @@ public class AvaliacaoRH extends Application {
 
 		ComboBox<String> status = new ComboBox<>();
 		status.getItems().addAll("Não Iniciado", "Em Andamento", "Concluído", "Atrasado");
+		status.getStyleClass().add("responsive-combo");
 
 		metas.setOnAction(event -> {
 		    Pdi metaSelecionada = metas.getSelectionModel().getSelectedItem();
@@ -238,6 +249,7 @@ public class AvaliacaoRH extends Application {
 		infosmeta.setVgap(10);
 		infosmeta.setAlignment(Pos.TOP_LEFT);
 		infosmeta.setMaxWidth(Double.MAX_VALUE);
+		infosmeta.getStyleClass().add("responsive-grid");
 		
 		infosmeta.add(meta, 0, 1);
 		infosmeta.add(data, 1, 1);
@@ -266,24 +278,32 @@ public class AvaliacaoRH extends Application {
 
 		HBox uploadArquivo = new HBox(15);
 		uploadArquivo.setAlignment(Pos.CENTER_LEFT);
+		uploadArquivo.getStyleClass().add("responsive-upload");
 		uploadArquivo.getChildren().addAll(upload, arquivoEscolher);
 
 		//===========================================================//
 		
 		Button salvar = new Button("Salvar");
 		salvar.setId("salvar"); 
+		salvar.getStyleClass().add("responsive-button");
 		
 		salvar.setOnAction(event -> {
 		    Pdi metaSelecionada = metas.getSelectionModel().getSelectedItem(); 
 		    String statusSelecionado = status.getSelectionModel().getSelectedItem(); 
 
-		    if (metaSelecionada != null && statusSelecionado != null) {
-		        Status novoStatus = Status.valueOf(statusSelecionado);
-		        
-		        metaSelecionada.setStatus(novoStatus);
-		        pdiDAO.update(metaSelecionada);
-		        
-		      
+		    if (metaSelecionada == null || statusSelecionado == null) {
+		    	Alert erro = new Alert(Alert.AlertType.ERROR);
+		        erro.setTitle("Erro");
+		        erro.setHeaderText(null);
+		        erro.setContentText("Selecione uma meta e um status antes de salvar.");
+		        erro.showAndWait();
+		        return; 
+		    }
+		    
+		    Status novoStatus = converterParaEnum(statusSelecionado);
+		    metaSelecionada.setStatus(novoStatus);
+		    pdiDAO.update(metaSelecionada);
+		    
 		   if (arquivoSelecionado != null) { 
 		                File pastaUploads = new File(System.getProperty("user.dir") + "/uploads");
 		                if (!pastaUploads.exists()) pastaUploads.mkdirs();
@@ -296,32 +316,35 @@ public class AvaliacaoRH extends Application {
 		                } catch (IOException e) {
 		                    e.printStackTrace();
 		                }
+		   }
 		                
-		                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-		                alerta.setTitle("Sucesso");
-		                alerta.setHeaderText(null);
-		                alerta.setContentText("Dados salvos com sucesso!");
-		                alerta.initOwner(avaliacaorhStage);
-		                alerta.initModality(Modality.WINDOW_MODAL); 
-		                DialogPane dialogPane = alerta.getDialogPane();
-		                dialogPane.setStyle("-fx-background-color: white");
-		                alerta.showAndWait();
-		                
+		   Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+		   alerta.setTitle("Sucesso");
+		   alerta.setHeaderText(null);
+		   alerta.setContentText("Dados salvos com sucesso!");
+		   alerta.initOwner(avaliacaorhStage);
+		   alerta.initModality(Modality.WINDOW_MODAL); 
+		   DialogPane dialogPane = alerta.getDialogPane();
+		   dialogPane.setStyle("-fx-background-color: white");
+		   alerta.showAndWait();             
+		                          
 		               
-		                colaborador.getSelectionModel().clearSelection();
-		                metas.getItems().clear();
-		                metas.getSelectionModel().clearSelection();
-		                status.getSelectionModel().clearSelection();
-		                arquivoSelecionado = null;
-		                arquivoEscolher.setText("Nenhum arquivo selecionado");
-		                meta.setText("Meta Escolhida");
-		                colab.setText("Colaborador");
-		            }
-		        }
+		   colaborador.getSelectionModel().clearSelection();
+		   metas.getSelectionModel().clearSelection();		   
+		   status.getSelectionModel().clearSelection();   
+		                
+		   arquivoSelecionado = null;		           
+		   arquivoEscolher.setText("Nenhum arquivo selecionado");		                
+		            
+		   meta.setText("Meta Escolhida");		   
+		   colab.setText("Colaborador");
+		  
+		        
 		});
 
 		HBox button = new HBox(20);
 		button.setAlignment(Pos.CENTER);
+		button.getStyleClass().add("responsive-button-container");
 		button.getChildren().add(salvar);
 		
 		//========================================================//
@@ -350,6 +373,7 @@ public class AvaliacaoRH extends Application {
 		HBox root = new HBox();
 		root.setId("root");
 		root.getChildren().addAll(barra, tela);
+		
 
 		
 		Scene scene = new Scene(root);
@@ -358,6 +382,13 @@ public class AvaliacaoRH extends Application {
 		scene.getStylesheets().add(getClass().getResource("/gui/HomeRH.css").toExternalForm());
 		scene.getStylesheets().add(getClass().getResource("/gui/AvaliacaoRH.css").toExternalForm());
 
+		scene.widthProperty().addListener((obss, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
+		
+		scene.heightProperty().addListener((obss, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
 
 		center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
 		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
@@ -390,6 +421,28 @@ public class AvaliacaoRH extends Application {
 		avaliacaorhStage.setFullScreen(true);
 		avaliacaorhStage.setFullScreenExitHint("");
 		avaliacaorhStage.show();
+		
+		updateResponsiveStyles(scene);
+	}
+	
+	private void updateResponsiveStyles(Scene scene) {
+		double width = scene.getWidth();
+		double height = scene.getHeight();
+		
+		scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
+		
+		if (width < 768) {
+			scene.getRoot().getStyleClass().add("small-screen");
+			if (width > height) {
+				scene.getRoot().getStyleClass().add("mobile-landscape");
+			}
+		} else if (width < 1024) { 
+			scene.getRoot().getStyleClass().add("medium-screen");
+		} else if (width < 1440) {
+			scene.getRoot().getStyleClass().add("large-screen");
+		} else {
+			scene.getRoot().getStyleClass().add("extra-large-screen");
+		}
 	}
 	
 	private String traduzirStatus(Status status) {
@@ -408,6 +461,21 @@ public class AvaliacaoRH extends Application {
 		            return status.name();
 		    }
 		}
+	
+	private Status converterParaEnum(String texto) {
+	    switch (texto) {
+	        case "Não Iniciado":
+	            return Status.NAO_INICIADO;
+	        case "Em Andamento":
+	            return Status.EM_ANDAMENTO;
+	        case "Concluído":
+	            return Status.CONCLUIDO;
+	        case "Atrasado":
+	            return Status.ATRASADO;
+	        default:
+	            return null;
+	    }
+	}
 	
 	public static void main(String[] args) {
 		launch(args);
