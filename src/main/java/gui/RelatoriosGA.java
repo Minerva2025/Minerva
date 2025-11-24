@@ -14,6 +14,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.layout.HBox;
@@ -67,12 +68,17 @@ public class RelatoriosGA extends Application {
         
         // A BARRA LATERAL
         BarraLateralGA barraLateral = new BarraLateralGA(logado);
+        
+        ScrollPane scrollPane = new ScrollPane(center);
+        scrollPane.setFitToWidth(true); 
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); 
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     
         HBox root = new HBox();
         root.setId("root-relatorios");
-        root.getChildren().addAll(barraLateral, center);
+        root.getChildren().addAll(barraLateral, scrollPane);
         
-        center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
+        scrollPane.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
         barraLateral.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
         
         // CSSs
@@ -278,7 +284,9 @@ public class RelatoriosGA extends Application {
     private VBox createEmployeeCard() {
         VBox card = new VBox(10);
         card.getStyleClass().add("employee-card");
-        card.setMaxWidth(800); // NOVO: Limitar largura máxima do card
+        card.setMaxWidth(1200); 
+        card.setPrefWidth(1200);
+        card.setMinWidth(900);
         card.setAlignment(Pos.CENTER); // NOVO: Centralizar o card
         
         HBox cardContent = new HBox(20);
