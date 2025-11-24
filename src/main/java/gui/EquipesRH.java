@@ -59,8 +59,6 @@ public class EquipesRH extends Application{
             new CadastroColaborador(logado).start(cadastroCStage);
         });
 		
-		
-		
 		VBox container = new VBox(15);
 		container.setAlignment(Pos.CENTER); 
 		container.setId("container");
@@ -73,23 +71,23 @@ public class EquipesRH extends Application{
 		
 		VBox center = new VBox();
 		center.setId("center");
+		center.setAlignment(Pos.CENTER);
 		center.getChildren().addAll(tituloEBotoes, blob1, blob2, blob3);
 
-		
 	    BarraLateralRH barra = new BarraLateralRH(logado);
 	
-		
 		HBox root = new HBox();
-		root.setStyle("-fx-background-color: #1E1E1E");
+		root.setId("root-equipes");
 		root.getChildren().addAll(barra, center);
-		
+	
 		center.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
 		barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("HomeRH.css").toExternalForm());
-		scene.getStylesheets().add(getClass().getResource("EquipesRH.css").toExternalForm());
-
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/HomeRH.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/EquipesRH.css").toExternalForm());
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
@@ -101,29 +99,57 @@ public class EquipesRH extends Application{
 		blob3.radiusYProperty().bind(blob3.radiusXProperty());
 	
 		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
-		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
-		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.09));
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.4));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.15));
 	
 		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
-		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.4));
-		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.3));
-	
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.1));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(0.12));
+
 		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
-		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.52));
-		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.07));
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.28));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(-0.7));
 	
+		scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
+		
+		scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
 	
 		equipesrhStage.setScene(scene);
 		equipesrhStage.setFullScreen(true);
 		equipesrhStage.setFullScreenExitHint("");
 		equipesrhStage.show();
+		
+		updateResponsiveStyles(scene);
 	
 		equipesrhStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
 		    if (isNowFocused) {
 		    	equipesrhStage.setFullScreen(true);
 		    }
 		});
+	}
 	
+	private void updateResponsiveStyles(Scene scene) {
+		double width = scene.getWidth();
+		double height = scene.getHeight();
+		
+		scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
+		
+		if (width < 768) {
+			scene.getRoot().getStyleClass().add("small-screen");
+			if (width > height) {
+				scene.getRoot().getStyleClass().add("mobile-landscape");
+			}
+		} else if (width < 1024) {
+			scene.getRoot().getStyleClass().add("medium-screen");
+		} else if (width < 1440) {
+			scene.getRoot().getStyleClass().add("large-screen");
+		} else {
+			scene.getRoot().getStyleClass().add("extra-large-screen");
+		}
 	}
 		
 	public static void main (String[]args) {

@@ -238,8 +238,61 @@ public class PdiDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return lista;
-    }	
+        return lista;       
+    }
+    
+    public int contarPorStatus(Status status) {
+        String sql = "SELECT COUNT(*) FROM pdis WHERE status = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status.name());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public int contarPorSetorEStatus(String setor, Status status) {
+        String sql = "SELECT COUNT(*) FROM pdi p JOIN colaborador c ON p.colaborador_id = c.id "
+                   + "WHERE c.setor = ? AND p.status = ?";
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, setor);
+            ps.setString(2, status.name()); 
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int contarPorSetor(String setor) {
+        String sql = "SELECT COUNT(*) FROM pdis p JOIN colaboradores c ON p.colaborador_id = c.id WHERE c.setor = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, setor);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }
+
 
 	

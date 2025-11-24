@@ -1,23 +1,23 @@
 @font-face{
-	font-family: 'JuliusSansOne';
+	font-family: 'Kodchasan';
 	src: url(fonts/JuliusSansOne-Regular.ttf);
 }
 
-#cadastro-layout{
+#cadastroRh-layout{
 	-fx-background-color: #1E1E1E;
 }
 
-#titulo-cadastro{
+#titulo-cadastro-rh{
 	-fx-fill: white;
 	-fx-font-size: 36px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 }
 
 .infos {
 	-fx-fill: white;
 	-fx-font-size: 26px;
-	-fx-font-family: 'JuliusSansOne';
+	-fx-font-family: 'Kodchasan';
 	-fx-letter-spacing: 2px;
 	
 }
@@ -32,7 +32,7 @@
 	
 }
 
-.botao-cadastro {
+.botoes {
 	-fx-background-color: #323232;
 	-fx-text-fill: white;
 	-fx-background-radius: 30px;
@@ -55,26 +55,3 @@
 .date-picker .arrow-button {
     -fx-background-color: transparent;
 }
-
-.combo-box {
-    -fx-background-color: transparent;
-    -fx-border-color: white;
-    -fx-border-width: 0 0 1 0;
-    -fx-prompt-text-fill: white; 
-}
-
-.combo-box .list-cell {
-    -fx-text-fill: white;           
-    -fx-font-size: 20px;
-    -fx-font-family: 'JuliusSansOne';
-}
-
-.combo-box .list-view .list-cell {
-    -fx-text-fill: white;        
-    -fx-background-color: #1E1E1E; 
-}
-
-#blob1, #blob2, #blob3{
-	-fx-fill: #323232;
-}
-

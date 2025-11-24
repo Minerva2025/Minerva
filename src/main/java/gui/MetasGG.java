@@ -1,94 +1,226 @@
-package gui;
+package gui; 
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListCell;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Ellipse;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import model.Colaborador;
-import model.Funcao;
+import javafx.util.Duration;
+import javafx.scene.control.ScrollPane;
 import model.Pdi;
 import model.Status;
 import model.Usuario;
+import util.PDFExporter;
 
+import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import dao.ColaboradorDAO;
+import model.Colaborador;
 import dao.PdiDAO;
-import gui.BarraLateralRH;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import dao.ColaboradorDAO;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
+import util.POIExcelExporter;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MetasGG extends Application {
 
     private TableView<Pdi> tabela;
     private ObservableList<Pdi> dados;
     private Usuario logado;
-    private ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
     private PdiDAO pdiDAO = new PdiDAO();
-
+    private ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
+    
+    private Label alerta1, alerta2, alerta3, alerta4;
+    private XYChart.Data<String, Number> dataD, dataS, dataM, dataF, dataP;
+ 
 
     public MetasGG(Usuario usuarioLogado) {
         this.logado = usuarioLogado;
     }
-	
-	public void start(Stage metasGGStage) {
 
-		// cria barra lateral
-	    BarraLateralRH barra = new BarraLateralRH(logado);
-	    
-	    VBox coluna1 = new VBox();
-	    coluna1.setId("coluna1");
+    @Override
+    public void start(Stage metasggStage) {
 
-	    Text titulo = new Text("Gerenciar Metas");
-	    titulo.setId("titulo");
-	    VBox.setMargin(titulo, new Insets(0, 0, 25, 0));
-	    titulo.setTextAlignment(TextAlignment.CENTER);
-	    titulo.setStyle("-fx-font-size: 32px; -fx-fill: white;");
-	   
-	    coluna1.setAlignment(Pos.TOP_CENTER);
-	    VBox.setMargin(titulo, new Insets(0, 0, 25, 0));
-	    
-	    tabela = new TableView<>();
-	    carregarTabela();
-	    VBox.setVgrow(tabela, Priority.ALWAYS);
-
+        BarraLateralGG barra = new BarraLateralGG(logado);
         
-        TableColumn<Pdi, String> colNome = new TableColumn<>("Colaborador");
-        colNome.setCellValueFactory(c -> {
-            int colaboradorId = c.getValue().getColaborador_id();
-            Colaborador colaborador = colaboradorDAO.getColaboradorById(colaboradorId); // método que você cria
-            String nome = (colaborador != null) ? colaborador.getNome() : "Desconhecido";
-            return new javafx.beans.property.SimpleStringProperty(nome);
-        });
+
+        VBox coluna1 = new VBox();
+        coluna1.setId("coluna1");
+        coluna1.setAlignment(Pos.TOP_CENTER);
+        coluna1.setSpacing(15);
+        coluna1.setPadding(new Insets(15));
+        coluna1.setStyle("-fx-background-color: #1E1E1E;");
         
-        TableColumn<Pdi, String> colSetor = new TableColumn<>("Setor");
-        colSetor.setCellValueFactory(c -> {
-            int colaboradorId = c.getValue().getColaborador_id();
-            Colaborador colaborador = colaboradorDAO.getColaboradorById(colaboradorId);
-            String setor = (colaborador != null) ? colaborador.getSetor() : "Desconhecido";
-            return new javafx.beans.property.SimpleStringProperty(setor);
+        Text titulo = new Text("Gerenciar Metas");
+        titulo.setId("titulo");
+        VBox.setMargin(titulo, new Insets(4, 0, 30, 0));
+        
+        Ellipse blob1 = new Ellipse();
+		blob1.setId("blob1");
+		
+		Ellipse blob2 = new Ellipse();
+		blob2.setId("blob2");
+		
+		Ellipse blob3 = new Ellipse();
+		blob3.setId("blob3");
+		
+		GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
+
+        CategoryAxis eixoX = new CategoryAxis();
+        eixoX.setTickLabelsVisible(false);
+        eixoX.setTickMarkVisible(false);
+
+        NumberAxis eixoY = new NumberAxis(0, 100, 20);
+        eixoY.setAutoRanging(false);
+
+        BarChart<String, Number> grafico = new BarChart<>(eixoX, eixoY);
+        grafico.setLegendVisible(false);
+        grafico.setAnimated(false);
+        grafico.setStyle("-fx-background-color: transparent;");
+        grafico.setCategoryGap(0);
+        grafico.setBarGap(-15);
+        grafico.setPrefWidth(270);
+        grafico.setPrefHeight(230);
+
+        XYChart.Series<String, Number> serieD = new XYChart.Series<>();
+        dataD = new XYChart.Data<>("Desenvolvimento", 0);
+        serieD.getData().add(dataD);
+
+        XYChart.Series<String, Number> serieS = new XYChart.Series<>();
+        dataS = new XYChart.Data<>("Suporte", 0);
+        serieS.getData().add(dataS);
+
+        XYChart.Series<String, Number> serieM = new XYChart.Series<>();
+        dataM = new XYChart.Data<>("Marketing", 0);
+        serieM.getData().add(dataM);
+
+        XYChart.Series<String, Number> serieF = new XYChart.Series<>();
+        dataF = new XYChart.Data<>("Financeiro", 0);
+        serieF.getData().add(dataF);
+
+        XYChart.Series<String, Number> serieP = new XYChart.Series<>();
+        dataP = new XYChart.Data<>("Pesquisa", 0);
+        serieP.getData().add(dataP);
+
+        grafico.getData().addAll(serieD, serieS, serieM, serieF, serieP);
+
+        grafico.widthProperty().addListener((obs, oldVal, newVal) -> {
+            grafico.applyCss();
+            grafico.layout();
+            for (XYChart.Series<String, Number> serie : grafico.getData()) {
+                for (XYChart.Data<String, Number> data : serie.getData()) {
+                    if (data.getNode() != null) {
+                        data.getNode().setTranslateX(5);
+                    }
+                }
+            }
         });
 
-        TableColumn<Pdi, String> colObjetivo = new TableColumn<>("Objetivo");
+        VBox legenda = new VBox(10);
+        legenda.setAlignment(Pos.CENTER_LEFT);
+        legenda.setPadding(new Insets(10));
+        legenda.getChildren().addAll(
+                criarCaixaLegenda("#c2f0ef", "Desenvolvimento"),
+                criarCaixaLegenda("#88ccc9", "Suporte"),
+                criarCaixaLegenda("#5ab2b0", "Marketing"),
+                criarCaixaLegenda("#267a78", "Financeiro"),
+                criarCaixaLegenda("#0b514f", "Pesquisa e Inovação")
+        );
+
+        Label tituloGrafico = new Label("Percentual de Conclusão por Setor");
+        tituloGrafico.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
+
+        HBox painelGrafico = new HBox(90, grafico, legenda);
+        painelGrafico.setAlignment(Pos.CENTER);
+        painelGrafico.setPadding(new Insets(10));
+
+        VBox caixaGraficoCompleta = new VBox(15, tituloGrafico, painelGrafico);
+        caixaGraficoCompleta.setAlignment(Pos.TOP_CENTER);
+        caixaGraficoCompleta.setPadding(new Insets(20));
+        caixaGraficoCompleta.setStyle("-fx-background-color: #2C2C2C; -fx-background-radius: 15;");
+        caixaGraficoCompleta.setPrefWidth(745);
+        caixaGraficoCompleta.setMinHeight(250);
+        caixaGraficoCompleta.setMaxHeight(250);
+
+        Label tituloAlertas = new Label("Alertas");
+        tituloAlertas.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+
+        alerta1 = new Label();
+        alerta2 = new Label();
+        alerta3 = new Label();
+        alerta4 = new Label();
+        atualizarAlertas();
+
+        for (Label lbl : new Label[]{alerta1, alerta2, alerta3, alerta4}) {
+            lbl.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+        }
+
+        StackPane tituloAlertasContainer = new StackPane(tituloAlertas);
+        tituloAlertasContainer.setAlignment(Pos.CENTER);
+
+        VBox conteudoAlertas = new VBox(20, alerta1, alerta2, alerta3, alerta4);
+        conteudoAlertas.setAlignment(Pos.CENTER_LEFT);
+        conteudoAlertas.setPadding(new Insets(0, 30, 30 , 30));
+
+        VBox painelAlertas = new VBox(15, tituloAlertasContainer, conteudoAlertas);
+        painelAlertas.setPadding(new Insets(20));
+        painelAlertas.setStyle("-fx-background-color: #2C2C2C; -fx-background-radius: 15;");
+        painelAlertas.setAlignment(Pos.TOP_LEFT);
+        painelAlertas.setPrefWidth(415);
+        painelAlertas.setMinHeight(250);
+        painelAlertas.setMaxHeight(250);
+
+        HBox topContainer = new HBox(30, caixaGraficoCompleta, painelAlertas);
+        topContainer.setAlignment(Pos.CENTER);
+        topContainer.setPadding(new Insets(10));
+
+        tabela = new TableView<>();
+        carregarTabela(); 
+        tabela.setMinHeight(350);
+        tabela.setMaxHeight(350);
+        tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        VBox.setVgrow(tabela, Priority.ALWAYS); 
+        
+        TableColumn<Pdi, String> colObjetivo = new TableColumn<>("Descrição");
         colObjetivo.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getObjetivo()));
 
+        TableColumn<Pdi, String> colDivisao = new TableColumn<>("Divisão");
+        colDivisao.setCellValueFactory(c -> {
+            Colaborador colab = colaboradorDAO.getColaboradorById(c.getValue().getColaborador_id());
+            return new javafx.beans.property.SimpleStringProperty(colab != null ? colab.getSetor() : "N/D");
+        });
+
+        TableColumn<Pdi, String> colResponsavel = new TableColumn<>("Responsável");
+        colResponsavel.setCellValueFactory(c -> {
+            Colaborador colab = colaboradorDAO.getColaboradorById(c.getValue().getColaborador_id());
+            return new javafx.beans.property.SimpleStringProperty(colab != null ? colab.getNome() : "Desconhecido");
+        });
+        
         TableColumn<Pdi, String> colPrazo = new TableColumn<>("Prazo");
         colPrazo.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getPrazo().toString()));
 
@@ -103,101 +235,272 @@ public class MetasGG extends Application {
                     setStyle("");
                 } else {
                     switch (status) {
-                        case NAO_INICIADO -> {
-                            setText("Não Iniciado");
-                            setStyle("-fx-text-fill: gray;");
-                        }
-                        case EM_ANDAMENTO -> {
-                            setText("Em Andamento");
-                            setStyle("-fx-text-fill: orange;");
-                        }
-                        case CONCLUIDO -> {
-                            setText("Concluído");
-                            setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-                        }
-                        case ATRASADO -> {
-                            setText("Atrasado");
-                            setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
-                        }
+                        case NAO_INICIADO -> { setText("Não Iniciado"); setStyle("-fx-text-fill: gray;"); }
+                        case EM_ANDAMENTO -> { setText("Em Andamento"); setStyle("-fx-text-fill: orange;"); }
+                        case CONCLUIDO -> { setText("Concluído"); setStyle("-fx-text-fill: green; -fx-font-weight: bold;"); }
+                        case ATRASADO -> { setText("Atrasado"); setStyle("-fx-text-fill: red; -fx-font-weight: bold;"); }
                     }
-                    setAlignment(Pos.CENTER); // centraliza texto
+                    setAlignment(Pos.CENTER);
                 }
             }
         });
+               
+        tabela.getColumns().addAll( colResponsavel,colDivisao, colObjetivo, colPrazo, colStatus);
         
+        // Adicionar classes responsivas
+        titulo.getStyleClass().add("responsive-title");
+        tabela.getStyleClass().add("responsive-table");
+        coluna1.getStyleClass().add("responsive-coluna");
+        caixaGraficoCompleta.getStyleClass().add("responsive-grafico");
+        painelAlertas.getStyleClass().add("responsive-alertas");
+        topContainer.getStyleClass().add("responsive-top-container");
         
-        
-        TableColumn<Pdi, Void> colAcoes = new TableColumn<>("Ações");
-        
-        colAcoes.setCellFactory(tc -> new javafx.scene.control.TableCell<>() {
-            private final Button btnDelete = new Button("❌");
+        coluna1.getChildren().addAll(titulo, topContainer, tabela, blob1, blob2, blob3);
 
-            {
-                btnDelete.setOnAction(e -> {
-                    Pdi pdi = getTableView().getItems().get(getIndex());
+        Button btnVerMetas = new Button("Ver Todas as Metas");
+        btnVerMetas.getStyleClass().add("btnVerMetas"); 
+        btnVerMetas.getStyleClass().add("responsive-button");
+        
+        Button btnExportar = new Button("Exportar PDF");
+        btnExportar.getStyleClass().add("botao-exportar");
+        btnExportar.getStyleClass().add("responsive-button");
 
-                    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                        "Deseja excluir a meta \"" + pdi.getObjetivo() + "\"?",
-                        ButtonType.YES, ButtonType.NO);
-                    confirm.showAndWait().ifPresent(response -> {
-                        if (response == ButtonType.YES) {
-                            pdiDAO.delete(pdi); 
-                            carregarTabela();
-                        }
-                    });
-                });
-                btnDelete.setId("btnDelete");
-            }
+        Button btnExportarExcel = new Button("Exportar Excel");
+        btnExportarExcel.getStyleClass().add("botao-exportar");
+        btnExportarExcel.getStyleClass().add("responsive-button");
+    	
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : btnDelete);
-            }
+        HBox containerBotoes = new HBox(15, btnVerMetas, btnExportar, btnExportarExcel);
+        containerBotoes.setAlignment(Pos.CENTER);
+        containerBotoes.setPadding(new Insets(10, 0, 20, 0));
+        containerBotoes.getStyleClass().add("responsive-botoes-container");
+
+        btnVerMetas.setOnAction(e -> {
+            MetasGGTotais totalPage = new MetasGGTotais();
+
+            VBox novaTela = totalPage.criarPagina(
+                coluna1,           
+                titulo,            
+                topContainer,      
+                tabela,            
+                containerBotoes    
+            );
+
+            coluna1.getChildren().clear();
+            coluna1.getChildren().add(novaTela);
         });
         
-	    HBox tabelaContainer = new HBox(tabela);
-	    tabelaContainer.setAlignment(Pos.CENTER);
-	    VBox.setVgrow(tabelaContainer, Priority.ALWAYS);
+        btnExportar.setOnAction(e -> {
+    		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+    		fileChooser.setTitle("Salvar relatório PDF");
+    		
+    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
+    		fileChooser.setInitialFileName(fileName);
+    		
+    		File file = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (file == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+    		
+    		List<Pdi> todasMetas = pdiDAO.listAll();
+    		todasMetas.sort(Comparator.comparing(Pdi::getPrazo)); 
 
-	    tabela.setMaxHeight(500);
-	    
-	    tabela.getColumns().addAll(colNome, colSetor, colObjetivo, colPrazo, colStatus, colAcoes);
+    		boolean sucesso = PDFExporter.exportarPDIsParaPDF(
+    		    FXCollections.observableArrayList(todasMetas),
+    		    file.getAbsolutePath()
+    		);
+
+    	});
+
+        btnExportarExcel.setOnAction(e -> {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Escolha onde salvar o arquivo Excel");
+
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx")
+            );
+
+            String fileName = "metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".xlsx";
+            fileChooser.setInitialFileName(fileName);
+
+            File pastaDownloads = new File(System.getProperty("user.home"), "Downloads");
+            if (pastaDownloads.exists()) {
+                fileChooser.setInitialDirectory(pastaDownloads);
+            }
+
+            File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+
+            if (!arquivoSelecionado.getName().toLowerCase().endsWith(".xlsx")) {
+                arquivoSelecionado = new File(arquivoSelecionado.getAbsolutePath() + ".xlsx");
+            }
+
+            List<Pdi> todasMetas = pdiDAO.listAll().stream()
+                    .filter(pdi -> {
+                        Colaborador colab = colaboradorDAO.getColaboradorById(pdi.getColaborador_id());
+                        return colab != null && logado.getSetor().equalsIgnoreCase(colab.getSetor());
+                    })
+                    .sorted(Comparator.comparing(Pdi::getPrazo))
+                    .toList();
+            FXCollections.observableArrayList(todasMetas);
+
+            POIExcelExporter.exportarParaExcel(arquivoSelecionado, todasMetas);
+        });
         
-        coluna1.getChildren().addAll(titulo, tabelaContainer);
+        coluna1.getChildren().add(containerBotoes);
+
+        HBox root = new HBox();
+        root.getChildren().addAll(barra, coluna1);
+        root.setStyle("-fx-background-color: #1E1E1E");
+
+        coluna1.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
+        barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
+
+        // Criar ScrollPane e adicionar o root
+        ScrollPane scrollPane = new ScrollPane(root);
+        scrollPane.setFitToWidth(true); // Para ajustar a largura ao viewport
+        scrollPane.setFitToHeight(true); // Para ajustar a altura ao viewport
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setStyle("-fx-background: #1E1E1E; -fx-border-color: #1E1E1E;");
+
+        Scene scene = new Scene(scrollPane, 1000, 600); // Usar scrollPane em vez de root
+
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
         
+        // Listener para redimensionamento responsivo
+        scene.widthProperty().addListener((obss, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
         
-	    // layout raiz
-	    HBox root = new HBox();
-	    root.getChildren().addAll(barra, coluna1);
-	    root.setStyle("-fx-background-color: #1E1E1E");
+        scene.heightProperty().addListener((obss, oldVal, newVal) -> {
+            updateResponsiveStyles(scene);
+        });
+        
+        blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
 
-	    // proporção
-	    coluna1.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
-	    barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
-	    
-	    colNome.prefWidthProperty().bind(tabela.widthProperty().multiply(0.2));  
-	    colSetor.prefWidthProperty().bind(tabela.widthProperty().multiply(0.15));  
-	    colObjetivo.prefWidthProperty().bind(tabela.widthProperty().multiply(0.3));  
-	    colPrazo.prefWidthProperty().bind(tabela.widthProperty().multiply(0.1));  
-	    colStatus.prefWidthProperty().bind(tabela.widthProperty().multiply(0.1));
-	    colAcoes.prefWidthProperty().bind(tabela.widthProperty().multiply(0.1));
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
 
-	    // cena e estilo
-	    Scene scene = new Scene(root, 1000, 600);
-	    scene.getStylesheets().add(getClass().getResource("Metas.css").toExternalForm());
-	    scene.getStylesheets().add(getClass().getResource("BarraLateralRH.css").toExternalForm());
-	    
-	    metasGGStage.setScene(scene);
-	    metasGGStage.setFullScreen(true);
-	    metasGGStage.setFullScreenExitHint("");
-	    metasGGStage.setTitle("Gerenciamento de Metas (PDIs)");
-	    metasGGStage.show();
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
 
-	}
-	
-    private void carregarTabela() {
-        dados = FXCollections.observableArrayList(pdiDAO.listAll());
-        tabela.setItems(dados);
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(0.01));
+		blob1.setManaged(false);
+
+		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.18));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(1.15));
+		blob2.setManaged(false);
+
+		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.6));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.1));
+		blob3.setManaged(false);
+
+        metasggStage.setScene(scene);
+        metasggStage.setFullScreen(true);
+        metasggStage.setFullScreenExitHint("");
+        metasggStage.setTitle("Gerenciamento de Metas (PDIs)");
+        metasggStage.show();
+
+        // Aplicar estilos iniciais
+        updateResponsiveStyles(scene);
+
+        Timeline atualizador = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            carregarTabela();
+            atualizarAlertas();
+            atualizarGrafico();
+        }));
+        atualizador.setCycleCount(Timeline.INDEFINITE);
+        atualizador.play();
+
+        atualizarGrafico();
     }
+
+    // Método responsivo - MESMO PADRÃO
+    private void updateResponsiveStyles(Scene scene) {
+        double width = scene.getWidth();
+        double height = scene.getHeight();
+        
+        // Remover classes de tamanho anteriores
+        scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
+        
+        // Adicionar classe baseada no tamanho da tela - MESMO PADRÃO
+        if (width < 768) { // Mobile
+            scene.getRoot().getStyleClass().add("small-screen");
+            if (width > height) {
+                scene.getRoot().getStyleClass().add("mobile-landscape");
+            }
+        } else if (width < 1024) { // Tablet
+            scene.getRoot().getStyleClass().add("medium-screen");
+        } else if (width < 1440) { // Desktop
+            scene.getRoot().getStyleClass().add("large-screen");
+        } else { // Telas grandes
+            scene.getRoot().getStyleClass().add("extra-large-screen");
+        }
+    }
+
+    private HBox criarCaixaLegenda(String cor, String texto) {
+        Label corBox = new Label("  ");
+        corBox.setMinSize(20, 20);
+        corBox.setStyle("-fx-background-color: " + cor + "; -fx-background-radius: 5;");
+        Label nome = new Label(texto);
+        nome.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
+        HBox item = new HBox(10, corBox, nome);
+        item.setAlignment(Pos.CENTER_LEFT);
+        return item;
+    }
+
+    private void carregarTabela() {
+        List<Pdi> todos = pdiDAO.listAll();
+
+        todos.sort(Comparator.comparing(Pdi::getPrazo));
+
+        List<Pdi> proximosOito = todos.stream().limit(8).collect(Collectors.toList());
+        dados = FXCollections.observableArrayList(proximosOito);
+        tabela.setItems(dados);   
+    }
+    private void atualizarAlertas() {
+        int andamento = pdiDAO.contarPorStatus(Status.EM_ANDAMENTO);
+        int concluidas = pdiDAO.contarPorStatus(Status.CONCLUIDO);
+        int futuras = pdiDAO.contarPorStatus(Status.NAO_INICIADO);
+        int atrasadas = pdiDAO.contarPorStatus(Status.ATRASADO);
+
+        alerta1.setText("•  " + andamento + " " + (andamento == 1 ? "meta em andamento" : "metas em andamento"));
+        alerta2.setText("•  " + concluidas + " " + (concluidas == 1 ? "meta concluída" : "metas concluídas"));
+        alerta3.setText("•  " + futuras + " " + (futuras == 1 ? "meta planejada" : "metas planejadas"));
+        alerta4.setText("•  " + atrasadas + " " + (atrasadas == 1 ? "meta atrasada" : "metas atrasadas"));
+    }
+
+    private void atualizarGrafico() {
+        Map<String, List<Pdi>> porSetor = pdiDAO.listAll().stream()
+                .collect(Collectors.groupingBy(p -> {
+                    Colaborador c = colaboradorDAO.getColaboradorById(p.getColaborador_id());
+                    return (c != null) ? c.getSetor() : "Desconhecido";
+                }));
+
+        dataD.setYValue(calcularPercentual(porSetor, "Desenvolvimento"));
+        dataS.setYValue(calcularPercentual(porSetor, "Suporte"));
+        dataM.setYValue(calcularPercentual(porSetor, "Marketing"));
+        dataF.setYValue(calcularPercentual(porSetor, "Financeiro"));
+        dataP.setYValue(calcularPercentual(porSetor, "Pesquisa e Inovação"));
+    }
+
+    private double calcularPercentual(Map<String, List<Pdi>> mapa, String setor) {
+        List<Pdi> lista = mapa.getOrDefault(setor, Collections.emptyList());
+        if (lista.isEmpty()) return 0;
+        long concluidos = lista.stream().filter(p -> p.getStatus() == Status.CONCLUIDO).count();
+        return (concluidos * 100.0) / lista.size();
+    }
+    
 }	

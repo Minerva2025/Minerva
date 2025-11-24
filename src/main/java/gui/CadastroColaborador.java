@@ -96,14 +96,11 @@ public class CadastroColaborador extends Application {
 		
 		ComboBox<String> setor = new ComboBox<>();
 		setor.getItems().addAll(
-		    "Desenvolvimento",
-		    "Produto",
-		    "Vendas e Marketing",
-		    "Suporte",
-		    "DevOps",
-		    "Financeiro",
-		    "Pesquisa e Inovação",
-		    "Gestão de Projetos"
+			"Desenvolvimento",
+			"Marketing",
+			"Suporte",
+			"Financeiro", 
+			"Pesquisa e Inovação"
 		);
 		setor.setPromptText("Setor");
 		setor.getStyleClass().add("input");
@@ -173,10 +170,11 @@ public class CadastroColaborador extends Application {
 		stack.getChildren().addAll(grid, blob1, blob2, blob3);
 		
 		BorderPane root = new BorderPane();
+		root.setId("root-cadastro-colaborador");
 		root.setCenter(stack);
 		
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("Cadastro.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/Cadastro.css").toExternalForm());
 		
 		blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty());
@@ -198,11 +196,21 @@ public class CadastroColaborador extends Application {
 		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
 		blob3.translateXProperty().bind(scene.widthProperty().multiply(-0.05));
 		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.1));
+		
+		scene.widthProperty().addListener((obss, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
+		
+		scene.heightProperty().addListener((obss, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
 	
 		cadastroCStage.setScene(scene);
 		cadastroCStage.setFullScreen(true);
 		cadastroCStage.setFullScreenExitHint("");
 		cadastroCStage.show();
+		
+		updateResponsiveStyles(scene);
 		
 		salvarButton.setOnAction(e -> {
 		    try {
@@ -232,8 +240,27 @@ public class CadastroColaborador extends Application {
 
 	}
 	
+	private void updateResponsiveStyles(Scene scene) {
+		double width = scene.getWidth();
+		double height = scene.getHeight();
+		
+		scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
+		
+		if (width < 768) {
+			scene.getRoot().getStyleClass().add("small-screen");
+			if (width > height) {
+				scene.getRoot().getStyleClass().add("mobile-landscape");
+			}
+		} else if (width < 1024) {
+			scene.getRoot().getStyleClass().add("medium-screen");
+		} else if (width < 1440) {
+			scene.getRoot().getStyleClass().add("large-screen");
+		} else {
+			scene.getRoot().getStyleClass().add("extra-large-screen");
+		}
+	}
+	
 	public static void main (String[]args) {
 		launch(args);
 	}
 }
-

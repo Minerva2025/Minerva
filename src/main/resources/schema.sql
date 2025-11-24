@@ -9,7 +9,8 @@ CREATE TABLE usuarios (
     data_nascimento DATE NOT NULL,
     funcao ENUM('RH', 'GESTOR_GERAL', 'GESTOR_AREA') NOT NULL,
     experiencia TEXT,
-    observacoes TEXT
+    observacoes TEXT,
+    setor VARCHAR(50)
 );
 
 CREATE TABLE colaboradores (
@@ -31,3 +32,4 @@ CREATE TABLE pdis (
     status ENUM('NAO_INICIADO','EM_ANDAMENTO','CONCLUIDO','ATRASADO') DEFAULT 'EM_ANDAMENTO',
     FOREIGN KEY (colaborador_id) REFERENCES colaboradores(id)
 );
+

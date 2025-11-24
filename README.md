@@ -36,12 +36,12 @@
 ## 🗂Backlog do Produto
 | Rank | User Story | Sprint | Prioridade  | Estimativa de Esforço | Status | Data de Entrega |
 |:-------:|:--------------:|:--------:|:---------------:|:-----------------------------:|:--------:|:----------------------:|
-| 1  | "Como RH, quero cadastrar usuários com diferentes perfis (RH, Gestor Geral, Gestor de Área), para que cada um tenha permissões adequadas." | 1      | Alta                | 40h |⏳|  28/09            |
-| 2  | "Como RH, quero cadastrar, atualizar e excluir os PDIs dos colaboradores, para gerenciar o desenvolvimento individual."  | 1      | Alta                | 24h |⏳ |  28/09            |
-| 3  | "Como Gestor Geral, quero visualizar o histórico de PDIs anuais para acompanhar a evolução da equipe." | 1      | Média | 12h | ⏳ |  28/09            |
-| 4  | "Como Gestor Geral, quero acompanhar o progresso individual e coletivo das metas, para avaliar o desempenho da equipe."   | 2      | Alta                | 26h |⏳|  26/10            |
-| 5  | "Como RH, quero anexar documentos relacionados ao PDI e exportar relatórios, para manter os registros organizados."                 | 2      | Alta                | 42h |⏳|  26/10            |
-| 6  | "Como Gestor Geral, quero visualizar um dashboard com gráficos e KPIs gerais, para acompanhar o desempenho global da empresa."     | 2     | Média               | 70h | ⏳ |  26/10            |
+| 1  | "Como RH, quero cadastrar usuários com diferentes perfis (RH, Gestor Geral, Gestor de Área), para que cada um tenha permissões adequadas." | 1      | Alta                | 40h |✅|  28/09            |
+| 2  | "Como RH, quero cadastrar, atualizar e excluir os PDIs dos colaboradores, para gerenciar o desenvolvimento individual."  | 1      | Alta                | 24h |✅ |  28/09            |
+| 3  | "Como Gestor Geral, quero visualizar o histórico de PDIs anuais para acompanhar a evolução da equipe." | 1      | Média | 12h | ✅ |  28/09            |
+| 4  | "Como Gestor Geral, quero acompanhar o progresso individual e coletivo das metas, para avaliar o desempenho da equipe."   | 2      | Alta                | 26h |✅|  26/10            |
+| 5  | "Como RH, quero anexar documentos relacionados ao PDI e exportar relatórios, para manter os registros organizados."                 | 2      | Alta                | 42h |✅|  26/10            |
+| 6  | "Como Gestor Geral, quero visualizar um dashboard com gráficos e KPIs gerais, para acompanhar o desempenho global da empresa."     | 2     | Média               | 70h | ✅ |  26/10            |
 | 7  | "Como Administrador, quero garantir que os dados estejam seguros e acessíveis apenas para usuários autorizados."      | 3  | Alta             | 45h | ⏳ |  23/11            |
 | 8  | "Como RH, quero gerar relatórios completos para reuniões e acompanhamento de desempenho." | 3    | Média                | 28h |⏳|  23/11            |
 <br>
@@ -50,7 +50,7 @@
 
 ### Sprint - 1️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint1)): Concluída ✅
 
-### Sprint - 2️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint2)) : Início em 6/10.
+### Sprint - 2️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint2)) : Concluída ✅
 
 ### Sprint - 3️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint3)) : Início em 3/11.
 

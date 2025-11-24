@@ -1,0 +1,186 @@
+#left{
+    -fx-background-color: #323232;
+    -fx-padding: 40 0 40 20;
+    -fx-background-radius: 0 20 20 0;
+    -fx-background-insets: 0;
+    -fx-spacing: 20;
+}
+
+#inicio, #equipe, #relatorios, #metas, #avaliacoes{
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Kodchasan';
+    -fx-letter-spacing: 1px;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 8 15 8 15;
+    -fx-min-width: 80px;
+    -fx-alignment: center-left;
+}
+
+.small-screen #left {
+    -fx-padding: 20 0 20 10 !important;
+    -fx-spacing: 15 !important;
+    -fx-background-radius: 0 15 15 0 !important;
+}
+
+.small-screen .responsive-button {
+    -fx-font-size: 12px !important;
+    -fx-letter-spacing: 0.5px !important;
+    -fx-padding: 6 10 6 10 !important;
+    -fx-min-width: 60px !important;
+}
+
+.mobile-landscape #left {
+    -fx-padding: 25 0 25 15 !important;
+    -fx-spacing: 18 !important;
+}
+
+.mobile-landscape .responsive-button {
+    -fx-font-size: 13px !important;
+    -fx-padding: 7 12 7 12 !important;
+}
+
+.medium-screen #left {
+    -fx-padding: 60 0 60 25 !important;
+    -fx-spacing: 25 !important;
+    -fx-background-radius: 0 18 18 0 !important;
+}
+
+.medium-screen .responsive-button {
+    -fx-font-size: 16px !important;
+    -fx-letter-spacing: 1.5px !important;
+    -fx-padding: 10 18 10 18 !important;
+    -fx-min-width: 90px !important;
+}
+
+.large-screen #left {
+    -fx-padding: 100 0 100 30 !important;
+    -fx-spacing: 28 !important;
+    -fx-background-radius: 0 20 20 0 !important;
+}
+
+.large-screen .responsive-button {
+    -fx-font-size: 18px !important;
+    -fx-letter-spacing: 1.8px !important;
+    -fx-padding: 12 22 12 22 !important;
+    -fx-min-width: 100px !important;
+}
+
+.extra-large-screen #left {
+    -fx-padding: 140 0 140 40 !important;
+    -fx-spacing: 30 !important;
+    -fx-background-radius: 0 25 25 0 !important;
+}
+
+.extra-large-screen .responsive-button {
+    -fx-font-size: 20px !important;
+    -fx-letter-spacing: 2px !important;
+    -fx-padding: 15 25 15 25 !important;
+    -fx-min-width: 120px !important;
+}
+
+.small-screen #left {
+    -fx-padding: 15 0 15 8 !important;
+    -fx-spacing: 12 !important;
+    -fx-background-radius: 0 12 12 0 !important;
+}
+
+.small-screen .responsive-button {
+    -fx-font-size: 11px !important;
+    -fx-letter-spacing: 0.3px !important;
+    -fx-padding: 5 8 5 8 !important;
+    -fx-min-width: 50px !important;
+}
+
+@media (max-height: 600px) {
+    .small-screen #left {
+        -fx-padding: 10 0 10 5 !important;
+        -fx-spacing: 10 !important;
+    }
+    
+    .small-screen .responsive-button {
+        -fx-font-size: 10px !important;
+        -fx-padding: 4 6 4 6 !important;
+    }
+}
+
+.responsive-button:hover {
+    -fx-background-color: #404040 !important;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-cursor: hand;
+}
+
+.responsive-button:pressed {
+    -fx-background-color: #505050 !important;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+@media (min-width: 2000px) {
+    .extra-large-screen #left {
+        -fx-max-width: 300px;
+        -fx-pref-width: 300px;
+    }
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+    .medium-screen #left {
+        -fx-padding: 40 0 40 20 !important;
+        -fx-spacing: 22 !important;
+    }
+    
+    .medium-screen .responsive-button {
+        -fx-font-size: 15px !important;
+        -fx-padding: 9 16 9 16 !important;
+    }
+}
+
+.mobile-landscape .responsive-barralateral {
+    -fx-orientation: horizontal !important;
+    -fx-alignment: center-left !important;
+}
+
+.mobile-landscape #left {
+    -fx-padding: 10 20 10 20 !important;
+    -fx-spacing: 15 !important;
+    -fx-background-radius: 0 0 20 20 !important;
+}
+
+#avaliacoes {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Kodchasan';
+    -fx-letter-spacing: 1px;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 8 15 8 15;
+    -fx-min-width: 80px;
+    -fx-alignment: center-left;
+}
+
+.small-screen #avaliacoes {
+    -fx-font-size: 12px !important;
+    -fx-padding: 6 10 6 10 !important;
+}
+
+.medium-screen #avaliacoes {
+    -fx-font-size: 16px !important;
+    -fx-padding: 10 18 10 18 !important;
+}
+
+.large-screen #avaliacoes {
+    -fx-font-size: 18px !important;
+    -fx-padding: 12 22 12 22 !important;
+}
+
+.extra-large-screen #avaliacoes {
+    -fx-font-size: 20px !important;
+    -fx-padding: 15 25 15 25 !important;
+}
+
+#inicio, #equipe, #relatorios, #metas, #avaliacoes {
+    -fx-cursor: hand;
+    -fx-background-radius: 8px;
+}

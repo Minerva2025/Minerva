@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,24 +16,29 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Colaborador;
-import model.Funcao;
 import model.Pdi;
 import model.Status;
 import model.Usuario;
+import util.PDFExporter;
 
+import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import dao.ColaboradorDAO;
 import dao.PdiDAO;
-import gui.BarraLateralRH;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
+import util.POIExcelExporter;
 
 public class Metas extends Application {
 
@@ -48,7 +54,9 @@ public class Metas extends Application {
     }
 	
 	public void start(Stage metasStage) {
-
+		setupBotaoExportar();
+        setupBotaoExportarExcel();
+		
 		// cria barra lateral
 	    BarraLateralRH barra = new BarraLateralRH(logado);
 	    
@@ -57,7 +65,22 @@ public class Metas extends Application {
 
 	    Text titulo = new Text("Gerenciar Metas");
 	    titulo.setId("titulo");
+	    titulo.getStyleClass().add("titulo-esquerda");
 	    VBox.setMargin(titulo, new Insets(0, 0, 25, 0));
+	    
+	    Ellipse blob1 = new Ellipse();
+	    blob1.setId("blob1");
+	    
+	    Ellipse blob2 = new Ellipse();
+	    blob2.setId("blob2");
+	    
+	    Ellipse blob3 = new Ellipse();
+	    blob3.setId("blob3");
+	    
+	    GaussianBlur blur = new GaussianBlur(40);
+		blob1.setEffect(blur);
+		blob2.setEffect(blur);
+		blob3.setEffect(blur);
 	   
 	    tabela = new TableView<>();
 	    carregarTabela();
@@ -114,7 +137,7 @@ public class Metas extends Application {
                             setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
                         }
                     }
-                    setAlignment(Pos.CENTER); // centraliza texto
+                    setAlignment(Pos.CENTER); 
                 }
             }
         });
@@ -150,15 +173,24 @@ public class Metas extends Application {
             }
         });
         
-	    HBox tabelaContainer = new HBox(tabela);
-	    tabelaContainer.setAlignment(Pos.CENTER);
-	    VBox.setVgrow(tabelaContainer, Priority.ALWAYS);
+        VBox tabelaContainer = new VBox(tabela);
+        tabelaContainer.setFillWidth(true); 
+        tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
+        tabelaContainer.setAlignment(Pos.TOP_LEFT); 
+        VBox.setVgrow(tabelaContainer, Priority.ALWAYS);
+
 
         
 	    tabela.getColumns().addAll(colNome, colSetor, colObjetivo, colPrazo, colStatus, colAcoes);
 	    
+        HBox botoesExportar = new HBox(20, btnExportar, btnExportarExcel);
+        botoesExportar.setAlignment(Pos.CENTER);
+        botoesExportar.setPadding(new Insets(15, 0, 0, 0));
+        botoesExportar.getStyleClass().add("botoes-exportar-container");
+	    
         Text tituloCadastrar = new Text("Cadastrar Nova Meta");
         tituloCadastrar.setId("tituloCadastrar");
+        tituloCadastrar.getStyleClass().add("titulo-esquerda");
         
         HBox boxTitulo = new HBox(tituloCadastrar);
         boxTitulo.setAlignment(Pos.CENTER_LEFT);
@@ -183,9 +215,8 @@ public class Metas extends Application {
 		ObservableList<Colaborador> todosColaboradores = FXCollections.observableArrayList(colaboradorDAO.listAll());
 		cbColaborador.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
 		    if (newValue == null || newValue.isEmpty()) {
-		        // apenas limpa a seleção e não altera os itens
 		        cbColaborador.getSelectionModel().clearSelection();
-		        cbColaborador.hide(); // evita mostrar dropdown indesejado
+		        cbColaborador.hide(); 
 		    } else {
 		        ObservableList<Colaborador> filtrados = todosColaboradores.filtered(c -> 
 		            c.getNome().toLowerCase().contains(newValue.toLowerCase())
@@ -219,7 +250,6 @@ public class Metas extends Application {
 
 		    @Override
 		    public Colaborador fromString(String string) {
-		        // Procura pelo colaborador correspondente ao nome digitado
 		        return cbColaborador.getItems()
 		                .stream()
 		                .filter(c -> c.getNome().equalsIgnoreCase(string))
@@ -236,8 +266,6 @@ public class Metas extends Application {
         tfObjetivo.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(tfObjetivo, Priority.ALWAYS);
 
-
-        
         DatePicker dpPrazo = new DatePicker();
         dpPrazo.getStyleClass().add("input");
         dpPrazo.setPromptText("Prazo");
@@ -245,9 +273,6 @@ public class Metas extends Application {
         dpPrazo.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(dpPrazo, Priority.ALWAYS);
 
-
-
-        
         ComboBox<Status> cbStatus = new ComboBox<>();
         cbStatus.getItems().setAll(Status.values());
         cbStatus.getStyleClass().add("input");
@@ -293,7 +318,17 @@ public class Metas extends Application {
         
         HBox boxBotao = new HBox(btnSalvar);
         boxBotao.setAlignment(Pos.CENTER);
+        boxBotao.getStyleClass().add("responsive-button-container");
 
+        cadastrar.getStyleClass().add("responsive-grid");
+        cbColaborador.getStyleClass().add("responsive-combo");
+        tfObjetivo.getStyleClass().add("responsive-input");
+        dpPrazo.getStyleClass().add("responsive-input");
+        cbStatus.getStyleClass().add("responsive-combo");
+        btnSalvar.getStyleClass().add("responsive-button");
+        titulo.getStyleClass().add("responsive-title");
+        tituloCadastrar.getStyleClass().add("responsive-subtitle");
+        tabela.getStyleClass().add("responsive-table");
 
         cadastrar.add(cbColaborador, 0, 0);
         cadastrar.add(tfObjetivo, 1, 0);
@@ -301,15 +336,12 @@ public class Metas extends Application {
         cadastrar.add(cbStatus, 1, 1);
         cadastrar.add(boxBotao, 0, 2, 2, 1); 
         
-        coluna1.getChildren().addAll(titulo, tabelaContainer, boxTitulo, cadastrar);
+        coluna1.getChildren().addAll(titulo, tabelaContainer, botoesExportar, boxTitulo, cadastrar, blob1, blob2, blob3);
         
-        
-	    // layout raiz
 	    HBox root = new HBox();
 	    root.getChildren().addAll(barra, coluna1);
 	    root.setStyle("-fx-background-color: #1E1E1E");
-
-	    // proporção
+	    
 	    coluna1.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
 	    barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 	    
@@ -322,15 +354,70 @@ public class Metas extends Application {
 
 	    // cena e estilo
 	    Scene scene = new Scene(root, 1000, 600);
-	    scene.getStylesheets().add(getClass().getResource("Metas.css").toExternalForm());
-	    scene.getStylesheets().add(getClass().getResource("BarraLateralRH.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
+	    
+		scene.widthProperty().addListener((obss, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
+		
+		scene.heightProperty().addListener((obss, oldVal, newVal) -> {
+			updateResponsiveStyles(scene);
+		});
+	    
+	    blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
+		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
+
+		blob2.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.05));
+		blob2.radiusYProperty().bind(blob2.radiusXProperty());
+
+		blob3.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.02));
+		blob3.radiusYProperty().bind(blob3.radiusXProperty());
+
+		StackPane.setAlignment(blob1, Pos.TOP_RIGHT);
+		blob1.translateXProperty().bind(scene.widthProperty().multiply(0.72));
+		blob1.translateYProperty().bind(scene.heightProperty().multiply(-0.015));
+		blob1.setManaged(false);
+
+		StackPane.setAlignment(blob2, Pos.BOTTOM_LEFT);
+		blob2.translateXProperty().bind(scene.widthProperty().multiply(0.2));
+		blob2.translateYProperty().bind(scene.heightProperty().multiply(1.025));
+		blob2.setManaged(false);
+
+		StackPane.setAlignment(blob3, Pos.BOTTOM_LEFT);
+		blob3.translateXProperty().bind(scene.widthProperty().multiply(0.6));
+		blob3.translateYProperty().bind(scene.heightProperty().multiply(0.012));
+		blob3.setManaged(false);
 	    
 	    metasStage.setScene(scene);
 	    metasStage.setFullScreen(true);
 	    metasStage.setFullScreenExitHint("");
 	    metasStage.setTitle("Gerenciamento de Metas (PDIs)");
 	    metasStage.show();
+	    
+		updateResponsiveStyles(scene);
 
+	}
+	
+	private void updateResponsiveStyles(Scene scene) {
+		double width = scene.getWidth();
+		double height = scene.getHeight();
+		
+		scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
+		
+		if (width < 768) { 
+			scene.getRoot().getStyleClass().add("small-screen");
+			if (width > height) {
+				scene.getRoot().getStyleClass().add("mobile-landscape");
+			}
+		} else if (width < 1024) { 
+			scene.getRoot().getStyleClass().add("medium-screen");
+		} else if (width < 1440) {
+			scene.getRoot().getStyleClass().add("large-screen");
+		} else { 
+			scene.getRoot().getStyleClass().add("extra-large-screen");
+		}
 	}
 	
     private void carregarTabela() {
@@ -351,4 +438,64 @@ public class Metas extends Application {
         cbStatus.setValue(null);
     }
     
-}	
+    //Botão exportar pdf
+    Button btnExportar = new Button("Exportar PDF");
+    private void setupBotaoExportar() {
+    	btnExportar.getStyleClass().add("botao-exportar");
+    	btnExportar.getStyleClass().add("responsive-button");
+    	
+    	btnExportar.setOnAction(e -> {
+    		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+    		fileChooser.setTitle("Salvar relatório PDF");
+    		
+    		
+    		String fileName = "relatorio_metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".pdf";
+    		fileChooser.setInitialFileName(fileName);
+    		
+    		File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+            
+            boolean sucesso = PDFExporter.exportarPDIsParaPDF(dados, arquivoSelecionado.getAbsolutePath());
+    	});
+    }
+
+    Button btnExportarExcel = new Button("Exportar Excel");
+
+    private void setupBotaoExportarExcel() {
+        btnExportarExcel.getStyleClass().add("botao-exportar");
+        btnExportarExcel.getStyleClass().add("responsive-button");
+
+        btnExportarExcel.setOnAction(e -> {
+            javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+            fileChooser.setTitle("Escolha onde salvar o arquivo Excel");
+
+            fileChooser.getExtensionFilters().add(
+                    new javafx.stage.FileChooser.ExtensionFilter("Arquivos Excel (*.xlsx)", "*.xlsx")
+            );
+
+            String fileName = "metas_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + ".xlsx";
+            fileChooser.setInitialFileName(fileName);
+
+            File pastaDownloads = new File(System.getProperty("user.home"), "Downloads");
+            if (pastaDownloads.exists()) {
+                fileChooser.setInitialDirectory(pastaDownloads);
+            }
+
+            File arquivoSelecionado = fileChooser.showSaveDialog(tabela.getScene().getWindow());
+            if (arquivoSelecionado == null) {
+                System.out.println("Operação cancelada pelo usuário.");
+                return;
+            }
+
+            if (!arquivoSelecionado.getName().toLowerCase().endsWith(".xlsx")) {
+                arquivoSelecionado = new File(arquivoSelecionado.getAbsolutePath() + ".xlsx");
+            }
+
+            POIExcelExporter.exportarParaExcel(arquivoSelecionado, dados);
+        });
+    }
+    
+}

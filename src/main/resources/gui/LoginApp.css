@@ -1,0 +1,154 @@
+#login-layout{
+    -fx-background-color: #1E1E1E;
+    -fx-padding: 20px;
+}
+
+#titulo-text{
+    -fx-fill: white;
+    -fx-font-size: 36px;
+    -fx-font-family: 'Kodchasan';
+    -fx-letter-spacing: 1px;
+}
+
+.input, .input-field{
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-width: 0 0 1 0;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-prompt-text-fill: white;
+    -fx-pref-width: 280px;
+    -fx-max-width: 280px;
+    -fx-font-family: 'Kodchasan';
+    -fx-padding: 8px 12px;
+}
+
+#login-botao{
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-background-radius: 25px;
+    -fx-padding: 8px 20px;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-font-family: 'Kodchasan';
+    -fx-pref-width: 150px;
+}
+
+#blob1, #blob2, #blob3{
+    -fx-fill: #323232;
+}
+
+.medium-screen #login-layout {
+    -fx-padding: 30px;
+}
+
+.medium-screen #titulo-text {
+    -fx-font-size: 48px;
+}
+
+.medium-screen .input,
+.medium-screen .input-field {
+    -fx-font-size: 18px;
+    -fx-pref-width: 400px;
+    -fx-max-width: 400px;
+    -fx-padding: 10px 15px;
+}
+
+.medium-screen #login-botao {
+    -fx-font-size: 18px;
+    -fx-padding: 10px 25px;
+    -fx-pref-width: 180px;
+}
+
+.large-screen #login-layout {
+    -fx-padding: 40px;
+}
+
+.large-screen #titulo-text {
+    -fx-font-size: 56px;
+    -fx-letter-spacing: 1.5px;
+}
+
+.large-screen .input,
+.large-screen .input-field {
+    -fx-font-size: 20px;
+    -fx-pref-width: 500px;
+    -fx-max-width: 500px;
+    -fx-padding: 12px 18px;
+}
+
+.large-screen #login-botao {
+    -fx-font-size: 18px;
+    -fx-padding: 12px 30px;
+    -fx-pref-width: 200px;
+    -fx-background-radius: 30px;
+}
+
+.extra-large-screen #login-layout {
+    -fx-padding: 50px;
+}
+
+.extra-large-screen #titulo-text {
+    -fx-font-size: 64px;
+    -fx-letter-spacing: 2px;
+}
+
+.extra-large-screen .input,
+.extra-large-screen .input-field {
+    -fx-font-size: 24px;
+    -fx-pref-width: 600px;
+    -fx-max-width: 600px;
+    -fx-padding: 15px 20px;
+}
+
+.extra-large-screen #login-botao {
+    -fx-font-size: 20px;
+    -fx-padding: 15px 35px;
+    -fx-pref-width: 220px;
+    -fx-background-radius: 35px;
+}
+
+.small-screen #login-layout {
+    -fx-padding: 15px;
+}
+
+.small-screen #titulo-text {
+    -fx-font-size: 32px;
+}
+
+.small-screen .input,
+.small-screen .input-field {
+    -fx-font-size: 14px;
+    -fx-pref-width: 250px;
+    -fx-max-width: 250px;
+    -fx-padding: 6px 10px;
+}
+
+.small-screen #login-botao {
+    -fx-font-size: 14px;
+    -fx-padding: 6px 15px;
+    -fx-pref-width: 120px;
+    -fx-background-radius: 20px;
+}
+
+@media (max-height: 600px) {
+    .small-screen #login-layout {
+        -fx-padding: 10px;
+    }
+    
+    .small-screen #titulo-text {
+        -fx-font-size: 28px;
+    }
+    
+    .small-screen .input,
+    .small-screen .input-field {
+        -fx-pref-width: 220px;
+        -fx-max-width: 220px;
+    }
+}
+
+#login-botao:hover {
+    -fx-background-color: #404040;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}

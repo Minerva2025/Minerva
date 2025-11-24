@@ -1,0 +1,580 @@
+/* Estilos base - Mobile First */
+#root-relatorios {
+    -fx-background-color: #1E1E1E;
+}
+
+#center {
+    -fx-background-color: #1E1E1E;
+    -fx-padding: 60 20 20 20;
+    -fx-alignment: top-center;
+}
+
+/* Título principal - ALINHADO À ESQUERDA */
+#titulo {
+    -fx-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-family: 'Kodchasan';
+    -fx-text-alignment: left; /* ALTERADO: de center para left */
+    -fx-wrapping-width: 280px;
+    -fx-alignment: center-left; /* NOVO: alinhamento à esquerda */
+}
+
+.relatorios-content {
+    -fx-spacing: 20;
+    -fx-padding: 20 0 20 0;
+}
+
+/* Container dos gráficos superiores - CENTRALIZADO */
+.top-charts-container {
+    -fx-spacing: 20;
+    -fx-alignment: center; /* ALTERADO: de center para center */
+}
+
+/* Cards de gráficos */
+.chart-card {
+    -fx-background-color: #2D2D2D; 
+    -fx-background-radius: 8px;
+    -fx-padding: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+    -fx-alignment: CENTER;
+    -fx-min-width: 280px;
+    -fx-min-height: 220px;
+}
+
+/* Área de busca */
+.search-area {
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 8;
+    -fx-padding: 10 0 10 0;
+}
+
+.search-label {
+    -fx-text-fill: #FFFFFF; 
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 14px;
+}
+
+.search-field {
+    -fx-background-color: #5A5A5A;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #AAAAAA;
+    -fx-background-radius: 6;
+    -fx-pref-width: 200px;
+    -fx-pref-height: 35px;
+}
+
+/* Card do colaborador - LARGURA REDUZIDA E CENTRALIZADO */
+.employee-card {
+    -fx-background-color: #2D2D2D; 
+    -fx-background-radius: 8px;
+    -fx-padding: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+    -fx-alignment: center; /* ALTERADO: de CENTER_LEFT para center */
+    -fx-max-width: 800px; /* NOVO: largura máxima reduzida */
+    -fx-pref-width: 750px; /* NOVO: largura preferida */
+}
+
+.employee-card .text {
+    -fx-fill: white !important;
+}
+
+.employee-card .label {
+    -fx-text-fill: white !important;
+}
+
+.employee-card .chart-legend {
+    -fx-text-fill: white !important;
+}
+
+/* Legenda do gráfico dentro do card da Gabrielle */
+.employee-card .pie-chart .chart-legend {
+    -fx-text-fill: white !important;
+}
+
+/* Textos específicos do card */
+.employee-name {
+    -fx-text-fill: white !important;
+}
+
+.employee-detail {
+    -fx-text-fill: white !important;
+}
+
+.employee-card-content {
+    -fx-spacing: 15;
+}
+
+.employee-info {
+    -fx-spacing: 5;
+}
+
+.employee-name {
+    -fx-text-fill: white;
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+}
+
+.employee-detail {
+    -fx-text-fill: #CCCCCC;
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+}
+
+/* Botões */
+.btn-ver-mais {
+    -fx-background-color: #4A4A4A;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: normal;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16;
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 14px;
+}
+
+.btn-ver-mais:hover {
+    -fx-background-color: #5A5A5A;
+}
+
+.btn-filtrar {
+    -fx-background-color: #4A4A4A; 
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: normal;
+    -fx-background-radius: 6;
+    -fx-padding: 6 12;
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 12px;
+}
+
+.btn-filtrar:hover {
+    -fx-background-color: #5A5A5A;
+}
+
+/* Gráficos responsivos */
+.bar-chart-responsive {
+    -fx-pref-width: 250px;
+    -fx-pref-height: 180px;
+}
+
+.pie-chart-responsive {
+    -fx-pref-width: 250px;
+    -fx-pref-height: 180px;
+}
+
+/* Remove o fundo padrão dos gráficos */
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-content {
+    -fx-background-color: transparent;
+}
+
+/* Estilos para legendas e eixos - TEXTO BRANCO */
+.chart-legend {
+    -fx-text-fill: white !important; /* NOVO: forçar cor branca */
+    -fx-font-family: 'Kodchasan';
+    -fx-background-color: transparent;
+    -fx-font-size: 10px;
+}
+
+.axis-label {
+    -fx-text-fill: white !important; /* NOVO: forçar cor branca */
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 11px;
+}
+
+.axis {
+    -fx-tick-label-fill: white !important; /* NOVO: forçar cor branca */
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 10px;
+}
+
+/* Títulos dos gráficos - TEXTO BRANCO */
+.chart-title {
+    -fx-text-fill: white !important; /* NOVO: forçar cor branca */
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 12px;
+}
+
+/* Textos nos cards - TEXTO BRANCO */
+.chart-card .text {
+    -fx-fill: white !important; /* NOVO: forçar cor branca */
+}
+
+/* Remover linhas de grid padrão */
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: transparent;
+}
+
+/* Cores das legendas dos gráficos de pizza */
+.data0 {
+    -fx-background-color: #A8E6CF;
+}
+
+.data1 {
+    -fx-background-color: #70C1B3;
+}
+
+.data2 {
+    -fx-background-color: #2E8B78;
+}
+
+#blob1, #blob2 {
+    -fx-fill: #323232;
+}
+
+/* Container responsivo - muda layout em telas pequenas */
+.small-screen .top-charts-container {
+    -fx-orientation: vertical;
+}
+
+.small-screen .employee-card-content {
+    -fx-orientation: vertical;
+    -fx-spacing: 15;
+}
+
+.small-screen .search-area {
+    -fx-orientation: vertical;
+    -fx-alignment: center-left;
+    -fx-spacing: 8;
+}
+
+/* Mobile Landscape */
+.mobile-landscape .top-charts-container {
+    -fx-orientation: horizontal;
+}
+
+.mobile-landscape .employee-card-content {
+    -fx-orientation: horizontal;
+}
+
+/* Tablet (768px+) */
+.medium-screen #center {
+    -fx-padding: 80 30 30 30;
+}
+
+.medium-screen #titulo {
+    -fx-font-size: 32px;
+    -fx-wrapping-width: 400px;
+}
+
+.medium-screen .relatorios-content {
+    -fx-spacing: 25;
+}
+
+.medium-screen .chart-card {
+    -fx-min-width: 320px;
+    -fx-min-height: 240px;
+    -fx-padding: 15px;
+    -fx-background-radius: 9px;
+}
+
+.medium-screen .search-area {
+    -fx-spacing: 10;
+}
+
+.medium-screen .search-field {
+    -fx-pref-width: 250px;
+    -fx-pref-height: 38px;
+}
+
+.medium-screen .employee-card {
+    -fx-padding: 15px;
+    -fx-background-radius: 9px;
+    -fx-max-width: 700px; /* NOVO: largura máxima reduzida */
+    -fx-pref-width: 650px; /* NOVO: largura preferida reduzida */
+}
+
+.medium-screen .employee-name {
+    -fx-font-size: 17px;
+}
+
+.medium-screen .employee-detail {
+    -fx-font-size: 13px;
+}
+
+.medium-screen .btn-ver-mais {
+    -fx-padding: 9 18;
+    -fx-font-size: 15px;
+}
+
+.medium-screen .btn-filtrar {
+    -fx-padding: 7 14;
+    -fx-font-size: 13px;
+}
+
+.medium-screen .bar-chart-responsive,
+.medium-screen .pie-chart-responsive {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 200px;
+}
+
+.medium-screen .chart-legend {
+    -fx-font-size: 11px;
+}
+
+.medium-screen .axis-label {
+    -fx-font-size: 12px;
+}
+
+.medium-screen .axis {
+    -fx-font-size: 11px;
+}
+
+.medium-screen .chart-title {
+    -fx-font-size: 13px;
+}
+
+/* Tablet Portrait - Gráficos em coluna */
+.tablet-portrait .top-charts-container {
+    -fx-orientation: vertical;
+}
+
+/* Desktop (1024px+) */
+.large-screen #center {
+    -fx-padding: 110 40 40 40;
+}
+
+.large-screen #titulo {
+    -fx-font-size: 36px;
+    -fx-wrapping-width: 500px;
+}
+
+.large-screen .relatorios-content {
+    -fx-spacing: 30;
+}
+
+.large-screen .chart-card {
+    -fx-min-width: 380px;
+    -fx-min-height: 260px;
+    -fx-padding: 18px;
+    -fx-background-radius: 10px;
+}
+
+.large-screen .search-area {
+    -fx-spacing: 12;
+}
+
+.large-screen .search-field {
+    -fx-pref-width: 300px;
+    -fx-pref-height: 40px;
+}
+
+.large-screen .employee-card {
+    -fx-padding: 18px;
+    -fx-background-radius: 10px;
+    -fx-max-width: 750px; /* NOVO: largura máxima reduzida */
+    -fx-pref-width: 700px; /* NOVO: largura preferida reduzida */
+}
+
+.large-screen .employee-name {
+    -fx-font-size: 18px;
+}
+
+.large-screen .employee-detail {
+    -fx-font-size: 14px;
+}
+
+.large-screen .btn-ver-mais {
+    -fx-padding: 10 20;
+    -fx-font-size: 16px;
+}
+
+.large-screen .btn-filtrar {
+    -fx-padding: 8 16;
+    -fx-font-size: 14px;
+}
+
+.large-screen .bar-chart-responsive,
+.large-screen .pie-chart-responsive {
+    -fx-pref-width: 350px;
+    -fx-pref-height: 240px;
+}
+
+.large-screen .chart-legend {
+    -fx-font-size: 12px;
+}
+
+.large-screen .axis-label {
+    -fx-font-size: 13px;
+}
+
+.large-screen .axis {
+    -fx-font-size: 12px;
+}
+
+.large-screen .chart-title {
+    -fx-font-size: 14px;
+}
+
+/* Telas grandes (1440px+) */
+.extra-large-screen #center {
+    -fx-padding: 110 0 0 45;
+}
+
+.extra-large-screen #titulo {
+    -fx-font-size: 40px;
+    -fx-wrapping-width: 600px;
+}
+
+.extra-large-screen .relatorios-content {
+    -fx-spacing: 35;
+}
+
+.extra-large-screen .chart-card {
+    -fx-min-width: 420px;
+    -fx-min-height: 280px;
+    -fx-padding: 20px;
+    -fx-background-radius: 10px;
+}
+
+.extra-large-screen .search-area {
+    -fx-spacing: 15;
+}
+
+.extra-large-screen .search-field {
+    -fx-pref-width: 350px;
+    -fx-pref-height: 42px;
+}
+
+.extra-large-screen .employee-card {
+    -fx-padding: 20px;
+    -fx-background-radius: 10px;
+    -fx-max-width: 800px; /* NOVO: largura máxima reduzida */
+    -fx-pref-width: 750px; /* NOVO: largura preferida reduzida */
+}
+
+.extra-large-screen .employee-name {
+    -fx-font-size: 20px;
+}
+
+.extra-large-screen .employee-detail {
+    -fx-font-size: 15px;
+}
+
+.extra-large-screen .btn-ver-mais {
+    -fx-padding: 12 24;
+    -fx-font-size: 17px;
+}
+
+.extra-large-screen .btn-filtrar {
+    -fx-padding: 9 18;
+    -fx-font-size: 15px;
+}
+
+.extra-large-screen .bar-chart-responsive,
+.extra-large-screen .pie-chart-responsive {
+    -fx-pref-width: 380px;
+    -fx-pref-height: 260px;
+}
+
+.extra-large-screen .chart-title {
+    -fx-font-size: 15px;
+}
+
+/* Ajustes para telas muito pequenas (menos de 480px) */
+.small-screen #center {
+    -fx-padding: 40 15 15 15;
+}
+
+.small-screen #titulo {
+    -fx-font-size: 20px;
+    -fx-wrapping-width: 250px;
+}
+
+.small-screen .relatorios-content {
+    -fx-spacing: 15;
+}
+
+.small-screen .chart-card {
+    -fx-min-width: 260px;
+    -fx-min-height: 200px;
+    -fx-padding: 10px;
+}
+
+.small-screen .search-field {
+    -fx-pref-width: 180px;
+    -fx-pref-height: 32px;
+}
+
+.small-screen .employee-card {
+    -fx-max-width: 300px; /* NOVO: largura máxima reduzida */
+    -fx-pref-width: 280px; /* NOVO: largura preferida reduzida */
+}
+
+.small-screen .employee-name {
+    -fx-font-size: 14px;
+}
+
+.small-screen .employee-detail {
+    -fx-font-size: 11px;
+}
+
+.small-screen .btn-ver-mais {
+    -fx-padding: 6 12;
+    -fx-font-size: 12px;
+}
+
+.small-screen .btn-filtrar {
+    -fx-padding: 5 10;
+    -fx-font-size: 11px;
+}
+
+.small-screen .bar-chart-responsive,
+.small-screen .pie-chart-responsive {
+    -fx-pref-width: 220px;
+    -fx-pref-height: 160px;
+}
+
+.small-screen .chart-legend {
+    -fx-font-size: 9px;
+}
+
+.small-screen .axis-label {
+    -fx-font-size: 10px;
+}
+
+.small-screen .axis {
+    -fx-font-size: 9px;
+}
+
+.small-screen .chart-title {
+    -fx-font-size: 11px;
+}
+
+/* Ajustes de altura para telas baixas */
+@media (max-height: 600px) {
+    .small-screen #center {
+        -fx-padding: 30 15 15 15;
+    }
+    
+    .small-screen .relatorios-content {
+        -fx-spacing: 12;
+    }
+    
+    .small-screen #titulo {
+        -fx-font-size: 18px;
+    }
+    
+    .small-screen .chart-card {
+        -fx-min-height: 180px;
+    }
+}
+
+/* Melhorias de acessibilidade */
+#titulo {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0.7, 2, 2);
+}
+
+/* Ajustes para quando a barra lateral é recolhida */
+#root-relatorios:has(.barra-lateral-recolhida) #center {
+    -fx-padding: 60 20 20 20;
+    -fx-alignment: top-center;
+}
