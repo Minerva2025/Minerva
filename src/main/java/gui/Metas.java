@@ -65,7 +65,6 @@ public class Metas extends Application {
 
 	    Text titulo = new Text("Gerenciar Metas");
 	    titulo.setId("titulo");
-	    titulo.getStyleClass().add("titulo-esquerda");
 	    VBox.setMargin(titulo, new Insets(0, 0, 25, 0));
 	    
 	    Ellipse blob1 = new Ellipse();
@@ -137,7 +136,7 @@ public class Metas extends Application {
                             setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
                         }
                     }
-                    setAlignment(Pos.CENTER); 
+                    setAlignment(Pos.CENTER); // centraliza texto
                 }
             }
         });
@@ -147,50 +146,112 @@ public class Metas extends Application {
         TableColumn<Pdi, Void> colAcoes = new TableColumn<>("Ações");
         
         colAcoes.setCellFactory(tc -> new javafx.scene.control.TableCell<>() {
-            private final Button btnDelete = new Button("❌");
+        	private final Button btnDelete = new Button("❌");
+            private final Button btnEdit = new Button("Editar");
+            private final HBox actionBox = new HBox(10);
 
             {
-                btnDelete.setOnAction(e -> {
-                    Pdi pdi = getTableView().getItems().get(getIndex());
+                actionBox.getChildren().addAll(btnEdit, btnDelete);
 
+                // --- BOTÃO DELETAR ---
+                
+                btnDelete.setOnAction(e -> {
+                	
+                    Pdi pdi = getTableView().getItems().get(getIndex());
                     Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                         "Deseja excluir a meta \"" + pdi.getObjetivo() + "\"?",
                         ButtonType.YES, ButtonType.NO);
+
                     confirm.showAndWait().ifPresent(response -> {
                         if (response == ButtonType.YES) {
                             pdiDAO.delete(pdi); 
                             carregarTabela();
                         }
+                        
                     });
                 });
-                btnDelete.setId("btnDelete");
+                
+                btnDelete.getStyleClass().add("btnAcoes");
+                
+                // --- BOTÃO EDITAR ---
+                btnEdit.setOnAction(e -> abrirPopupEdicao());
+                btnEdit.getStyleClass().add("btnAcoes");
+            }
+
+            private void abrirPopupEdicao() {
+                Pdi pdi = getTableView().getItems().get(getIndex());
+
+                Stage popup = new Stage();
+                popup.setTitle("Editar Meta");
+
+                GridPane layout = new GridPane();
+                layout.setPadding(new Insets(20));
+                layout.setHgap(20);
+                layout.setVgap(20);
+
+                TextField tfObjetivo = new TextField(pdi.getObjetivo());
+                tfObjetivo.getStyleClass().add("input");
+                tfObjetivo.setPromptText("Objetivo");
+                DatePicker dpPrazo = new DatePicker(pdi.getPrazo());
+
+                ComboBox<Status> cbStatus = new ComboBox<>();
+                cbStatus.getItems().addAll(Status.values());
+                cbStatus.setValue(pdi.getStatus());
+
+                Button btnSalvar = new Button("Salvar Alterações");
+                
+                btnSalvar.getStyleClass().add("btnSalvarAlteracoes");
+
+                btnSalvar.setOnAction(ev -> {
+                    if (tfObjetivo.getText().isEmpty() || dpPrazo.getValue() == null || cbStatus.getValue() == null) {
+                        new Alert(Alert.AlertType.WARNING, "Preencha todos os campos!", ButtonType.OK).show();
+                        return;
+                    }
+
+                    pdi.setObjetivo(tfObjetivo.getText());
+                    pdi.setPrazo(dpPrazo.getValue());
+                    pdi.setStatus(cbStatus.getValue());
+
+                    pdiDAO.update(pdi);
+                    carregarTabela();
+                    popup.close();
+                });
+
+                layout.add(tfObjetivo, 0, 0);
+                layout.add(dpPrazo, 0, 1);	
+                layout.add(cbStatus, 0, 2);
+                layout.add(btnSalvar, 0, 3);
+
+                Scene scene = new Scene(layout, 330, 280);
+                String css = getClass().getResource("/gui/Metas.css").toExternalForm();
+                scene.getStylesheets().add(css);
+
+                popup.setScene(scene);
+                popup.initOwner(tabela.getScene().getWindow());
+                popup.show();
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : btnDelete);
+                setGraphic(empty ? null : actionBox);
             }
         });
         
-        VBox tabelaContainer = new VBox(tabela);
-        tabelaContainer.setFillWidth(true); 
-        tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
-        tabelaContainer.setAlignment(Pos.TOP_LEFT); 
-        VBox.setVgrow(tabelaContainer, Priority.ALWAYS);
-
+	    HBox tabelaContainer = new HBox(tabela);
+	    tabelaContainer.setAlignment(Pos.CENTER);
+	    VBox.setVgrow(tabelaContainer, Priority.ALWAYS);
 
         
 	    tabela.getColumns().addAll(colNome, colSetor, colObjetivo, colPrazo, colStatus, colAcoes);
 	    
-        HBox botoesExportar = new HBox(20, btnExportar, btnExportarExcel);
-        botoesExportar.setAlignment(Pos.CENTER);
-        botoesExportar.setPadding(new Insets(15, 0, 0, 0));
-        botoesExportar.getStyleClass().add("botoes-exportar-container");
+	    //Botão exportar pdf
+        HBox headerBox = new HBox(titulo, btnExportar, btnExportarExcel);
+        headerBox.setAlignment(Pos.CENTER);
+        headerBox.setSpacing(20);
 	    
         Text tituloCadastrar = new Text("Cadastrar Nova Meta");
         tituloCadastrar.setId("tituloCadastrar");
-        tituloCadastrar.getStyleClass().add("titulo-esquerda");
         
         HBox boxTitulo = new HBox(tituloCadastrar);
         boxTitulo.setAlignment(Pos.CENTER_LEFT);
@@ -215,8 +276,9 @@ public class Metas extends Application {
 		ObservableList<Colaborador> todosColaboradores = FXCollections.observableArrayList(colaboradorDAO.listAll());
 		cbColaborador.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
 		    if (newValue == null || newValue.isEmpty()) {
+		        // apenas limpa a seleção e não altera os itens
 		        cbColaborador.getSelectionModel().clearSelection();
-		        cbColaborador.hide(); 
+		        cbColaborador.hide(); // evita mostrar dropdown indesejado
 		    } else {
 		        ObservableList<Colaborador> filtrados = todosColaboradores.filtered(c -> 
 		            c.getNome().toLowerCase().contains(newValue.toLowerCase())
@@ -250,6 +312,7 @@ public class Metas extends Application {
 
 		    @Override
 		    public Colaborador fromString(String string) {
+		        // Procura pelo colaborador correspondente ao nome digitado
 		        return cbColaborador.getItems()
 		                .stream()
 		                .filter(c -> c.getNome().equalsIgnoreCase(string))
@@ -266,6 +329,8 @@ public class Metas extends Application {
         tfObjetivo.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(tfObjetivo, Priority.ALWAYS);
 
+
+        
         DatePicker dpPrazo = new DatePicker();
         dpPrazo.getStyleClass().add("input");
         dpPrazo.setPromptText("Prazo");
@@ -273,6 +338,9 @@ public class Metas extends Application {
         dpPrazo.setMaxWidth(Double.MAX_VALUE);
 		GridPane.setHgrow(dpPrazo, Priority.ALWAYS);
 
+
+
+        
         ComboBox<Status> cbStatus = new ComboBox<>();
         cbStatus.getItems().setAll(Status.values());
         cbStatus.getStyleClass().add("input");
@@ -318,17 +386,7 @@ public class Metas extends Application {
         
         HBox boxBotao = new HBox(btnSalvar);
         boxBotao.setAlignment(Pos.CENTER);
-        boxBotao.getStyleClass().add("responsive-button-container");
 
-        cadastrar.getStyleClass().add("responsive-grid");
-        cbColaborador.getStyleClass().add("responsive-combo");
-        tfObjetivo.getStyleClass().add("responsive-input");
-        dpPrazo.getStyleClass().add("responsive-input");
-        cbStatus.getStyleClass().add("responsive-combo");
-        btnSalvar.getStyleClass().add("responsive-button");
-        titulo.getStyleClass().add("responsive-title");
-        tituloCadastrar.getStyleClass().add("responsive-subtitle");
-        tabela.getStyleClass().add("responsive-table");
 
         cadastrar.add(cbColaborador, 0, 0);
         cadastrar.add(tfObjetivo, 1, 0);
@@ -336,12 +394,15 @@ public class Metas extends Application {
         cadastrar.add(cbStatus, 1, 1);
         cadastrar.add(boxBotao, 0, 2, 2, 1); 
         
-        coluna1.getChildren().addAll(titulo, tabelaContainer, botoesExportar, boxTitulo, cadastrar, blob1, blob2, blob3);
+        coluna1.getChildren().addAll(titulo, tabelaContainer, headerBox, boxTitulo, cadastrar, blob1, blob2, blob3);
         
+        
+	    // layout raiz
 	    HBox root = new HBox();
 	    root.getChildren().addAll(barra, coluna1);
 	    root.setStyle("-fx-background-color: #1E1E1E");
-	    
+
+	    // proporção
 	    coluna1.prefWidthProperty().bind(root.widthProperty().multiply(0.85));
 	    barra.prefWidthProperty().bind(root.widthProperty().multiply(0.15));
 	    
@@ -357,14 +418,6 @@ public class Metas extends Application {
         scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
 	    scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
-	    
-		scene.widthProperty().addListener((obss, oldVal, newVal) -> {
-			updateResponsiveStyles(scene);
-		});
-		
-		scene.heightProperty().addListener((obss, oldVal, newVal) -> {
-			updateResponsiveStyles(scene);
-		});
 	    
 	    blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.07));
 		blob1.radiusYProperty().bind(blob1.radiusXProperty()); 
@@ -395,29 +448,7 @@ public class Metas extends Application {
 	    metasStage.setFullScreenExitHint("");
 	    metasStage.setTitle("Gerenciamento de Metas (PDIs)");
 	    metasStage.show();
-	    
-		updateResponsiveStyles(scene);
 
-	}
-	
-	private void updateResponsiveStyles(Scene scene) {
-		double width = scene.getWidth();
-		double height = scene.getHeight();
-		
-		scene.getRoot().getStyleClass().removeAll("small-screen", "medium-screen", "large-screen", "extra-large-screen", "mobile-landscape");
-		
-		if (width < 768) { 
-			scene.getRoot().getStyleClass().add("small-screen");
-			if (width > height) {
-				scene.getRoot().getStyleClass().add("mobile-landscape");
-			}
-		} else if (width < 1024) { 
-			scene.getRoot().getStyleClass().add("medium-screen");
-		} else if (width < 1440) {
-			scene.getRoot().getStyleClass().add("large-screen");
-		} else { 
-			scene.getRoot().getStyleClass().add("extra-large-screen");
-		}
 	}
 	
     private void carregarTabela() {
@@ -442,7 +473,6 @@ public class Metas extends Application {
     Button btnExportar = new Button("Exportar PDF");
     private void setupBotaoExportar() {
     	btnExportar.getStyleClass().add("botao-exportar");
-    	btnExportar.getStyleClass().add("responsive-button");
     	
     	btnExportar.setOnAction(e -> {
     		javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
@@ -466,7 +496,6 @@ public class Metas extends Application {
 
     private void setupBotaoExportarExcel() {
         btnExportarExcel.getStyleClass().add("botao-exportar");
-        btnExportarExcel.getStyleClass().add("responsive-button");
 
         btnExportarExcel.setOnAction(e -> {
             javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
@@ -498,4 +527,4 @@ public class Metas extends Application {
         });
     }
     
-}
+}	
