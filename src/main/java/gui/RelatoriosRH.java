@@ -3,6 +3,7 @@ package gui;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -283,7 +285,7 @@ public class RelatoriosRH extends Application {
         Scene scene = new Scene(root, 1000, 600);
         scene.getStylesheets().add(getClass().getResource("/gui/Global.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/BarraLateral.css").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("/gui/Metas.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/gui/Metas2.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("/gui/RelatoriosRH.css").toExternalForm());
         
         blob1.radiusXProperty().bind(Bindings.multiply(scene.widthProperty(), 0.06));
@@ -505,8 +507,8 @@ public class RelatoriosRH extends Application {
 
         TableView<Pdi> tabelaPdis = new TableView<>();
         tabelaPdis.setMinHeight(200);
-        tabelaPdis.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        tabelaPdis.getStyleClass().add("tabela-pdis");
+
+        tabelaPdis.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         TableColumn<Pdi, String> colPrazo = new TableColumn<>("Prazo");
         colPrazo.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(
@@ -516,11 +518,36 @@ public class RelatoriosRH extends Application {
         TableColumn<Pdi, String> colObjetivo = new TableColumn<>("Descrição");
         colObjetivo.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(c.getValue().getObjetivo()));
 
+        colObjetivo.setCellFactory(column -> new TableCell<>() {
+            private final Label label = new Label();
+
+            {
+                label.setWrapText(true);
+                label.getStyleClass().add("label-dado");
+                setGraphic(label);
+                setPrefHeight(Control.USE_COMPUTED_SIZE);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    label.setText(null);
+                    setGraphic(null);
+                } else {
+                    label.setText(item);
+                    setGraphic(label);
+                    double colWidth = getTableColumn() != null ? getTableColumn().getWidth() : 200;
+                    label.setPrefWidth(Math.max(50, colWidth - 18));
+                    this.setWrapText(true);
+                }
+            }
+        });
+
         TableColumn<Pdi, Status> colStatus = new TableColumn<>("Status");
         colStatus.setCellValueFactory(c -> new javafx.beans.property.SimpleObjectProperty<>(c.getValue().getStatus()));
         colStatus.setCellFactory(column -> new javafx.scene.control.TableCell<>() {
-            @Override
-            protected void updateItem(Status status, boolean empty) {
+            @Override protected void updateItem(Status status, boolean empty) {
                 super.updateItem(status, empty);
                 if (empty || status == null) {
                     setText(null);
@@ -528,29 +555,30 @@ public class RelatoriosRH extends Application {
                     setStyle("");
                 } else {
                     String statusText;
-                    String statusClass;
                     switch (status) {
-                        case NAO_INICIADO -> { statusText = "Não Iniciado"; setStyle("-fx-text-fill: gray;"); statusClass = "status-nao-iniciado"; }
-                        case EM_ANDAMENTO -> { statusText = "Em Andamento"; setStyle("-fx-text-fill: orange;"); statusClass = "status-em-andamento"; }
-                        case CONCLUIDO -> { statusText = "Concluído"; setStyle("-fx-text-fill: green; -fx-font-weight: bold;"); statusClass = "status-concluido"; }
-                        case ATRASADO -> { statusText = "Atrasado"; setStyle("-fx-text-fill: red; -fx-font-weight: bold;"); statusClass = "status-atrasado"; }
-                        default -> { statusText = ""; setStyle(""); statusClass = ""; }
+                        case NAO_INICIADO -> { statusText = "Não Iniciado"; setStyle("-fx-text-fill: gray;"); }
+                        case EM_ANDAMENTO -> { statusText = "Em Andamento"; setStyle("-fx-text-fill: orange;"); }
+                        case CONCLUIDO -> { statusText = "Concluído"; setStyle("-fx-text-fill: green; -fx-font-weight: bold;"); }
+                        case ATRASADO -> { statusText = "Atrasado"; setStyle("-fx-text-fill: red; -fx-font-weight: bold;"); }
+                        default -> { statusText = ""; setStyle(""); }
                     }
                     setText(statusText);
                     setAlignment(Pos.CENTER);
-                    getStyleClass().removeAll("status-nao-iniciado", "status-em-andamento", "status-concluido", "status-atrasado");
-                    if (!statusClass.isEmpty()) getStyleClass().add(statusClass);
                 }
             }
         });
+
         tabelaPdis.getColumns().addAll(colPrazo, colObjetivo, colStatus);
         tabelaPdis.setItems(FXCollections.observableArrayList(pdisDoColaborador));
+        tabelaPdis.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+        ajustarLarguraColunas(tabelaPdis);
         HBox tabelaContainer = new HBox(tabelaPdis);
-        tabelaContainer.setAlignment(Pos.CENTER); 
+        tabelaContainer.setAlignment(Pos.CENTER);
         tabelaContainer.setPadding(new Insets(10, 0, 0, 0));
-
         relatorioColaborador.getChildren().add(tabelaContainer);
+        
+        
     }
 
     private HBox criarCaixaLegenda(String cor, String texto) {
@@ -638,6 +666,47 @@ public class RelatoriosRH extends Application {
         } else {
             tituloAlertas.setText("PDIs");
         }
+    }
+    
+    private void ajustarLarguraColunas(TableView<Pdi> table) {
+        for (TableColumn<Pdi, ?> col : table.getColumns()) {
+            double largura = calcularLarguraColuna(table, col);
+            
+            double min = 80;
+            double max = 800; 
+            col.setMinWidth(min);
+            col.setPrefWidth(Math.max(min, Math.min(largura + 30, max)));
+        }
+
+
+        if (table.getColumns().size() >= 2) {
+            TableColumn<?, ?> colObjetivo = table.getColumns().get(1);
+            colObjetivo.widthProperty().addListener((obs, oldW, newW) -> {
+                Platform.runLater(() -> {
+                    table.refresh();
+                });
+            });
+        }
+    }
+
+    private double calcularLarguraColuna(TableView<Pdi> table, TableColumn<Pdi, ?> column) {
+        Text texto = new Text();
+        texto.setFont(Font.font(13));
+        double max = 0;
+
+        String header = column.getText() != null ? column.getText() : "";
+        texto.setText(header);
+        max = Math.max(max, texto.getLayoutBounds().getWidth());
+
+        for (Pdi item : table.getItems()) {
+            Object cellValue = column.getCellData(item);
+            String s = cellValue == null ? "" : cellValue.toString();
+            texto.setText(s);
+            double w = texto.getLayoutBounds().getWidth();
+            if (w > max) max = w;
+        }
+
+        return max;
     }
 
     private void atualizarGraficoPorArea(String areaFiltro,
