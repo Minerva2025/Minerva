@@ -42,8 +42,8 @@
 | 4  | "Como Gestor Geral, quero acompanhar o progresso individual e coletivo das metas, para avaliar o desempenho da equipe."   | 2      | Alta                | 26h |✅|  26/10            |
 | 5  | "Como RH, quero anexar documentos relacionados ao PDI e exportar relatórios, para manter os registros organizados."                 | 2      | Alta                | 42h |✅|  26/10            |
 | 6  | "Como Gestor Geral, quero visualizar um dashboard com gráficos e KPIs gerais, para acompanhar o desempenho global da empresa."     | 2     | Média               | 70h | ✅ |  26/10            |
-| 7  | "Como Administrador, quero garantir que os dados estejam seguros e acessíveis apenas para usuários autorizados."      | 3  | Alta             | 45h | ⏳ |  23/11            |
-| 8  | "Como RH, quero gerar relatórios completos para reuniões e acompanhamento de desempenho." | 3    | Média                | 28h |⏳|  23/11            |
+| 7  | "Como Administrador, quero garantir que os dados estejam seguros e acessíveis apenas para usuários autorizados."      | 3  | Alta             | 45h | ✅ |  23/11            |
+| 8  | "Como RH, quero gerar relatórios completos para reuniões e acompanhamento de desempenho." | 3    | Média                | 28h |✅|  23/11            |
 <br>
 
 ## 📅Sprints
@@ -52,7 +52,7 @@
 
 ### Sprint - 2️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint2)) : Concluída ✅
 
-### Sprint - 3️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint3)) : Início em 3/11.
+### Sprint - 3️⃣ 🎯 ([Clique aqui](/documents/Sprints/Sprint3)) : Concluída ✅
 
 ## 🖥Tecnologias Utilizadas 
 
