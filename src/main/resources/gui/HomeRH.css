@@ -3,191 +3,187 @@
 	src: url(fonts/JuliusSansOne-Regular.ttf);
 }
 
-#root-home{
-	-fx-background-color: #1E1E1E;
-}
-
 #center{
 	-fx-background-color: #1E1E1E;
-	-fx-padding: 60 20 20 45;
-	-fx-alignment: top-left;
+	-fx-padding: 110 0 0 45
 }
 
 #titulo{
 	-fx-fill: white;
-	-fx-font-size: 28px;
+	-fx-font-size: 48px;
 	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 1px;
-	-fx-text-alignment: left;
-	-fx-wrapping-width: 300px;
+	-fx-letter-spacing: 2px;
+	
 }
 
 #container{
-	-fx-padding: 40 0 0 0;
-	-fx-alignment: center-left;
-	-fx-spacing: 20;
+	-fx-padding: 80 0 0 0
 }
 
 #colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido{
 	-fx-fill: white;
-	-fx-font-size: 14px;
+	-fx-font-size: 18px;
 	-fx-font-family: 'Kodchasan';
-	-fx-letter-spacing: 1px;
-	-fx-text-alignment: left;
-	-fx-wrapping-width: 150px;
+	-fx-letter-spacing: 2px;
 }
+
 
 #blob1, #blob2, #blob3{
 	-fx-fill: #323232;
 }
-
-.small-screen #container {
-	-fx-orientation: vertical;
-	-fx-alignment: center-left;
 }
 
-.small-screen #container > * {
-	-fx-padding: 8px 0;
+#chartsContainer{
+    -fx-padding: 30 0 20 0;
+    -fx-alignment: center-left;
 }
 
-.mobile-landscape #container {
-	-fx-orientation: horizontal;
-	-fx-spacing: 15;
-	-fx-alignment: center-left;
+
+.card{
+    -fx-background-color: #2A2A2A;
+    -fx-background-radius: 18;
+    -fx-min-width: 420px;
+    -fx-min-height: 240px;
+
+	    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.0, 0, 4);
+    -fx-border-color: transparent;
 }
 
-.mobile-landscape #container > * {
-	-fx-wrapping-width: 120px;
+
+#boxChart1, #boxChart2{
+    -fx-alignment: center;
 }
 
-.medium-screen #center {
-	-fx-padding: 80 30 30 45;
+
+
+#alertBox{
+    -fx-padding: 28 0 0 10;
+    -fx-spacing: 6;
 }
 
-.medium-screen #titulo {
-	-fx-font-size: 36px;
-	-fx-wrapping-width: 400px;
+#alertTitle{
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 28px;
+    -fx-font-family: 'Kodchasan';
+    -fx-letter-spacing: 1.5px;
 }
 
-.medium-screen #container {
-	-fx-padding: 60 0 0 0;
-	-fx-spacing: 40;
-	-fx-alignment: center-left;
+#alertMessage{
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 22px;
+    -fx-opacity: 0.9;
+    -fx-font-family: 'Kodchasan';
 }
 
-.medium-screen #colaboradores,
-.medium-screen #pdiAtivo, 
-.medium-screen #pdiInativo, 
-.medium-screen #pdiConcluido {
-	-fx-font-size: 16px;
-	-fx-wrapping-width: 180px;
+
+#alertBox {
+    -fx-background-color: transparent;
+    -fx-border-radius: 8;
 }
 
-.large-screen #center {
-	-fx-padding: 110 40 40 45; 
-	-fx-alignment: top-left;
+
+@media screen and (max-width: 1280px) {
+    .card {
+        -fx-min-width: 340px;
+        -fx-min-height: 500px;
+    }
+}	
+
+/* --- ESTILOS ESPECÍFICOS DOS GRÁFICOS --- */
+
+/* --- Gráfico de Pizza --- */
+
+.chart-pie {
+    -fx-border-color: transparent;
 }
 
-.large-screen #titulo {
-	-fx-font-size: 42px;
-	-fx-wrapping-width: 500px;
-	-fx-text-alignment: left;
+/*cores*/
+    .data0 { -fx-pie-color: #A8E6CF; }
+	.data1 { -fx-pie-color: #70C1B3; }
+	.data2 { -fx-pie-color: #2E8B78; }
+	.data3 { -fx-pie-color: #155E57; }
+
+/* Estilo da legenda do gráfico de pizza */
+.chart-legend {
+    -fx-background-color: transparent; 
+    -fx-text-fill: white; 
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 13px; 
+    -fx-padding: 0 0 0 20px; 
 }
 
-.large-screen #container {
-	-fx-padding: 80 0 0 0;
-	-fx-spacing: 80;
-	-fx-alignment: center-left;
+/* Estilo de cada item individual da legenda */
+.chart-legend .chart-legend-item {
+    -fx-text-fill: #E0E0E0; 
+    -fx-padding: 2px 0;
 }
 
-.large-screen #colaboradores,
-.large-screen #pdiAtivo, 
-.large-screen #pdiInativo, 
-.large-screen #pdiConcluido {
-	-fx-font-size: 17px;
-	-fx-wrapping-width: 200px;
-	-fx-text-alignment: left;
+/* Estilo do símbolo (quadradinho) de cada item da legenda */
+.chart-legend .chart-legend-item-symbol {
+    -fx-shape: "M0 0 H10 V10 H0 Z"; 
+    -fx-scale-x: 0.9; 
+    -fx-scale-y: 0.9;
+ 
 }
 
-.extra-large-screen #center {
-	-fx-padding: 110 0 0 45;
+/* --- Gráfico de Barras --- */
+
+/* Fundo do gráfico */
+.chart {
+    -fx-background-color: transparent;
 }
 
-.extra-large-screen #titulo {
-	-fx-font-size: 48px;
-	-fx-letter-spacing: 2px;
-	-fx-wrapping-width: 600px;
+/* Fundo da área de plot */
+.chart-plot-background {
+    -fx-background-color: transparent;
 }
 
-.extra-large-screen #container {
-	-fx-padding: 80 0 0 0;
-	-fx-spacing: 150;
-	-fx-alignment: center-left;
+
+
+/* Remove o fundo da área de plot (onde as barras aparecem) */
+.chart-bar .chart-plot-background {
+    -fx-background-color: transparent;
 }
 
-.extra-large-screen #colaboradores,
-.extra-large-screen #pdiAtivo, 
-.extra-large-screen #pdiInativo, 
-.extra-large-screen #pdiConcluido {
-	-fx-font-size: 18px;
-	-fx-letter-spacing: 2px;
-	-fx-wrapping-width: 220px;
+/* Estilo dos eixos */
+.axis {
+    -fx-font-family: 'Kodchasan';
+    -fx-font-size: 12px;
+    -fx-tick-label-fill: #E0E0E0;
+    -fx-stroke: #5A5A5A;
+    -fx-tick-mark-stroke: transparent;
+    -fx-opacity: 0.7;
 }
 
-.small-screen #center {
-	-fx-padding: 40 15 15 30;
-	-fx-alignment: top-left;
+/* Rótulos dos eixos */
+.axis-label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+	-fx-font-weight: 300;
 }
 
-.small-screen #titulo {
-	-fx-font-size: 24px;
-	-fx-wrapping-width: 250px;
-	-fx-text-alignment: left;
+
+
+/* Tirar linhas de grade */
+.chart-vertical-grid-lines,
+.chart-horizontal-grid-lines {
+    -fx-stroke: transparent;
 }
 
-.small-screen #container {
-	-fx-padding: 30 0 0 0;
-	-fx-spacing: 15;
-	-fx-alignment: center-left;
+
+#boxChart2 {
+    
+    -fx-bar-gap: 1; 
+    -fx-category-gap: 60px; 
 }
 
-.small-screen #colaboradores,
-.small-screen #pdiAtivo, 
-.small-screen #pdiInativo, 
-.small-screen #pdiConcluido {
-	-fx-font-size: 12px;
-	-fx-wrapping-width: 130px;
-	-fx-text-alignment: left;
+/* Reduzir o gap do eixo X para forçar o ajuste */
+.bar-chart .axis-category {
+    -fx-padding: 0 30 0 30; 
 }
 
-#root-home:has(.barra-lateral-recolhida) #center {
-	-fx-padding: 60 20 20 30;
-	-fx-alignment: top-left;
-}
+#root-home{
+	-fx-background-color: #1E1E1E;
 
-#root-home:has(.barra-lateral-recolhida) #container {
-	-fx-alignment: center-left;
-}
-
-@media (max-height: 600px) {
-	.small-screen #center {
-		-fx-padding: 30 15 15 30;
-	}
-	
-	.small-screen #container {
-		-fx-padding: 20 0 0 0;
-		-fx-spacing: 10;
-	}
-	
-	.small-screen #titulo {
-		-fx-font-size: 20px;
-	}
-}
-
-#colaboradores, #pdiAtivo, #pdiInativo, #pdiConcluido {
-	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 0.5, 1, 1);
-}
-
-#titulo {
-	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0.7, 2, 2);
 }
