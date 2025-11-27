@@ -2,7 +2,9 @@
 Sprint concluída ✅
 <br>
 
-## Segurança e Relatórios:
+## Relatórios Analíticos RH e Gestores:
+
+https://github.com/user-attachments/assets/dea5e590-7549-4d64-84d1-234cce99ff0e
 
 
 ## Backlog da Sprint 📝
