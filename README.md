@@ -8,7 +8,7 @@
 <br>
   <p align="center">
   |    
-    <a href="((/documents/Manual/readme.md))"> Manual de Instalação </a> |
+    <a href="/documents/Manual/readme.md"> Manual de Instalação </a> |
     <a href="#sobre-o-projeto"> Sobre o Projeto </a> |
     <a href="#-metodologia"> Metodologia </a> |
     <a href="#backlog-do-produto"> Backlog do Produto </a> |
