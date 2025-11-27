@@ -7,7 +7,8 @@
 
 <br>
   <p align="center">
-  |
+  |    
+    <a href="((/documents/Manual/readme.md))"> Manual de Instalação </a> |
     <a href="#sobre-o-projeto"> Sobre o Projeto </a> |
     <a href="#-metodologia"> Metodologia </a> |
     <a href="#backlog-do-produto"> Backlog do Produto </a> |
@@ -24,7 +25,7 @@
 >
 > O sistema busca fornecer uma plataforma que permita o registro, acompanhamento e análise de PDIs de colaboradores, disponibilizando relatórios e indicadores para gestores de área e RH. Assim, a ferramenta auxilia na tomada de decisões estratégicas, no alinhamento de objetivos individuais e corporativos e na valorização do desenvolvimento contínuo dos profissionais.
 > 
-> Status do Projeto: Em andamento⏳
+> Status do Projeto: Concluído ✅
 <br>
 
 ## 📚 Metodologia
