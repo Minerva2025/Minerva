@@ -3,12 +3,20 @@
     -fx-background-color: #1E1E1E;
 }
 
+.scroll-pane{
+	-fx-background-color: transparent;
+	-fx-background-insets: 0;
+}
+
 #center {
     -fx-background-color: #1E1E1E;
     -fx-padding: 60 20 20 20;
     -fx-alignment: top-center;
 }
 
+.chart-pie {
+    -fx-border-color: transparent;
+}
 /* Título principal - ALINHADO À ESQUERDA */
 #titulo {
     -fx-fill: white;

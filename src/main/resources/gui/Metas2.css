@@ -1,0 +1,793 @@
+#coluna1 {
+    -fx-background-color: #1E1E1E;
+    -fx-padding: 20 15 20 15;
+    -fx-spacing: 20;
+}
+
+#titulo, #tituloCadastrar {
+    -fx-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-family: 'Kodchasan';
+    -fx-letter-spacing: 1px;
+}
+
+.titulo-esquerda {
+    -fx-alignment: CENTER_LEFT;
+    -fx-text-alignment: LEFT;
+}
+
+.botoes-exportar-container {
+    -fx-alignment: CENTER;
+    -fx-spacing: 20;
+    -fx-padding: 15 0 0 0;
+}
+
+.botao-cadastro {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 8 20 8 20;
+}
+
+#btnDelete{
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-background-radius: 50px;
+    -fx-cursor: hand;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+}
+
+.botao-exportar {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 8 20 8 20;
+}
+
+.input {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-width: 0 0 1 0;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: white;
+    -fx-pref-height: 35px;
+}
+
+.date-picker {
+    -fx-background-color: transparent;
+}
+
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.table-view {
+    -fx-background-color: #2b2b2b;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10;
+    -fx-border-width: 2;
+    -fx-pref-height: 200px;
+    -fx-text-fill: white;
+    -fx-border-insets: 0 0 10px 0;
+    -fx-background-insets: 0 0 10px 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #2b2b2b;
+    -fx-background-radius: 15 15 0 0;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header, 
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-alignment: Center;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-cell-size: 25px;
+    -fx-text-fill: white;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #3c3c3c;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-alignment: Center;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-alignment: Center;
+    -fx-text-fill: white;
+}
+
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+    -fx-border-width: 0 0 1 0;
+    -fx-prompt-text-fill: white;
+    -fx-pref-height: 35px;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Kodchasan';
+    -fx-padding: 5 10 5 10;
+}
+
+.combo-box .list-view .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: #1E1E1E;
+    -fx-padding: 5 10 5 10;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.combo-box .arrow {
+    -fx-background-color: white;
+}
+
+.small-screen #coluna1 {
+    -fx-padding: 15 10 15 10;
+    -fx-spacing: 15;
+}
+
+.small-screen .botoes-exportar-container {
+    -fx-spacing: 10;
+    -fx-padding: 10 0 0 0;
+}
+
+.mobile-landscape #coluna1 {
+    -fx-padding: 15 12 15 12;
+    -fx-spacing: 18;
+}
+
+.medium-screen #coluna1 {
+    -fx-padding: 25 20 25 20;
+    -fx-spacing: 25;
+}
+
+.medium-screen #titulo,
+.medium-screen #tituloCadastrar {
+    -fx-font-size: 32px;
+}
+
+.medium-screen .botao-cadastro,
+.medium-screen .botao-exportar {
+    -fx-font-size: 16px;
+    -fx-padding: 10 25 10 25;
+    -fx-background-radius: 25px;
+}
+
+.medium-screen .input {
+    -fx-font-size: 15px;
+    -fx-pref-height: 38px;
+}
+
+.medium-screen .table-view {
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-padding: 15;
+}
+
+.medium-screen .table-view .column-header,
+.medium-screen .table-view .filler {
+    -fx-font-size: 14px;
+}
+
+.medium-screen .table-view .table-cell {
+    -fx-font-size: 12px;
+}
+
+.medium-screen .combo-box {
+    -fx-pref-height: 38px;
+}
+
+.medium-screen .combo-box .list-cell {
+    -fx-font-size: 15px;
+}
+
+.large-screen #coluna1 {
+    -fx-padding: 30 25 30 25;
+    -fx-spacing: 30;
+}
+
+.large-screen #titulo,
+.large-screen #tituloCadastrar {
+    -fx-font-size: 36px;
+}
+
+.large-screen .botao-cadastro,
+.large-screen .botao-exportar {
+    -fx-font-size: 17px;
+    -fx-padding: 12 30 12 30;
+    -fx-background-radius: 28px;
+}
+
+.large-screen .input {
+    -fx-font-size: 16px;
+    -fx-pref-height: 40px;
+}
+
+.large-screen .table-view {
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-padding: 18;
+}
+
+.large-screen .table-view .column-header,
+.large-screen .table-view .filler {
+    -fx-font-size: 15px;
+}
+
+.large-screen .table-view .table-cell {
+    -fx-font-size: 13px;
+}
+
+.large-screen .combo-box {
+    -fx-pref-height: 40px;
+}
+
+.large-screen .combo-box .list-cell {
+    -fx-font-size: 16px;
+}
+
+.extra-large-screen #coluna1 {
+    -fx-padding: 40 30 40 30;
+    -fx-spacing: 40;
+}
+
+.extra-large-screen #titulo,
+.extra-large-screen #tituloCadastrar {
+    -fx-font-size: 48px;
+}
+
+.extra-large-screen .botao-cadastro,
+.extra-large-screen .botao-exportar {
+    -fx-font-size: 18px;
+    -fx-padding: 15 35 15 35;
+    -fx-background-radius: 30px;
+}
+
+.extra-large-screen .input {
+    -fx-font-size: 18px;
+    -fx-pref-height: 45px;
+}
+
+.extra-large-screen .table-view {
+    -fx-background-radius: 40;
+    -fx-border-radius: 40;
+    -fx-padding: 20;
+}
+
+.extra-large-screen .table-view .column-header,
+.extra-large-screen .table-view .filler {
+    -fx-font-size: 16px;
+}
+
+.extra-large-screen .table-view .table-cell {
+    -fx-font-size: 14px;
+}
+
+.extra-large-screen .combo-box {
+    -fx-pref-height: 45px;
+}
+
+.extra-large-screen .combo-box .list-cell {
+    -fx-font-size: 18px;
+}
+
+.small-screen #coluna1 {
+    -fx-padding: 10 8 10 8;
+    -fx-spacing: 12;
+}
+
+.small-screen #titulo,
+.small-screen #tituloCadastrar {
+    -fx-font-size: 20px;
+}
+
+.small-screen .botao-cadastro,
+.small-screen .botao-exportar {
+    -fx-font-size: 12px;
+    -fx-padding: 6 15 6 15;
+    -fx-background-radius: 15px;
+}
+
+.small-screen .input {
+    -fx-font-size: 12px;
+    -fx-pref-height: 32px;
+}
+
+.small-screen .table-view {
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-padding: 8;
+}
+
+.small-screen .table-view .column-header,
+.small-screen .table-view .filler {
+    -fx-font-size: 10px;
+}
+
+.small-screen .table-view .table-cell {
+    -fx-font-size: 9px;
+}
+
+.small-screen .combo-box {
+    -fx-pref-height: 32px;
+}
+
+.small-screen .combo-box .list-cell {
+    -fx-font-size: 12px;
+    -fx-padding: 3 8 3 8;
+}
+
+.small-screen .responsive-grid {
+    -fx-hgap: 15 !important;
+    -fx-vgap: 20 !important;
+    -fx-padding: 15 20 15 20 !important;
+}
+
+.small-screen .responsive-grid .grid-cell {
+    -fx-column-span: 2;
+}
+
+.small-screen #cadastro-layout {
+    -fx-column-constraints: "100%" !important;
+}
+
+.small-screen .responsive-grid > * {
+    -fx-column-span: 2 !important;
+}
+
+.small-screen .responsive-table {
+    -fx-pref-width: 100% !important;
+    -fx-max-width: 100% !important;
+}
+
+@media (max-height: 600px) {
+    .small-screen #coluna1 {
+        -fx-padding: 8 5 8 5;
+        -fx-spacing: 10;
+    }
+    
+    .small-screen #titulo,
+    .small-screen #tituloCadastrar {
+        -fx-font-size: 18px;
+    }
+    
+    .small-screen .table-view {
+        -fx-pref-height: 150px;
+    }
+    
+    .small-screen .input {
+        -fx-pref-height: 30px;
+    }
+}
+
+.botao-cadastro:hover,
+.botao-exportar:hover {
+    -fx-background-color: #404040;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+#titulo,
+#tituloCadastrar {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0.7, 2, 2);
+}
+
+@media (min-width: 2000px) {
+    .extra-large-screen #coluna1 {
+        -fx-max-width: 1800px;
+        -fx-pref-width: 1800px;
+    }
+}
+
+.combo-box {
+    -fx-max-width: 1000px;
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+    .medium-screen #coluna1 {
+        -fx-padding: 20 15 20 15;
+        -fx-spacing: 20;
+    }
+    
+    .medium-screen #titulo,
+    .medium-screen #tituloCadastrar {
+        -fx-font-size: 28px;
+    }
+}
+
+.responsive-button-container {
+    -fx-padding: 10 0 10 0;
+}
+
+.small-screen .responsive-button-container {
+    -fx-padding: 8 0 8 0;
+}
+
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar .thumb {
+    -fx-background-color: #888;
+    -fx-background-radius: 8;
+    -fx-pref-width: 6;
+    -fx-pref-height: 6;
+}
+
+.table-view .scroll-bar .thumb:hover {
+    -fx-background-color: #aaa;
+}
+
+.table-view .scroll-bar .increment-arrow,
+.table-view .scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+#blob1, #blob2, #blob3{
+    -fx-fill: #323232
+}
+
+.responsive-table {
+    -fx-opacity: 1 !important;
+    -fx-translate-x: 0 !important;
+    -fx-translate-y: 0 !important;
+    -fx-scale-x: 1 !important;
+    -fx-scale-y: 1 !important;
+}
+
+.scroll-pane {
+    -fx-background: #1E1E1E;
+    -fx-border-color: transparent;
+    -fx-background-color: #1E1E1E;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #1E1E1E;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #888;
+    -fx-background-radius: 8;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #aaa;
+}
+
+.scroll-pane .scroll-bar .increment-button,
+.scroll-pane .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.btnvoltar {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-padding: 10 25 10 25;
+    -fx-min-width: 120px;
+    -fx-alignment: center;
+    -fx-wrap-text: true;
+    -fx-font-family: 'Kodchasan';
+}
+
+.btnvoltar:hover {
+    -fx-background-color: #404040;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.small-screen .btnvoltar {
+    -fx-font-size: 14px !important;
+    -fx-padding: 8 20 8 20 !important;
+    -fx-min-width: 100px !important;
+    -fx-background-radius: 18px !important;
+}
+
+.medium-screen .btnvoltar {
+    -fx-font-size: 16px !important;
+    -fx-padding: 10 25 10 25 !important;
+    -fx-min-width: 120px !important;
+    -fx-background-radius: 22px !important;
+}
+
+.large-screen .btnvoltar {
+    -fx-font-size: 17px !important;
+    -fx-padding: 12 30 12 30 !important;
+    -fx-min-width: 130px !important;
+    -fx-background-radius: 25px !important;
+}
+
+.extra-large-screen .btnvoltar {
+    -fx-font-size: 18px !important;
+    -fx-padding: 14 35 14 35 !important;
+    -fx-min-width: 140px !important;
+    -fx-background-radius: 28px !important;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent !important;
+}
+
+.chart-content {
+    -fx-background-color: transparent !important;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent !important;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: transparent !important;
+}
+
+.axis {
+    -fx-tick-label-fill: white !important;
+    -fx-tick-mark-visible: false !important;
+}
+
+.axis-label {
+    -fx-text-fill: white !important;
+}
+
+.responsive-grafico {
+    -fx-background-color: #2C2C2C;
+    -fx-background-radius: 15;
+    -fx-padding: 20px;
+    -fx-pref-width: 745px;
+    -fx-min-height: 250px;
+    -fx-max-height: 250px;
+}
+
+.responsive-alertas {
+    -fx-background-color: #2C2C2C;
+    -fx-background-radius: 15;
+    -fx-padding: 20px;
+    -fx-pref-width: 415px;
+    -fx-min-height: 250px;
+    -fx-max-height: 250px;
+}
+
+.responsive-top-container {
+    -fx-spacing: 30px;
+    -fx-alignment: center;
+    -fx-padding: 10px;
+}
+
+.small-screen .responsive-top-container {
+    -fx-spacing: 20px;
+    -fx-padding: 5px;
+}
+
+.small-screen .responsive-grafico {
+    -fx-padding: 15px;
+    -fx-pref-width: 100% !important;
+    -fx-min-height: 200px;
+    -fx-max-height: 200px;
+    -fx-background-radius: 12px;
+}
+
+.small-screen .responsive-alertas {
+    -fx-padding: 15px;
+    -fx-pref-width: 100% !important;
+    -fx-min-height: 200px;
+    -fx-max-height: 200px;
+    -fx-background-radius: 12px;
+}
+
+.small-screen .responsive-top-container {
+    -fx-orientation: vertical;
+}
+
+.mobile-landscape .responsive-top-container {
+    -fx-spacing: 25px;
+}
+
+.mobile-landscape .responsive-grafico {
+    -fx-min-height: 220px;
+    -fx-max-height: 220px;
+}
+
+.mobile-landscape .responsive-alertas {
+    -fx-min-height: 220px;
+    -fx-max-height: 220px;
+}
+
+.medium-screen .responsive-top-container {
+    -fx-spacing: 25px;
+}
+
+.medium-screen .responsive-grafico {
+    -fx-padding: 18px;
+    -fx-pref-width: 600px;
+    -fx-min-height: 230px;
+    -fx-max-height: 230px;
+    -fx-background-radius: 13px;
+}
+
+.medium-screen .responsive-alertas {
+    -fx-padding: 18px;
+    -fx-pref-width: 350px;
+    -fx-min-height: 230px;
+    -fx-max-height: 230px;
+    -fx-background-radius: 13px;
+}
+
+.large-screen .responsive-top-container {
+    -fx-spacing: 30px;
+}
+
+.large-screen .responsive-grafico {
+    -fx-padding: 20px;
+    -fx-pref-width: 700px;
+    -fx-min-height: 240px;
+    -fx-max-height: 240px;
+    -fx-background-radius: 14px;
+}
+
+.large-screen .responsive-alertas {
+    -fx-padding: 20px;
+    -fx-pref-width: 380px;
+    -fx-min-height: 240px;
+    -fx-max-height: 240px;
+    -fx-background-radius: 14px;
+}
+
+.extra-large-screen .responsive-top-container {
+    -fx-spacing: 35px;
+}
+
+.extra-large-screen .responsive-grafico {
+    -fx-padding: 25px;
+    -fx-pref-width: 800px;
+    -fx-min-height: 250px;
+    -fx-max-height: 250px;
+    -fx-background-radius: 15px;
+}
+
+.extra-large-screen .responsive-alertas {
+    -fx-padding: 25px;
+    -fx-pref-width: 420px;
+    -fx-min-height: 250px;
+    -fx-max-height: 250px;
+    -fx-background-radius: 15px;
+}
+
+.small-screen .responsive-grafico {
+    -fx-padding: 12px;
+    -fx-min-height: 180px;
+    -fx-max-height: 180px;
+    -fx-background-radius: 10px;
+}
+
+.small-screen .responsive-alertas {
+    -fx-padding: 12px;
+    -fx-min-height: 180px;
+    -fx-max-height: 180px;
+    -fx-background-radius: 10px;
+}
+
+@media (max-height: 600px) {
+    .small-screen .responsive-grafico {
+        -fx-padding: 10px;
+        -fx-min-height: 160px;
+        -fx-max-height: 160px;
+    }
+    
+    .small-screen .responsive-alertas {
+        -fx-padding: 10px;
+        -fx-min-height: 160px;
+        -fx-max-height: 160px;
+    }
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+    .medium-screen .responsive-top-container {
+        -fx-spacing: 20px;
+    }
+    
+    .medium-screen .responsive-grafico {
+        -fx-pref-width: 550px;
+        -fx-min-height: 220px;
+        -fx-max-height: 220px;
+    }
+    
+    .medium-screen .responsive-alertas {
+        -fx-pref-width: 320px;
+        -fx-min-height: 220px;
+        -fx-max-height: 220px;
+    }
+}
+
+.btnVerMetas {
+    -fx-background-color: #323232;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-padding: 10 25 10 25;
+}
+
+.small-screen .btnVerMetas {
+    -fx-font-size: 12px !important;
+    -fx-padding: 6 15 6 15 !important;
+    -fx-background-radius: 15px !important;
+}
+
+.medium-screen .btnVerMetas {
+    -fx-font-size: 15px !important;
+    -fx-padding: 9 22 9 22 !important;
+    -fx-background-radius: 18px !important;
+}
+
+.large-screen .btnVerMetas {
+    -fx-font-size: 16px !important;
+    -fx-padding: 10 25 10 25 !important;
+    -fx-background-radius: 20px !important;
+}
+
+.extra-large-screen .btnVerMetas {
+    -fx-font-size: 18px !important;
+    -fx-padding: 12 30 12 30 !important;
+    -fx-background-radius: 22px !important;
+}
+
+.btnVerMetas:hover {
+    -fx-background-color: #404040;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
